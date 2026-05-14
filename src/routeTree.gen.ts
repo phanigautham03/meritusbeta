@@ -18,6 +18,8 @@ import { Route as MockTestsIdRouteImport } from './routes/mock-tests.$id'
 import { Route as AppStudyPlannerRouteImport } from './routes/_app.study-planner'
 import { Route as AppMyExamsRouteImport } from './routes/_app.my-exams'
 import { Route as AppMockTestsRouteImport } from './routes/_app.mock-tests'
+import { Route as AppLeaderboardRouteImport } from './routes/_app.leaderboard'
+import { Route as AppForgetMeterRouteImport } from './routes/_app.forget-meter'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppResultsIdRouteImport } from './routes/_app.results.$id'
 
@@ -65,6 +67,16 @@ const AppMockTestsRoute = AppMockTestsRouteImport.update({
   path: '/mock-tests',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLeaderboardRoute = AppLeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppForgetMeterRoute = AppForgetMeterRouteImport.update({
+  id: '/forget-meter',
+  path: '/forget-meter',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -82,6 +94,8 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
   '/dashboard': typeof AppDashboardRoute
+  '/forget-meter': typeof AppForgetMeterRoute
+  '/leaderboard': typeof AppLeaderboardRoute
   '/mock-tests': typeof AppMockTestsRoute
   '/my-exams': typeof AppMyExamsRoute
   '/study-planner': typeof AppStudyPlannerRoute
@@ -94,6 +108,8 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
   '/dashboard': typeof AppDashboardRoute
+  '/forget-meter': typeof AppForgetMeterRoute
+  '/leaderboard': typeof AppLeaderboardRoute
   '/mock-tests': typeof AppMockTestsRoute
   '/my-exams': typeof AppMyExamsRoute
   '/study-planner': typeof AppStudyPlannerRoute
@@ -108,6 +124,8 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/forget-meter': typeof AppForgetMeterRoute
+  '/_app/leaderboard': typeof AppLeaderboardRoute
   '/_app/mock-tests': typeof AppMockTestsRoute
   '/_app/my-exams': typeof AppMyExamsRoute
   '/_app/study-planner': typeof AppStudyPlannerRoute
@@ -122,6 +140,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/signup'
     | '/dashboard'
+    | '/forget-meter'
+    | '/leaderboard'
     | '/mock-tests'
     | '/my-exams'
     | '/study-planner'
@@ -134,6 +154,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/signup'
     | '/dashboard'
+    | '/forget-meter'
+    | '/leaderboard'
     | '/mock-tests'
     | '/my-exams'
     | '/study-planner'
@@ -147,6 +169,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/signup'
     | '/_app/dashboard'
+    | '/_app/forget-meter'
+    | '/_app/leaderboard'
     | '/_app/mock-tests'
     | '/_app/my-exams'
     | '/_app/study-planner'
@@ -228,6 +252,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMockTestsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/leaderboard': {
+      id: '/_app/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AppLeaderboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/forget-meter': {
+      id: '/_app/forget-meter'
+      path: '/forget-meter'
+      fullPath: '/forget-meter'
+      preLoaderRoute: typeof AppForgetMeterRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -247,6 +285,8 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppForgetMeterRoute: typeof AppForgetMeterRoute
+  AppLeaderboardRoute: typeof AppLeaderboardRoute
   AppMockTestsRoute: typeof AppMockTestsRoute
   AppMyExamsRoute: typeof AppMyExamsRoute
   AppStudyPlannerRoute: typeof AppStudyPlannerRoute
@@ -255,6 +295,8 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppForgetMeterRoute: AppForgetMeterRoute,
+  AppLeaderboardRoute: AppLeaderboardRoute,
   AppMockTestsRoute: AppMockTestsRoute,
   AppMyExamsRoute: AppMyExamsRoute,
   AppStudyPlannerRoute: AppStudyPlannerRoute,
