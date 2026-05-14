@@ -14,6 +14,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MockTestsIdRouteImport } from './routes/mock-tests.$id'
 import { Route as AppMyExamsRouteImport } from './routes/_app.my-exams'
 import { Route as AppMockTestsRouteImport } from './routes/_app.mock-tests'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
@@ -42,6 +43,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MockTestsIdRoute = MockTestsIdRouteImport.update({
+  id: '/mock-tests/$id',
+  path: '/mock-tests/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppMyExamsRoute = AppMyExamsRouteImport.update({
   id: '/my-exams',
   path: '/my-exams',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRoute
   '/mock-tests': typeof AppMockTestsRoute
   '/my-exams': typeof AppMyExamsRoute
+  '/mock-tests/$id': typeof MockTestsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRoute
   '/mock-tests': typeof AppMockTestsRoute
   '/my-exams': typeof AppMyExamsRoute
+  '/mock-tests/$id': typeof MockTestsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/mock-tests': typeof AppMockTestsRoute
   '/_app/my-exams': typeof AppMyExamsRoute
+  '/mock-tests/$id': typeof MockTestsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/mock-tests'
     | '/my-exams'
+    | '/mock-tests/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/mock-tests'
     | '/my-exams'
+    | '/mock-tests/$id'
   id:
     | '__root__'
     | '/'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/_app/mock-tests'
     | '/_app/my-exams'
+    | '/mock-tests/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -124,6 +136,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
   SignupRoute: typeof SignupRoute
+  MockTestsIdRoute: typeof MockTestsIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mock-tests/$id': {
+      id: '/mock-tests/$id'
+      path: '/mock-tests/$id'
+      fullPath: '/mock-tests/$id'
+      preLoaderRoute: typeof MockTestsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/my-exams': {
@@ -207,6 +227,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
   SignupRoute: SignupRoute,
+  MockTestsIdRoute: MockTestsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
