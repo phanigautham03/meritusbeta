@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { externalSupabase } from "./client";
+import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 
 interface AuthContextValue {
   session: Session | null;
@@ -23,11 +24,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set listener BEFORE getSession (per Supabase guidance).
-    const { data: sub } = externalSupabase.auth.onAuthStateChange((_e, s) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
     });
-    externalSupabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setLoading(false);
     });
@@ -39,13 +39,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: session?.user ?? null,
     loading,
     signInWithPassword: async (email, password) => {
-      const { error } = await externalSupabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       return { error: error?.message ?? null };
     },
     signUpWithPassword: async (email, password, metadata) => {
       const redirectTo =
-        typeof window !== "undefined" ? `${window.location.origin}/onboarding` : undefined;
-      const { error } = await externalSupabase.auth.signUp({
+        typeof window !== "undefined" ? `${window.location.origin}/dashboard` : undefined;
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: { data: metadata, emailRedirectTo: redirectTo },
@@ -55,14 +55,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signInWithGoogle: async () => {
       const redirectTo =
         typeof window !== "undefined" ? `${window.location.origin}/dashboard` : undefined;
-      const { error } = await externalSupabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo },
-      });
-      return { error: error?.message ?? null };
+      const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: redirectTo });
+      if ("error" in result && result.error) {
+        return { error: result.error instanceof Error ? result.error.message : String(result.error) };
+      }
+      return { error: null };
     },
     signOut: async () => {
-      await externalSupabase.auth.signOut();
+      await supabase.auth.signOut();
     },
   };
 
