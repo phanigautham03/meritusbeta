@@ -5,7 +5,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, FileText, Clock, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app/mock-tests")({ component: MockTests });
+export const Route = createFileRoute("/_app/mock-tests")({
+  component: MockTests,
+  head: () => ({
+    meta: [
+      { title: "Mock Tests — Meritus" },
+      { name: "description", content: "Pixel-perfect NTA-style mock tests for JEE, NEET, GATE, CAT and more." },
+      { property: "og:title", content: "Mock Tests — Meritus" },
+      { property: "og:description", content: "Pixel-perfect NTA-style mock tests for JEE, NEET, GATE, CAT and more." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/mock-tests" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/mock-tests" }],
+  }),
+});
 
 const tests = [
   { id: "1", exam: "JEE Main", diff: "Hard", title: "Full Mock Test #14", desc: "Complete syllabus mock as per latest NTA pattern. Tests Physics, Chemistry, Math.", q: 90, mins: 180, subject: "PCM" },

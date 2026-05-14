@@ -4,7 +4,20 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Crown, Trophy, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app/leaderboard")({ component: Leaderboard });
+export const Route = createFileRoute("/_app/leaderboard")({
+  component: Leaderboard,
+  head: () => ({
+    meta: [
+      { title: "Leaderboard — Meritus" },
+      { name: "description", content: "Compete with exam aspirants across India and climb the all-India rank board." },
+      { property: "og:title", content: "Leaderboard — Meritus" },
+      { property: "og:description", content: "Compete with exam aspirants across India and climb the all-India rank board." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/leaderboard" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/leaderboard" }],
+  }),
+});
 
 const top3 = [
   { rank: 2, name: "Aanya Gupta", city: "Delhi", points: 12480, color: "bg-zinc-300 text-zinc-800" },

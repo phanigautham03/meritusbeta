@@ -8,7 +8,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { GraduationCap, Briefcase, Building2, Search, Sparkles, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/onboarding")({ component: Onboarding });
+export const Route = createFileRoute("/onboarding")({
+  component: Onboarding,
+  head: () => ({
+    meta: [
+      { title: "Get started — Meritus" },
+      { name: "description", content: "Tell us your exam goals so we can personalise your prep journey." },
+      { property: "og:title", content: "Get started — Meritus" },
+      { property: "og:description", content: "Tell us your exam goals so we can personalise your prep journey." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/onboarding" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/onboarding" }],
+  }),
+});
 
 const allExams = [
   "JEE Main", "JEE Advanced", "NEET UG", "NEET PG", "UPSC CSE", "UPSC CDS",

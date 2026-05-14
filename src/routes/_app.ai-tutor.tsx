@@ -3,7 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sparkles, Send } from "lucide-react";
 
-export const Route = createFileRoute("/_app/ai-tutor")({ component: AITutor });
+export const Route = createFileRoute("/_app/ai-tutor")({
+  component: AITutor,
+  head: () => ({
+    meta: [
+      { title: "AI Tutor — Meritus" },
+      { name: "description", content: "Ask anything about JEE, NEET, UPSC and 200+ exams. AI-powered tutor that explains concepts and solves problems." },
+      { property: "og:title", content: "AI Tutor — Meritus" },
+      { property: "og:description", content: "Ask anything about JEE, NEET, UPSC and 200+ exams. AI-powered tutor that explains concepts and solves problems." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/ai-tutor" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/ai-tutor" }],
+  }),
+});
 
 function AITutor() {
   return (

@@ -8,7 +8,20 @@ import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/integrations/external-supabase/auth-context";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/signup")({ component: Signup });
+export const Route = createFileRoute("/signup")({
+  component: Signup,
+  head: () => ({
+    meta: [
+      { title: "Sign up — Meritus" },
+      { name: "description", content: "Join 3.8 crore aspirants prepping smarter with AI on Meritus." },
+      { property: "og:title", content: "Sign up — Meritus" },
+      { property: "og:description", content: "Join 3.8 crore aspirants prepping smarter with AI on Meritus." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/signup" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/signup" }],
+  }),
+});
 
 function Signup() {
   const [show, setShow] = useState(false);

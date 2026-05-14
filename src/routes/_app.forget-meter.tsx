@@ -4,7 +4,20 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app/forget-meter")({ component: ForgetMeter });
+export const Route = createFileRoute("/_app/forget-meter")({
+  component: ForgetMeter,
+  head: () => ({
+    meta: [
+      { title: "Forget-Meter — Meritus" },
+      { name: "description", content: "AI spaced-repetition based on the Ebbinghaus forgetting curve. Revise exactly when you need to." },
+      { property: "og:title", content: "Forget-Meter — Meritus" },
+      { property: "og:description", content: "AI spaced-repetition based on the Ebbinghaus forgetting curve. Revise exactly when you need to." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/forget-meter" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/forget-meter" }],
+  }),
+});
 
 const topics = [
   { topic: "Rotational Motion", subject: "Physics", revised: "3 days ago", retention: 22 },
