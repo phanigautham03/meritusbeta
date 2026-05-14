@@ -78,10 +78,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "India's AI-powered competitive exam prep for JEE, NEET, UPSC, Banking, GATE, CAT and 200+ exams." },
       { name: "author", content: "Meritus" },
       { property: "og:title", content: "Meritus — Merit, Mastered." },
-      { property: "og:description", content: "Crack any exam with AI by your side." },
+      { property: "og:description", content: "India's AI-powered competitive exam prep for JEE, NEET, UPSC, Banking, GATE, CAT and 200+ exams." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Meritus — Merit, Mastered." },
+      { name: "twitter:description", content: "India's AI-powered competitive exam prep for JEE, NEET, UPSC, Banking, GATE, CAT and 200+ exams." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/c088b18c-0852-45d4-9565-c9f1a40a7135" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/c088b18c-0852-45d4-9565-c9f1a40a7135" },
     ],
     links: [
       {
