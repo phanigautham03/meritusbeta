@@ -15,9 +15,11 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MockTestsIdRouteImport } from './routes/mock-tests.$id'
+import { Route as AppStudyPlannerRouteImport } from './routes/_app.study-planner'
 import { Route as AppMyExamsRouteImport } from './routes/_app.my-exams'
 import { Route as AppMockTestsRouteImport } from './routes/_app.mock-tests'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppResultsIdRouteImport } from './routes/_app.results.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -48,6 +50,11 @@ const MockTestsIdRoute = MockTestsIdRouteImport.update({
   path: '/mock-tests/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppStudyPlannerRoute = AppStudyPlannerRouteImport.update({
+  id: '/study-planner',
+  path: '/study-planner',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMyExamsRoute = AppMyExamsRouteImport.update({
   id: '/my-exams',
   path: '/my-exams',
@@ -63,6 +70,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppResultsIdRoute = AppResultsIdRouteImport.update({
+  id: '/results/$id',
+  path: '/results/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -72,7 +84,9 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRoute
   '/mock-tests': typeof AppMockTestsRoute
   '/my-exams': typeof AppMyExamsRoute
+  '/study-planner': typeof AppStudyPlannerRoute
   '/mock-tests/$id': typeof MockTestsIdRoute
+  '/results/$id': typeof AppResultsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -82,7 +96,9 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRoute
   '/mock-tests': typeof AppMockTestsRoute
   '/my-exams': typeof AppMyExamsRoute
+  '/study-planner': typeof AppStudyPlannerRoute
   '/mock-tests/$id': typeof MockTestsIdRoute
+  '/results/$id': typeof AppResultsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -94,7 +110,9 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/mock-tests': typeof AppMockTestsRoute
   '/_app/my-exams': typeof AppMyExamsRoute
+  '/_app/study-planner': typeof AppStudyPlannerRoute
   '/mock-tests/$id': typeof MockTestsIdRoute
+  '/_app/results/$id': typeof AppResultsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -106,7 +124,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/mock-tests'
     | '/my-exams'
+    | '/study-planner'
     | '/mock-tests/$id'
+    | '/results/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -116,7 +136,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/mock-tests'
     | '/my-exams'
+    | '/study-planner'
     | '/mock-tests/$id'
+    | '/results/$id'
   id:
     | '__root__'
     | '/'
@@ -127,7 +149,9 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/_app/mock-tests'
     | '/_app/my-exams'
+    | '/_app/study-planner'
     | '/mock-tests/$id'
+    | '/_app/results/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -183,6 +207,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MockTestsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/study-planner': {
+      id: '/_app/study-planner'
+      path: '/study-planner'
+      fullPath: '/study-planner'
+      preLoaderRoute: typeof AppStudyPlannerRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/my-exams': {
       id: '/_app/my-exams'
       path: '/my-exams'
@@ -204,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/results/$id': {
+      id: '/_app/results/$id'
+      path: '/results/$id'
+      fullPath: '/results/$id'
+      preLoaderRoute: typeof AppResultsIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -211,12 +249,16 @@ interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppMockTestsRoute: typeof AppMockTestsRoute
   AppMyExamsRoute: typeof AppMyExamsRoute
+  AppStudyPlannerRoute: typeof AppStudyPlannerRoute
+  AppResultsIdRoute: typeof AppResultsIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppMockTestsRoute: AppMockTestsRoute,
   AppMyExamsRoute: AppMyExamsRoute,
+  AppStudyPlannerRoute: AppStudyPlannerRoute,
+  AppResultsIdRoute: AppResultsIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
