@@ -1,94 +1,77 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
-import { Plus, X, Calendar } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Loader2, Trash2, Plus } from "lucide-react";
+import { toast } from "sonner";
+import { listMyExams, addMyExam, removeMyExam } from "@/lib/data.functions";
 
 export const Route = createFileRoute("/_app/my-exams")({
   component: MyExams,
-  head: () => ({
-    meta: [
-      { title: "My Exams — Meritus" },
-      { name: "description", content: "Manage every exam you are prepping for in one personalised dashboard." },
-      { property: "og:title", content: "My Exams — Meritus" },
-      { property: "og:description", content: "Manage every exam you are prepping for in one personalised dashboard." },
-      { property: "og:url", content: "https://meritusbeta.lovable.app/my-exams" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/my-exams" }],
-  }),
+  head: () => ({ meta: [{ title: "My Exams — Meritus" }] }),
 });
 
+const POPULAR = ["JEE Main", "JEE Advanced", "NEET", "UPSC", "CAT", "GATE", "IBPS PO", "SSC CGL", "BITSAT"];
+
 function MyExams() {
-  const [exams, setExams] = useState([
-    { name: "JEE Main", date: "Apr 2, 2025", days: 47 },
-    { name: "JEE Advanced", date: "Jun 17, 2025", days: 124 },
-    { name: "BITSAT", date: "Aug 10, 2025", days: 178 },
-  ]);
+  const qc = useQueryClient();
+  const listFn = useServerFn(listMyExams);
+  const addFn = useServerFn(addMyExam);
+  const rmFn = useServerFn(removeMyExam);
+
+  const { data, isLoading } = useQuery({ queryKey: ["my-exams"], queryFn: () => listFn() });
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function add(examName: string) {
+    if (!examName.trim()) return;
+    setBusy(true);
+    try { await addFn({ data: { examName: examName.trim(), targetDate: date || null } }); setName(""); setDate(""); toast.success(`Added ${examName}`); qc.invalidateQueries({ queryKey: ["my-exams"] }); }
+    catch (e: any) { toast.error(e.message); }
+    finally { setBusy(false); }
+  }
+  async function rm(id: string) {
+    try { await rmFn({ data: { id } }); qc.invalidateQueries({ queryKey: ["my-exams"] }); }
+    catch (e: any) { toast.error(e.message); }
+  }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-body">My Exams</h1>
-          <p className="text-sm text-secondary-text mt-1">Track countdowns and prep progress for every exam.</p>
-        </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="font-semibold"><Plus size={16} className="mr-1" /> Add Exam</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md rounded-xl">
-            <DialogHeader><DialogTitle>Add an exam</DialogTitle></DialogHeader>
-            <div className="space-y-4 py-2">
-              <div>
-                <Label>Search exam</Label>
-                <Input placeholder="JEE / NEET / UPSC..." className="mt-1.5 h-11" />
-              </div>
-              <div>
-                <Label>Target date</Label>
-                <Input type="date" className="mt-1.5 h-11" />
-              </div>
-              <Button className="w-full h-11 font-semibold">Add to my exams</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+    <div className="max-w-3xl mx-auto space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-body">My Exams</h1>
+        <p className="text-sm text-secondary-text mt-1">Track exams you're preparing for and their target dates.</p>
       </div>
 
-      {exams.length ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {exams.map((e) => (
-            <div key={e.name} className="bg-card border border-border rounded-xl p-5 shadow-card hover:border-indigo-200 hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-bold text-body text-lg">{e.name}</h3>
-                  <p className="text-sm text-secondary-text mt-1 flex items-center gap-1.5"><Calendar size={14} /> {e.date}</p>
-                </div>
-                <button
-                  onClick={() => setExams((x) => x.filter((a) => a.name !== e.name))}
-                  className="p-1 rounded hover:bg-danger-light text-muted-text hover:text-danger"
-                  aria-label="Remove"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-              <div className="mt-5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-light text-primary text-sm font-bold">
-                {e.days} days left
-              </div>
-            </div>
+      <div className="bg-card border border-border rounded-xl p-5 shadow-card">
+        <h2 className="font-semibold text-body">Add an exam</h2>
+        <div className="mt-3 flex flex-col sm:flex-row gap-2">
+          <Input placeholder="Exam name (e.g. JEE Main 2025)" value={name} onChange={(e) => setName(e.target.value)} className="h-11" />
+          <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="h-11 sm:w-44" />
+          <Button onClick={() => add(name)} disabled={busy || !name.trim()} className="h-11 font-semibold"><Plus size={16} className="mr-1"/> Add</Button>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {POPULAR.map((e) => (
+            <button key={e} onClick={() => add(e)} disabled={busy} className="text-xs px-3 py-1.5 rounded-md border border-dashed border-border hover:bg-primary-light hover:border-primary text-secondary-text">+ {e}</button>
           ))}
         </div>
-      ) : (
-        <div className="bg-card border border-border rounded-xl p-12 text-center shadow-card">
-          <div className="mx-auto h-16 w-16 rounded-full bg-primary-light text-primary flex items-center justify-center">
-            <Calendar size={28} />
+      </div>
+
+      <div className="bg-card border border-border rounded-xl shadow-card divide-y divide-border">
+        {isLoading && <div className="p-6 text-secondary-text"><Loader2 className="animate-spin inline mr-2" size={16}/> Loading…</div>}
+        {!isLoading && (data?.length ?? 0) === 0 && <div className="p-8 text-center text-sm text-secondary-text">No exams added yet.</div>}
+        {(data ?? []).map((e: any) => (
+          <div key={e.id} className="flex items-center justify-between p-4">
+            <div>
+              <div className="font-medium text-body">{e.exam_name}</div>
+              <div className="text-xs text-secondary-text">{e.target_date ? `Target: ${e.target_date}` : "No target date set"}</div>
+            </div>
+            <Button variant="ghost" size="icon" onClick={() => rm(e.id)}><Trash2 size={16} className="text-danger" /></Button>
           </div>
-          <h3 className="mt-4 font-semibold text-body">No exams yet</h3>
-          <p className="text-sm text-secondary-text mt-1">Add your first exam to start tracking countdowns.</p>
-          <Button className="mt-5 font-semibold"><Plus size={16} className="mr-1" /> Add your first exam</Button>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }

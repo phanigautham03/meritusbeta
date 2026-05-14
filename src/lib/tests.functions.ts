@@ -102,6 +102,7 @@ export const submitAttempt = createServerFn({ method: "POST" })
     if (attempt.user_id !== userId) throw new Error("Forbidden");
     if (attempt.submitted_at) throw new Error("Already submitted");
 
+    if (!attempt.test_id) throw new Error("Legacy attempt has no test_id");
     const { data: test } = await supabase
       .from("tests")
       .select("marks_per_correct,marks_per_wrong,total_questions")
