@@ -3,7 +3,7 @@ import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import {
   LayoutDashboard, BookOpen, FileText, CalendarDays, Brain, Sparkles,
   Trophy, Users, ChevronLeft, ChevronRight, Bell, Search, LogOut,
-  Settings as SettingsIcon, User, Crown, Home, BarChart3,
+  Settings as SettingsIcon, User, Crown, Home, BarChart3, ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -23,6 +23,7 @@ const navItems = [
   { to: "/ai-tutor", label: "AI Tutor", icon: Sparkles, badge: "AI", badgeColor: "bg-primary text-white" },
   { to: "/leaderboard", label: "Leaderboard", icon: Trophy },
   { to: "/mentor-sessions", label: "Mentors", icon: Users },
+  { to: "/admin", label: "Admin", icon: ShieldCheck },
 ];
 
 const mobileTabs = [
