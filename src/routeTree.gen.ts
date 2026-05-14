@@ -15,12 +15,16 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MockTestsIdRouteImport } from './routes/mock-tests.$id'
+import { Route as AppUpgradeRouteImport } from './routes/_app.upgrade'
 import { Route as AppStudyPlannerRouteImport } from './routes/_app.study-planner'
+import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppMyExamsRouteImport } from './routes/_app.my-exams'
 import { Route as AppMockTestsRouteImport } from './routes/_app.mock-tests'
+import { Route as AppMentorSessionsRouteImport } from './routes/_app.mentor-sessions'
 import { Route as AppLeaderboardRouteImport } from './routes/_app.leaderboard'
 import { Route as AppForgetMeterRouteImport } from './routes/_app.forget-meter'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppAiTutorRouteImport } from './routes/_app.ai-tutor'
 import { Route as AppResultsIdRouteImport } from './routes/_app.results.$id'
 
 const SignupRoute = SignupRouteImport.update({
@@ -52,9 +56,19 @@ const MockTestsIdRoute = MockTestsIdRouteImport.update({
   path: '/mock-tests/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppUpgradeRoute = AppUpgradeRouteImport.update({
+  id: '/upgrade',
+  path: '/upgrade',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppStudyPlannerRoute = AppStudyPlannerRouteImport.update({
   id: '/study-planner',
   path: '/study-planner',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMyExamsRoute = AppMyExamsRouteImport.update({
@@ -65,6 +79,11 @@ const AppMyExamsRoute = AppMyExamsRouteImport.update({
 const AppMockTestsRoute = AppMockTestsRouteImport.update({
   id: '/mock-tests',
   path: '/mock-tests',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMentorSessionsRoute = AppMentorSessionsRouteImport.update({
+  id: '/mentor-sessions',
+  path: '/mentor-sessions',
   getParentRoute: () => AppRoute,
 } as any)
 const AppLeaderboardRoute = AppLeaderboardRouteImport.update({
@@ -82,6 +101,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAiTutorRoute = AppAiTutorRouteImport.update({
+  id: '/ai-tutor',
+  path: '/ai-tutor',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppResultsIdRoute = AppResultsIdRouteImport.update({
   id: '/results/$id',
   path: '/results/$id',
@@ -93,12 +117,16 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
+  '/ai-tutor': typeof AppAiTutorRoute
   '/dashboard': typeof AppDashboardRoute
   '/forget-meter': typeof AppForgetMeterRoute
   '/leaderboard': typeof AppLeaderboardRoute
+  '/mentor-sessions': typeof AppMentorSessionsRoute
   '/mock-tests': typeof AppMockTestsRoute
   '/my-exams': typeof AppMyExamsRoute
+  '/profile': typeof AppProfileRoute
   '/study-planner': typeof AppStudyPlannerRoute
+  '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof MockTestsIdRoute
   '/results/$id': typeof AppResultsIdRoute
 }
@@ -107,12 +135,16 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
+  '/ai-tutor': typeof AppAiTutorRoute
   '/dashboard': typeof AppDashboardRoute
   '/forget-meter': typeof AppForgetMeterRoute
   '/leaderboard': typeof AppLeaderboardRoute
+  '/mentor-sessions': typeof AppMentorSessionsRoute
   '/mock-tests': typeof AppMockTestsRoute
   '/my-exams': typeof AppMyExamsRoute
+  '/profile': typeof AppProfileRoute
   '/study-planner': typeof AppStudyPlannerRoute
+  '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof MockTestsIdRoute
   '/results/$id': typeof AppResultsIdRoute
 }
@@ -123,12 +155,16 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
+  '/_app/ai-tutor': typeof AppAiTutorRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/forget-meter': typeof AppForgetMeterRoute
   '/_app/leaderboard': typeof AppLeaderboardRoute
+  '/_app/mentor-sessions': typeof AppMentorSessionsRoute
   '/_app/mock-tests': typeof AppMockTestsRoute
   '/_app/my-exams': typeof AppMyExamsRoute
+  '/_app/profile': typeof AppProfileRoute
   '/_app/study-planner': typeof AppStudyPlannerRoute
+  '/_app/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof MockTestsIdRoute
   '/_app/results/$id': typeof AppResultsIdRoute
 }
@@ -139,12 +175,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/signup'
+    | '/ai-tutor'
     | '/dashboard'
     | '/forget-meter'
     | '/leaderboard'
+    | '/mentor-sessions'
     | '/mock-tests'
     | '/my-exams'
+    | '/profile'
     | '/study-planner'
+    | '/upgrade'
     | '/mock-tests/$id'
     | '/results/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -153,12 +193,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/signup'
+    | '/ai-tutor'
     | '/dashboard'
     | '/forget-meter'
     | '/leaderboard'
+    | '/mentor-sessions'
     | '/mock-tests'
     | '/my-exams'
+    | '/profile'
     | '/study-planner'
+    | '/upgrade'
     | '/mock-tests/$id'
     | '/results/$id'
   id:
@@ -168,12 +212,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/signup'
+    | '/_app/ai-tutor'
     | '/_app/dashboard'
     | '/_app/forget-meter'
     | '/_app/leaderboard'
+    | '/_app/mentor-sessions'
     | '/_app/mock-tests'
     | '/_app/my-exams'
+    | '/_app/profile'
     | '/_app/study-planner'
+    | '/_app/upgrade'
     | '/mock-tests/$id'
     | '/_app/results/$id'
   fileRoutesById: FileRoutesById
@@ -231,11 +279,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MockTestsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/upgrade': {
+      id: '/_app/upgrade'
+      path: '/upgrade'
+      fullPath: '/upgrade'
+      preLoaderRoute: typeof AppUpgradeRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/study-planner': {
       id: '/_app/study-planner'
       path: '/study-planner'
       fullPath: '/study-planner'
       preLoaderRoute: typeof AppStudyPlannerRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/my-exams': {
@@ -250,6 +312,13 @@ declare module '@tanstack/react-router' {
       path: '/mock-tests'
       fullPath: '/mock-tests'
       preLoaderRoute: typeof AppMockTestsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mentor-sessions': {
+      id: '/_app/mentor-sessions'
+      path: '/mentor-sessions'
+      fullPath: '/mentor-sessions'
+      preLoaderRoute: typeof AppMentorSessionsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/leaderboard': {
@@ -273,6 +342,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/ai-tutor': {
+      id: '/_app/ai-tutor'
+      path: '/ai-tutor'
+      fullPath: '/ai-tutor'
+      preLoaderRoute: typeof AppAiTutorRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/results/$id': {
       id: '/_app/results/$id'
       path: '/results/$id'
@@ -284,22 +360,30 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAiTutorRoute: typeof AppAiTutorRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppForgetMeterRoute: typeof AppForgetMeterRoute
   AppLeaderboardRoute: typeof AppLeaderboardRoute
+  AppMentorSessionsRoute: typeof AppMentorSessionsRoute
   AppMockTestsRoute: typeof AppMockTestsRoute
   AppMyExamsRoute: typeof AppMyExamsRoute
+  AppProfileRoute: typeof AppProfileRoute
   AppStudyPlannerRoute: typeof AppStudyPlannerRoute
+  AppUpgradeRoute: typeof AppUpgradeRoute
   AppResultsIdRoute: typeof AppResultsIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAiTutorRoute: AppAiTutorRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppForgetMeterRoute: AppForgetMeterRoute,
   AppLeaderboardRoute: AppLeaderboardRoute,
+  AppMentorSessionsRoute: AppMentorSessionsRoute,
   AppMockTestsRoute: AppMockTestsRoute,
   AppMyExamsRoute: AppMyExamsRoute,
+  AppProfileRoute: AppProfileRoute,
   AppStudyPlannerRoute: AppStudyPlannerRoute,
+  AppUpgradeRoute: AppUpgradeRoute,
   AppResultsIdRoute: AppResultsIdRoute,
 }
 
