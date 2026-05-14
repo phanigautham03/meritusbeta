@@ -93,6 +93,12 @@ const plans = [
 ];
 
 function Landing() {
+  const { user, loading } = useAuth();
+  const nav = useNavigate();
+  useEffect(() => {
+    if (!loading && user) nav({ to: "/dashboard" });
+  }, [loading, user, nav]);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Top nav */}
@@ -251,13 +257,13 @@ function Landing() {
             {features.map((f) => {
               const Icon = f.icon;
               return (
-                <div key={f.title} className="group bg-card border border-border rounded-xl p-6 shadow-card hover:border-indigo-200 hover:shadow-[0_8px_25px_rgba(67,56,202,0.15)] hover:-translate-y-0.5 transition-all">
+                <Link key={f.title} to={f.to} className="group block bg-card border border-border rounded-xl p-6 shadow-card hover:border-indigo-200 hover:shadow-[0_8px_25px_rgba(67,56,202,0.15)] hover:-translate-y-0.5 transition-all">
                   <div className={`h-11 w-11 rounded-lg flex items-center justify-center ${colorMap[f.color]}`}>
                     <Icon size={22} />
                   </div>
                   <h3 className="mt-4 text-lg font-semibold text-body">{f.title}</h3>
                   <p className="mt-2 text-sm text-secondary-text leading-relaxed">{f.desc}</p>
-                </div>
+                </Link>
               );
             })}
           </div>
