@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import {
   LayoutDashboard, BookOpen, FileText, CalendarDays, Brain, Sparkles,
   Trophy, Users, ChevronLeft, ChevronRight, Bell, Search, LogOut,
@@ -12,6 +12,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/integrations/external-supabase/auth-context";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -35,6 +36,20 @@ const mobileTabs = [
 export function AppShell({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const { user } = useAuth();
+
+  const fullName =
+    (user?.user_metadata?.full_name as string | undefined) ??
+    user?.email?.split("@")[0] ??
+    "Student";
+  const firstName = fullName.split(" ")[0];
+  const initials = fullName
+    .split(" ")
+    .map((p) => p[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase() || "U";
 
   return (
     <div className="min-h-screen bg-background flex w-full">
@@ -110,11 +125,11 @@ export function AppShell({ children }: { children: ReactNode }) {
             )}
           >
             <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-primary text-white text-xs">RK</AvatarFallback>
+              <AvatarFallback className="bg-primary text-white text-xs">{initials}</AvatarFallback>
             </Avatar>
             {!collapsed && (
               <div className="min-w-0">
-                <p className="text-sm font-medium truncate">Rahul K.</p>
+                <p className="text-sm font-medium truncate">{firstName}</p>
                 <p className="text-xs text-indigo-200">Free plan</p>
               </div>
             )}
@@ -124,7 +139,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
-        <TopNavbar />
+        <TopNavbar firstName={firstName} initials={initials} />
         <main className="flex-1 px-4 md:px-6 lg:px-8 py-6 pb-24 md:pb-6">{children}</main>
       </div>
 
@@ -156,7 +171,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 }
 
-function TopNavbar() {
+function TopNavbar({ firstName, initials }: { firstName: string; initials: string }) {
+  const { signOut } = useAuth();
+  const nav = useNavigate();
+  async function handleSignOut() {
+    await signOut();
+    nav({ to: "/login" });
+  }
   return (
     <header className="sticky top-0 z-30 h-16 bg-white border-b border-border flex items-center px-4 md:px-6 gap-4">
       <Link to="/dashboard" className="md:hidden flex items-center gap-2">
@@ -184,16 +205,18 @@ function TopNavbar() {
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-2 p-1 rounded-lg hover:bg-muted">
             <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-primary text-white text-xs">RK</AvatarFallback>
+              <AvatarFallback className="bg-primary text-white text-xs">{initials}</AvatarFallback>
             </Avatar>
-            <span className="hidden sm:block text-sm font-medium">Rahul</span>
+            <span className="hidden sm:block text-sm font-medium">{firstName}</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 rounded-xl">
             <DropdownMenuItem asChild><Link to="/profile"><User size={14} className="mr-2" />Profile</Link></DropdownMenuItem>
             <DropdownMenuItem asChild><Link to="/upgrade"><Crown size={14} className="mr-2" />Upgrade Plan</Link></DropdownMenuItem>
             <DropdownMenuItem><SettingsIcon size={14} className="mr-2" />Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-danger"><LogOut size={14} className="mr-2" />Sign out</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignOut} className="text-danger">
+              <LogOut size={14} className="mr-2" />Sign out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
