@@ -331,6 +331,7 @@ export type Database = {
       }
       test_attempts: {
         Row: {
+          answers_json: Json | null
           correct_count: number | null
           id: string
           mock_test_id: string | null
@@ -345,6 +346,7 @@ export type Database = {
           wrong_count: number | null
         }
         Insert: {
+          answers_json?: Json | null
           correct_count?: number | null
           id?: string
           mock_test_id?: string | null
@@ -359,6 +361,7 @@ export type Database = {
           wrong_count?: number | null
         }
         Update: {
+          answers_json?: Json | null
           correct_count?: number | null
           id?: string
           mock_test_id?: string | null
