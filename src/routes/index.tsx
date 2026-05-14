@@ -4,6 +4,7 @@ import {
   Brain, Monitor, Sparkles, CalendarDays, TrendingUp, Users,
   Check, Star, ArrowRight, X,
 } from "lucide-react";
+import heroStudent from "@/assets/hero-student.jpg";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -97,7 +98,8 @@ function Landing() {
           </span>
         ))}
 
-        <div className="relative max-w-5xl mx-auto px-6 text-center">
+        <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-medium">
             <Star size={12} className="text-gold fill-gold" />
             India's First AI-Powered All-Exam Platform
@@ -108,18 +110,18 @@ function Landing() {
             <br />
             <span className="text-gradient-hero">AI by your side.</span>
           </h1>
-          <p className="mt-6 text-lg text-indigo-200 max-w-2xl mx-auto">
+          <p className="mt-6 text-lg text-indigo-200 max-w-2xl mx-auto lg:mx-0">
             Prep for JEE, NEET, UPSC, Banking, GATE, CAT and 200+ Indian competitive exams — all in one
             AI-first platform built for Indian aspirants.
           </p>
-          <div className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+          <div className="mt-7 flex flex-wrap justify-center lg:justify-start gap-x-6 gap-y-2 text-sm">
             {["Free to start", "All 200+ exams", "AI-powered weak spot detection"].map((t) => (
               <span key={t} className="inline-flex items-center gap-2 text-indigo-100">
                 <Check size={16} className="text-emerald-400" /> {t}
               </span>
             ))}
           </div>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
+          <div className="mt-9 flex flex-wrap justify-center lg:justify-start gap-3">
             <Link to="/signup">
               <Button size="lg" className="bg-white text-navy hover:bg-white/90 font-bold h-12 px-7">
                 Start for free <ArrowRight className="ml-2" size={16} />
@@ -129,9 +131,47 @@ function Landing() {
               See how it works
             </Button>
           </div>
+          </div>
+
+          {/* Hero image */}
+          <div className="relative mx-auto lg:mx-0 w-full max-w-xl">
+            <div className="absolute -inset-6 bg-gradient-to-tr from-primary/40 via-violet-500/20 to-gold/30 blur-3xl rounded-full opacity-70" />
+            <div className="relative rounded-2xl overflow-hidden border border-white/15 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.6)] ring-1 ring-white/10">
+              <img
+                src={heroStudent}
+                alt="Indian student preparing for competitive exams with Meritus AI"
+                width={1024}
+                height={1024}
+                className="w-full h-auto block"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent" />
+            </div>
+            {/* floating badge */}
+            <div className="hidden sm:flex absolute -bottom-5 -left-5 items-center gap-3 rounded-xl bg-white text-navy px-4 py-3 shadow-xl">
+              <div className="h-9 w-9 rounded-full bg-gold-light flex items-center justify-center">
+                <Star size={16} className="text-gold fill-gold" />
+              </div>
+              <div className="text-left">
+                <div className="text-sm font-bold leading-none">AIR 287</div>
+                <div className="text-[11px] text-secondary-text mt-1">JEE Adv 2024</div>
+              </div>
+            </div>
+            <div className="hidden sm:flex absolute -top-4 -right-4 items-center gap-2 rounded-xl bg-white text-navy px-3 py-2 shadow-xl">
+              <div className="h-8 w-8 rounded-lg bg-teal-light flex items-center justify-center">
+                <TrendingUp size={14} className="text-teal" />
+              </div>
+              <div className="text-left">
+                <div className="text-xs font-bold leading-none">+47% rank</div>
+                <div className="text-[10px] text-secondary-text mt-0.5">in 90 days</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative max-w-5xl mx-auto px-6 mt-16 text-center">
 
           {/* Stats */}
-          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               ["3.8 Cr+", "Aspirants"],
               ["200+", "Exams"],
