@@ -83,30 +83,123 @@ export type Database = {
         }
         Relationships: []
       }
+      mentor_profiles: {
+        Row: {
+          bio: string | null
+          created_at: string
+          exam_cleared: string | null
+          id: string
+          institution: string | null
+          is_active: boolean
+          name: string
+          price_per_session: number
+          rank_achieved: string | null
+          rating: number
+          sessions_count: number
+          specialisation_tags: string[]
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          exam_cleared?: string | null
+          id?: string
+          institution?: string | null
+          is_active?: boolean
+          name: string
+          price_per_session?: number
+          rank_achieved?: string | null
+          rating?: number
+          sessions_count?: number
+          specialisation_tags?: string[]
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          exam_cleared?: string | null
+          id?: string
+          institution?: string | null
+          is_active?: boolean
+          name?: string
+          price_per_session?: number
+          rank_achieved?: string | null
+          rating?: number
+          sessions_count?: number
+          specialisation_tags?: string[]
+        }
+        Relationships: []
+      }
+      mock_tests: {
+        Row: {
+          created_at: string
+          description: string | null
+          difficulty: string
+          duration_minutes: number
+          exam_name: string
+          id: string
+          num_questions: number
+          questions: Json
+          subject: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          difficulty?: string
+          duration_minutes?: number
+          exam_name: string
+          id?: string
+          num_questions?: number
+          questions?: Json
+          subject?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          difficulty?: string
+          duration_minutes?: number
+          exam_name?: string
+          id?: string
+          num_questions?: number
+          questions?: Json
+          subject?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
+          city: string | null
           created_at: string
           display_name: string | null
+          first_name: string | null
           id: string
+          merit_points: number
           target_exam: string
           target_year: number | null
           updated_at: string
         }
         Insert: {
           avatar_url?: string | null
+          city?: string | null
           created_at?: string
           display_name?: string | null
+          first_name?: string | null
           id: string
+          merit_points?: number
           target_exam?: string
           target_year?: number | null
           updated_at?: string
         }
         Update: {
           avatar_url?: string | null
+          city?: string | null
           created_at?: string
           display_name?: string | null
+          first_name?: string | null
           id?: string
+          merit_points?: number
           target_exam?: string
           target_year?: number | null
           updated_at?: string
@@ -180,6 +273,30 @@ export type Database = {
           },
         ]
       }
+      study_topics: {
+        Row: {
+          created_at: string
+          exam_name: string
+          id: string
+          subject: string
+          topic_name: string
+        }
+        Insert: {
+          created_at?: string
+          exam_name: string
+          id?: string
+          subject: string
+          topic_name: string
+        }
+        Update: {
+          created_at?: string
+          exam_name?: string
+          id?: string
+          subject?: string
+          topic_name?: string
+        }
+        Relationships: []
+      }
       subjects: {
         Row: {
           exam_id: string
@@ -216,11 +333,12 @@ export type Database = {
         Row: {
           correct_count: number | null
           id: string
+          mock_test_id: string | null
           percentile: number | null
           score: number | null
           started_at: string
           submitted_at: string | null
-          test_id: string
+          test_id: string | null
           total_marks: number | null
           unattempted_count: number | null
           user_id: string
@@ -229,11 +347,12 @@ export type Database = {
         Insert: {
           correct_count?: number | null
           id?: string
+          mock_test_id?: string | null
           percentile?: number | null
           score?: number | null
           started_at?: string
           submitted_at?: string | null
-          test_id: string
+          test_id?: string | null
           total_marks?: number | null
           unattempted_count?: number | null
           user_id: string
@@ -242,17 +361,25 @@ export type Database = {
         Update: {
           correct_count?: number | null
           id?: string
+          mock_test_id?: string | null
           percentile?: number | null
           score?: number | null
           started_at?: string
           submitted_at?: string | null
-          test_id?: string
+          test_id?: string | null
           total_marks?: number | null
           unattempted_count?: number | null
           user_id?: string
           wrong_count?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "test_attempts_mock_test_id_fkey"
+            columns: ["mock_test_id"]
+            isOneToOne: false
+            referencedRelation: "mock_tests"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "test_attempts_test_id_fkey"
             columns: ["test_id"]
@@ -348,6 +475,41 @@ export type Database = {
           },
         ]
       }
+      topic_revisions: {
+        Row: {
+          id: string
+          last_revised_at: string
+          retention_score: number
+          times_revised: number
+          topic_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          last_revised_at?: string
+          retention_score?: number
+          times_revised?: number
+          topic_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          last_revised_at?: string
+          retention_score?: number
+          times_revised?: number
+          topic_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topic_revisions_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "study_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       topics: {
         Row: {
           id: string
@@ -377,6 +539,30 @@ export type Database = {
           },
         ]
       }
+      user_exams: {
+        Row: {
+          added_at: string
+          exam_name: string
+          id: string
+          target_date: string | null
+          user_id: string
+        }
+        Insert: {
+          added_at?: string
+          exam_name: string
+          id?: string
+          target_date?: string | null
+          user_id: string
+        }
+        Update: {
+          added_at?: string
+          exam_name?: string
+          id?: string
+          target_date?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -394,6 +580,30 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_streaks: {
+        Row: {
+          current_streak: number
+          last_active_date: string | null
+          longest_streak: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          current_streak?: number
+          last_active_date?: string | null
+          longest_streak?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          current_streak?: number
+          last_active_date?: string | null
+          longest_streak?: number
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -435,7 +645,17 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      leaderboard: {
+        Row: {
+          city: string | null
+          current_streak: number | null
+          first_name: string | null
+          merit_points: number | null
+          rank: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
