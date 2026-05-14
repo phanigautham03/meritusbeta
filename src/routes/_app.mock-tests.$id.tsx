@@ -6,45 +6,45 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { getTestForAttempt, startAttempt, submitAttempt } from "@/lib/tests.functions";
+import { getMockTestForAttempt, startMockAttempt, submitMockAttempt } from "@/lib/data.functions";
 
 export const Route = createFileRoute("/_app/mock-tests/$id")({
   component: TestUI,
-  head: () => ({ meta: [{ title: "NEET PG Test — Meritus" }] }),
+  head: () => ({ meta: [{ title: "Mock Test — Meritus" }] }),
 });
-
-type AnswerState = "answered" | "marked" | "notAnswered";
 
 function TestUI() {
   const { id: testId } = Route.useParams();
   const nav = useNavigate();
-  const fetchTest = useServerFn(getTestForAttempt);
-  const startFn = useServerFn(startAttempt);
-  const submitFn = useServerFn(submitAttempt);
+  const fetchTest = useServerFn(getMockTestForAttempt);
+  const startFn = useServerFn(startMockAttempt);
+  const submitFn = useServerFn(submitMockAttempt);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["test-attempt", testId],
+    queryKey: ["mock-test-attempt", testId],
     queryFn: () => fetchTest({ data: { testId } }),
     staleTime: Infinity,
   });
 
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [current, setCurrent] = useState(0);
-  const [selections, setSelections] = useState<Record<string, number | null>>({});
-  const [statuses, setStatuses] = useState<Record<string, AnswerState>>({});
+  const [selections, setSelections] = useState<Record<number, number>>({});
+  const [marked, setMarked] = useState<Record<number, boolean>>({});
+  const [visited, setVisited] = useState<Record<number, boolean>>({});
   const [secs, setSecs] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const startedRef = useRef(false);
 
-  // Start attempt + timer once test loads
   useEffect(() => {
     if (!data || startedRef.current) return;
     startedRef.current = true;
-    setSecs(data.test.duration_min * 60);
-    startFn({ data: { testId } })
+    setSecs(data.test.duration_minutes * 60);
+    startFn({ data: { mockTestId: testId } })
       .then((r) => setAttemptId(r.attemptId))
-      .catch((e) => toast.error(`Could not start test: ${e.message}`));
+      .catch((e) => toast.error(`Could not start: ${e.message}`));
   }, [data, startFn, testId]);
+
+  useEffect(() => { if (data) setVisited((v) => ({ ...v, [current]: true })); }, [current, data]);
 
   useEffect(() => {
     if (!attemptId) return;
@@ -57,48 +57,27 @@ function TestUI() {
   const q = questions[current];
 
   const counts = useMemo(() => {
-    let answered = 0, notAnswered = 0, marked = 0;
-    for (const s of Object.values(statuses)) {
-      if (s === "answered") answered++;
-      else if (s === "notAnswered") notAnswered++;
-      else if (s === "marked") marked++;
+    let answered = 0, markedC = 0, notAnswered = 0;
+    for (let i = 0; i < total; i++) {
+      if (marked[i]) markedC++;
+      else if (selections[i] != null) answered++;
+      else if (visited[i]) notAnswered++;
     }
-    return { answered, notAnswered, marked, notVisited: total - Object.keys(statuses).length };
-  }, [statuses, total]);
+    return { answered, marked: markedC, notAnswered, notVisited: total - answered - markedC - notAnswered };
+  }, [marked, selections, visited, total]);
 
-  const fmt = (s: number) => {
-    const h = String(Math.floor(s / 3600)).padStart(2, "0");
-    const m = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
-    const ss = String(s % 60).padStart(2, "0");
-    return `${h}:${m}:${ss}`;
-  };
-
-  function pick(idx: number) {
-    if (!q) return;
-    setSelections((p) => ({ ...p, [q.id]: idx }));
-  }
-
-  function save(markReview = false) {
-    if (!q) return;
-    const sel = selections[q.id];
-    setStatuses((p) => ({
-      ...p,
-      [q.id]: markReview ? "marked" : sel != null ? "answered" : "notAnswered",
-    }));
-    setCurrent((c) => Math.min(total - 1, c + 1));
-  }
+  const fmt = (s: number) => `${String(Math.floor(s/3600)).padStart(2,"0")}:${String(Math.floor((s%3600)/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
 
   async function handleSubmit() {
     if (!attemptId) return;
     setSubmitting(true);
     try {
       const answers = questions.map((qq) => ({
-        questionId: qq.id,
-        selectedIndex: selections[qq.id] ?? null,
-        markedReview: statuses[qq.id] === "marked",
-        timeSpentS: 0,
+        index: qq.index,
+        selected: selections[qq.index] ?? -1,
+        marked: !!marked[qq.index],
       }));
-      await submitFn({ data: { attemptId, answers } });
+      await submitFn({ data: { attemptId, mockTestId: testId, answers } });
       nav({ to: "/results/$id", params: { id: attemptId } });
     } catch (e: any) {
       toast.error(`Submit failed: ${e.message}`);
@@ -106,28 +85,20 @@ function TestUI() {
     }
   }
 
-  // Auto-submit when timer hits zero
   useEffect(() => {
     if (attemptId && secs === 0 && !submitting) handleSubmit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [secs, attemptId]);
 
-  if (isLoading || !data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="flex items-center gap-2 text-secondary-text"><Loader2 className="animate-spin" /> Loading test…</div>
-      </div>
-    );
-  }
+  if (isLoading || !data) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="flex items-center gap-2 text-secondary-text"><Loader2 className="animate-spin" /> Loading test…</div></div>;
   if (error) return <div className="p-8 text-danger">Failed: {(error as Error).message}</div>;
-  if (!total) return <div className="p-8">This test has no questions yet.</div>;
+  if (!total) return <div className="p-8">This test has no questions.</div>;
 
   const cls = (i: number) => {
     if (i === current) return "bg-card border-2 border-gold text-gold";
-    const s = statuses[questions[i].id];
-    if (s === "answered") return "bg-success text-white";
-    if (s === "notAnswered") return "bg-danger text-white";
-    if (s === "marked") return "bg-violet-600 text-white";
+    if (marked[i]) return "bg-violet-600 text-white";
+    if (selections[i] != null) return "bg-success text-white";
+    if (visited[i]) return "bg-danger text-white";
     return "bg-muted text-secondary-text";
   };
 
@@ -138,16 +109,12 @@ function TestUI() {
           <div className="h-8 w-8 rounded bg-primary flex items-center justify-center font-bold text-sm">M</div>
           <div>
             <div className="font-bold text-sm leading-tight">{data.test.title}</div>
-            <div className="text-xs text-indigo-200">+{data.test.marks_per_correct} correct · {data.test.marks_per_wrong} wrong</div>
+            <div className="text-xs text-indigo-200">{data.test.exam_name} · +4 / −1</div>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className={cn("font-mono text-lg md:text-xl font-bold tabular-nums px-3 py-1 rounded", secs < 60 ? "text-red-400" : "text-white")}>
-            {fmt(secs)}
-          </div>
-          <Button onClick={handleSubmit} disabled={submitting || !attemptId} className="bg-danger hover:bg-danger/90 font-semibold">
-            {submitting ? "Submitting…" : "Submit Test"}
-          </Button>
+          <div className={cn("font-mono text-lg md:text-xl font-bold tabular-nums px-3 py-1 rounded", secs < 60 ? "text-red-400" : "text-white")}>{fmt(secs)}</div>
+          <Button onClick={handleSubmit} disabled={submitting || !attemptId} className="bg-danger hover:bg-danger/90 font-semibold">{submitting ? "Submitting…" : "Submit Test"}</Button>
         </div>
       </header>
 
@@ -156,21 +123,17 @@ function TestUI() {
           <div className="max-w-3xl mx-auto">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-semibold text-body">Question {current + 1} of {total}</span>
+              {q.topic && <span className="text-xs text-secondary-text">{q.subject} · {q.topic}</span>}
             </div>
             <div className="bg-card border border-border rounded-xl p-6 shadow-card">
-              <p className="text-base leading-relaxed text-body whitespace-pre-wrap">{q.stem}</p>
+              <p className="text-base leading-relaxed text-body whitespace-pre-wrap">{q.text}</p>
               <div className="mt-6 space-y-3">
                 {q.options.map((opt, i) => {
-                  const sel = selections[q.id] === i;
+                  const sel = selections[q.index] === i;
                   return (
-                    <button
-                      key={i}
-                      onClick={() => pick(i)}
-                      className={cn(
-                        "w-full text-left rounded-lg border p-4 flex items-center gap-3 transition-all",
-                        sel ? "border-primary bg-primary-light" : "border-border bg-card hover:border-indigo-200 hover:bg-primary-light/40",
-                      )}
-                    >
+                    <button key={i} onClick={() => setSelections((p) => ({ ...p, [q.index]: i }))}
+                      className={cn("w-full text-left rounded-lg border p-4 flex items-center gap-3 transition-all",
+                        sel ? "border-primary bg-primary-light" : "border-border bg-card hover:border-indigo-200 hover:bg-primary-light/40")}>
                       <span className={cn("h-6 w-6 rounded-full border-2 flex items-center justify-center shrink-0", sel ? "border-primary bg-primary" : "border-border")}>
                         {sel && <span className="h-2 w-2 rounded-full bg-white" />}
                       </span>
@@ -180,10 +143,10 @@ function TestUI() {
                 })}
               </div>
               <div className="mt-6 flex flex-wrap gap-2">
-                <Button onClick={() => save(true)} variant="outline" className="border-violet-500 text-violet-600 hover:bg-violet-50">Mark for Review & Next</Button>
-                <Button onClick={() => setSelections((p) => ({ ...p, [q.id]: null }))} variant="ghost">Clear Response</Button>
+                <Button onClick={() => { setMarked((p) => ({ ...p, [q.index]: true })); setCurrent((c) => Math.min(total - 1, c + 1)); }} variant="outline" className="border-violet-500 text-violet-600 hover:bg-violet-50">Mark for Review & Next</Button>
+                <Button onClick={() => setSelections((p) => { const n = { ...p }; delete n[q.index]; return n; })} variant="ghost">Clear Response</Button>
                 <Button onClick={() => setCurrent((c) => Math.max(0, c - 1))} variant="outline" disabled={current === 0}>Previous</Button>
-                <Button onClick={() => save(false)} className="ml-auto font-semibold">Save & Next</Button>
+                <Button onClick={() => { setMarked((p) => { const n = { ...p }; delete n[q.index]; return n; }); setCurrent((c) => Math.min(total - 1, c + 1)); }} className="ml-auto font-semibold">Save & Next</Button>
               </div>
             </div>
           </div>
@@ -192,12 +155,7 @@ function TestUI() {
         <aside className="lg:w-[300px] bg-card border-t lg:border-t-0 lg:border-l border-border p-5 overflow-y-auto">
           <h3 className="font-semibold text-body">Question Palette</h3>
           <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-            {[
-              ["Answered", counts.answered, "bg-success"],
-              ["Not Answered", counts.notAnswered, "bg-danger"],
-              ["Marked", counts.marked, "bg-violet-600"],
-              ["Not Visited", counts.notVisited, "bg-muted-text"],
-            ].map(([l, c, color]) => (
+            {[["Answered", counts.answered, "bg-success"], ["Not Answered", counts.notAnswered, "bg-danger"], ["Marked", counts.marked, "bg-violet-600"], ["Not Visited", counts.notVisited, "bg-muted-text"]].map(([l, c, color]) => (
               <div key={l as string} className="flex items-center gap-2">
                 <span className={cn("h-3 w-3 rounded", color as string)} />
                 <span className="text-secondary-text">{l as string}: <b className="text-body">{c as number}</b></span>
@@ -206,9 +164,7 @@ function TestUI() {
           </div>
           <div className="mt-5 grid grid-cols-5 gap-1.5">
             {questions.map((_, i) => (
-              <button key={i} onClick={() => setCurrent(i)} className={cn("h-9 rounded text-xs font-bold flex items-center justify-center", cls(i))}>
-                {i + 1}
-              </button>
+              <button key={i} onClick={() => setCurrent(i)} className={cn("h-9 rounded text-xs font-bold flex items-center justify-center", cls(i))}>{i + 1}</button>
             ))}
           </div>
         </aside>
