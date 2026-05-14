@@ -15,7 +15,6 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as MockTestsIdRouteImport } from './routes/mock-tests.$id'
 import { Route as AppUpgradeRouteImport } from './routes/_app.upgrade'
 import { Route as AppStudyPlannerRouteImport } from './routes/_app.study-planner'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
@@ -27,6 +26,7 @@ import { Route as AppForgetMeterRouteImport } from './routes/_app.forget-meter'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppAiTutorRouteImport } from './routes/_app.ai-tutor'
 import { Route as AppResultsIdRouteImport } from './routes/_app.results.$id'
+import { Route as AppMockTestsIdRouteImport } from './routes/_app.mock-tests.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -55,11 +55,6 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MockTestsIdRoute = MockTestsIdRouteImport.update({
-  id: '/mock-tests/$id',
-  path: '/mock-tests/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppUpgradeRoute = AppUpgradeRouteImport.update({
@@ -117,6 +112,11 @@ const AppResultsIdRoute = AppResultsIdRouteImport.update({
   path: '/results/$id',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMockTestsIdRoute = AppMockTestsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppMockTestsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -129,12 +129,12 @@ export interface FileRoutesByFullPath {
   '/forget-meter': typeof AppForgetMeterRoute
   '/leaderboard': typeof AppLeaderboardRoute
   '/mentor-sessions': typeof AppMentorSessionsRoute
-  '/mock-tests': typeof AppMockTestsRoute
+  '/mock-tests': typeof AppMockTestsRouteWithChildren
   '/my-exams': typeof AppMyExamsRoute
   '/profile': typeof AppProfileRoute
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
-  '/mock-tests/$id': typeof MockTestsIdRoute
+  '/mock-tests/$id': typeof AppMockTestsIdRoute
   '/results/$id': typeof AppResultsIdRoute
 }
 export interface FileRoutesByTo {
@@ -148,12 +148,12 @@ export interface FileRoutesByTo {
   '/forget-meter': typeof AppForgetMeterRoute
   '/leaderboard': typeof AppLeaderboardRoute
   '/mentor-sessions': typeof AppMentorSessionsRoute
-  '/mock-tests': typeof AppMockTestsRoute
+  '/mock-tests': typeof AppMockTestsRouteWithChildren
   '/my-exams': typeof AppMyExamsRoute
   '/profile': typeof AppProfileRoute
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
-  '/mock-tests/$id': typeof MockTestsIdRoute
+  '/mock-tests/$id': typeof AppMockTestsIdRoute
   '/results/$id': typeof AppResultsIdRoute
 }
 export interface FileRoutesById {
@@ -169,12 +169,12 @@ export interface FileRoutesById {
   '/_app/forget-meter': typeof AppForgetMeterRoute
   '/_app/leaderboard': typeof AppLeaderboardRoute
   '/_app/mentor-sessions': typeof AppMentorSessionsRoute
-  '/_app/mock-tests': typeof AppMockTestsRoute
+  '/_app/mock-tests': typeof AppMockTestsRouteWithChildren
   '/_app/my-exams': typeof AppMyExamsRoute
   '/_app/profile': typeof AppProfileRoute
   '/_app/study-planner': typeof AppStudyPlannerRoute
   '/_app/upgrade': typeof AppUpgradeRoute
-  '/mock-tests/$id': typeof MockTestsIdRoute
+  '/_app/mock-tests/$id': typeof AppMockTestsIdRoute
   '/_app/results/$id': typeof AppResultsIdRoute
 }
 export interface FileRouteTypes {
@@ -234,7 +234,7 @@ export interface FileRouteTypes {
     | '/_app/profile'
     | '/_app/study-planner'
     | '/_app/upgrade'
-    | '/mock-tests/$id'
+    | '/_app/mock-tests/$id'
     | '/_app/results/$id'
   fileRoutesById: FileRoutesById
 }
@@ -245,7 +245,6 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  MockTestsIdRoute: typeof MockTestsIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -290,13 +289,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mock-tests/$id': {
-      id: '/mock-tests/$id'
-      path: '/mock-tests/$id'
-      fullPath: '/mock-tests/$id'
-      preLoaderRoute: typeof MockTestsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/upgrade': {
@@ -376,8 +368,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppResultsIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/mock-tests/$id': {
+      id: '/_app/mock-tests/$id'
+      path: '/$id'
+      fullPath: '/mock-tests/$id'
+      preLoaderRoute: typeof AppMockTestsIdRouteImport
+      parentRoute: typeof AppMockTestsRoute
+    }
   }
 }
+
+interface AppMockTestsRouteChildren {
+  AppMockTestsIdRoute: typeof AppMockTestsIdRoute
+}
+
+const AppMockTestsRouteChildren: AppMockTestsRouteChildren = {
+  AppMockTestsIdRoute: AppMockTestsIdRoute,
+}
+
+const AppMockTestsRouteWithChildren = AppMockTestsRoute._addFileChildren(
+  AppMockTestsRouteChildren,
+)
 
 interface AppRouteChildren {
   AppAiTutorRoute: typeof AppAiTutorRoute
@@ -385,7 +396,7 @@ interface AppRouteChildren {
   AppForgetMeterRoute: typeof AppForgetMeterRoute
   AppLeaderboardRoute: typeof AppLeaderboardRoute
   AppMentorSessionsRoute: typeof AppMentorSessionsRoute
-  AppMockTestsRoute: typeof AppMockTestsRoute
+  AppMockTestsRoute: typeof AppMockTestsRouteWithChildren
   AppMyExamsRoute: typeof AppMyExamsRoute
   AppProfileRoute: typeof AppProfileRoute
   AppStudyPlannerRoute: typeof AppStudyPlannerRoute
@@ -399,7 +410,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppForgetMeterRoute: AppForgetMeterRoute,
   AppLeaderboardRoute: AppLeaderboardRoute,
   AppMentorSessionsRoute: AppMentorSessionsRoute,
-  AppMockTestsRoute: AppMockTestsRoute,
+  AppMockTestsRoute: AppMockTestsRouteWithChildren,
   AppMyExamsRoute: AppMyExamsRoute,
   AppProfileRoute: AppProfileRoute,
   AppStudyPlannerRoute: AppStudyPlannerRoute,
@@ -416,8 +427,17 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  MockTestsIdRoute: MockTestsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
