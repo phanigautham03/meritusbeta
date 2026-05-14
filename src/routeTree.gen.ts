@@ -25,6 +25,7 @@ import { Route as AppLeaderboardRouteImport } from './routes/_app.leaderboard'
 import { Route as AppForgetMeterRouteImport } from './routes/_app.forget-meter'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppAiTutorRouteImport } from './routes/_app.ai-tutor'
+import { Route as AppAdminRouteImport } from './routes/_app.admin'
 import { Route as AppResultsIdRouteImport } from './routes/_app.results.$id'
 import { Route as AppMockTestsIdRouteImport } from './routes/_app.mock-tests.$id'
 
@@ -107,6 +108,11 @@ const AppAiTutorRoute = AppAiTutorRouteImport.update({
   path: '/ai-tutor',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppResultsIdRoute = AppResultsIdRouteImport.update({
   id: '/results/$id',
   path: '/results/$id',
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin': typeof AppAdminRoute
   '/ai-tutor': typeof AppAiTutorRoute
   '/dashboard': typeof AppDashboardRoute
   '/forget-meter': typeof AppForgetMeterRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin': typeof AppAdminRoute
   '/ai-tutor': typeof AppAiTutorRoute
   '/dashboard': typeof AppDashboardRoute
   '/forget-meter': typeof AppForgetMeterRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_app/admin': typeof AppAdminRoute
   '/_app/ai-tutor': typeof AppAiTutorRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/forget-meter': typeof AppForgetMeterRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/signup'
     | '/sitemap.xml'
+    | '/admin'
     | '/ai-tutor'
     | '/dashboard'
     | '/forget-meter'
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/signup'
     | '/sitemap.xml'
+    | '/admin'
     | '/ai-tutor'
     | '/dashboard'
     | '/forget-meter'
@@ -224,6 +235,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/signup'
     | '/sitemap.xml'
+    | '/_app/admin'
     | '/_app/ai-tutor'
     | '/_app/dashboard'
     | '/_app/forget-meter'
@@ -361,6 +373,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAiTutorRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/results/$id': {
       id: '/_app/results/$id'
       path: '/results/$id'
@@ -391,6 +410,7 @@ const AppMockTestsRouteWithChildren = AppMockTestsRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
   AppAiTutorRoute: typeof AppAiTutorRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppForgetMeterRoute: typeof AppForgetMeterRoute
@@ -405,6 +425,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
   AppAiTutorRoute: AppAiTutorRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppForgetMeterRoute: AppForgetMeterRoute,
