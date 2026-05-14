@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/mock-tests/$id")({
+export const Route = createFileRoute("/_app/mock-tests/$id")({
   component: TestUI,
   head: () => ({
     meta: [
