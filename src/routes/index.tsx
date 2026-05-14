@@ -12,6 +12,38 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Meritus — Crack any exam with AI by your side" },
       { name: "description", content: "India's first AI-powered all-exam platform. Prep for JEE, NEET, UPSC, Banking, GATE, CAT and 200+ exams." },
+      { property: "og:title", content: "Meritus — Crack any exam with AI by your side" },
+      { property: "og:description", content: "India's first AI-powered all-exam platform. Prep for JEE, NEET, UPSC, Banking, GATE, CAT and 200+ exams." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Meritus",
+          url: "https://meritusbeta.lovable.app/",
+          logo: "https://meritusbeta.lovable.app/favicon.ico",
+          description: "AI-powered competitive exam prep for JEE, NEET, UPSC, Banking, GATE, CAT and 200+ exams.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Meritus",
+          url: "https://meritusbeta.lovable.app/",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "https://meritusbeta.lovable.app/?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
+        }),
+      },
     ],
   }),
 });
