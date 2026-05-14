@@ -7,7 +7,20 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app/mentor-sessions")({ component: Mentors });
+export const Route = createFileRoute("/_app/mentor-sessions")({
+  component: Mentors,
+  head: () => ({
+    meta: [
+      { title: "Mentors — Meritus" },
+      { name: "description", content: "Book 1-on-1 sessions with toppers who cracked your target exam." },
+      { property: "og:title", content: "Mentors — Meritus" },
+      { property: "og:description", content: "Book 1-on-1 sessions with toppers who cracked your target exam." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/mentor-sessions" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/mentor-sessions" }],
+  }),
+});
 
 const mentors = [
   { name: "Aditya Verma", inst: "IIT Delhi", cleared: "Cleared JEE Advanced 2022 · AIR 142", rating: 4.9, sessions: 48, tags: ["Physics", "Maths", "Problem Solving"], price: 599, bio: "Specialised in mechanics and electrodynamics. Helped 200+ students crack JEE Advanced." },

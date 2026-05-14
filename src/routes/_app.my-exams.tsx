@@ -6,7 +6,20 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const Route = createFileRoute("/_app/my-exams")({ component: MyExams });
+export const Route = createFileRoute("/_app/my-exams")({
+  component: MyExams,
+  head: () => ({
+    meta: [
+      { title: "My Exams — Meritus" },
+      { name: "description", content: "Manage every exam you are prepping for in one personalised dashboard." },
+      { property: "og:title", content: "My Exams — Meritus" },
+      { property: "og:description", content: "Manage every exam you are prepping for in one personalised dashboard." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/my-exams" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/my-exams" }],
+  }),
+});
 
 function MyExams() {
   const [exams, setExams] = useState([

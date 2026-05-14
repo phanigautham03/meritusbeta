@@ -8,7 +8,20 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Edit2 } from "lucide-react";
 
-export const Route = createFileRoute("/_app/profile")({ component: Profile });
+export const Route = createFileRoute("/_app/profile")({
+  component: Profile,
+  head: () => ({
+    meta: [
+      { title: "Profile — Meritus" },
+      { name: "description", content: "Update your profile, subscription, and study preferences." },
+      { property: "og:title", content: "Profile — Meritus" },
+      { property: "og:description", content: "Update your profile, subscription, and study preferences." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/profile" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/profile" }],
+  }),
+});
 
 function Profile() {
   return (

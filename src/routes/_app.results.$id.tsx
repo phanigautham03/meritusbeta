@@ -4,7 +4,18 @@ import { Progress } from "@/components/ui/progress";
 import { Check, X, Minus, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app/results/$id")({ component: Results });
+export const Route = createFileRoute("/_app/results/$id")({
+  component: Results,
+  head: () => ({
+    meta: [
+      { title: "Test Results — Meritus" },
+      { name: "description", content: "Detailed analysis of your mock test performance with subject-wise accuracy and weak topics." },
+      { property: "og:title", content: "Test Results — Meritus" },
+      { property: "og:description", content: "Detailed analysis of your mock test performance with subject-wise accuracy and weak topics." },
+      { property: "og:type", content: "website" },
+    ],
+  }),
+});
 
 const subjects = [
   { name: "Physics", score: 56, total: 100, accuracy: 71, color: "bg-sky-500" },

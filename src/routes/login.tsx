@@ -7,7 +7,20 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/integrations/external-supabase/auth-context";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/login")({ component: Login });
+export const Route = createFileRoute("/login")({
+  component: Login,
+  head: () => ({
+    meta: [
+      { title: "Log in — Meritus" },
+      { name: "description", content: "Sign in to continue your AI-powered exam prep on Meritus." },
+      { property: "og:title", content: "Log in — Meritus" },
+      { property: "og:description", content: "Sign in to continue your AI-powered exam prep on Meritus." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/login" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/login" }],
+  }),
+});
 
 function Login() {
   const nav = useNavigate();

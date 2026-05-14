@@ -4,7 +4,20 @@ import { Switch } from "@/components/ui/switch";
 import { Check, X } from "lucide-react";
 import { useState } from "react";
 
-export const Route = createFileRoute("/_app/upgrade")({ component: Upgrade });
+export const Route = createFileRoute("/_app/upgrade")({
+  component: Upgrade,
+  head: () => ({
+    meta: [
+      { title: "Upgrade to Pro — Meritus" },
+      { name: "description", content: "Unlock unlimited mock tests, AI tutor, Forget-Meter and mentor sessions." },
+      { property: "og:title", content: "Upgrade to Pro — Meritus" },
+      { property: "og:description", content: "Unlock unlimited mock tests, AI tutor, Forget-Meter and mentor sessions." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/upgrade" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/upgrade" }],
+  }),
+});
 
 const plans = [
   { name: "Free", price: 0, current: true, cta: "Current Plan", features: [["3 mock tests / month", true], ["Basic analytics", true], ["ExamMatch AI", true], ["AI Study Planner", false], ["Forget-Meter", false], ["Mentor sessions", false], ["Voice AI tutor", false]] },

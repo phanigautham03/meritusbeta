@@ -1,0 +1,11 @@
+# Meritus
+
+> India's AI-powered all-exam prep platform for JEE, NEET, UPSC, Banking, GATE, CAT and 200+ competitive exams.
+
+Meritus combines pixel-perfect NTA-style mock tests, an Ebbinghaus-curve "Forget-Meter" for spaced repetition, an AI tutor, AI-generated study plans, and 1-on-1 mentor sessions with toppers.
+
+## Pages
+
+- [Home](/): Product overview, features, pricing, testimonials.
+- [Log in](/login): Existing user sign in.
+- [Sign up](/signup): Create a new Meritus account.

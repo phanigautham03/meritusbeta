@@ -8,7 +8,17 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/dashboard")({
   component: Dashboard,
-  head: () => ({ meta: [{ title: "Dashboard — Meritus" }] }),
+  head: () => ({
+    meta: [
+      { title: "Dashboard — Meritus" },
+      { name: "description", content: "Track streaks, mock test scores, Forget-Meter alerts and upcoming exams in one place." },
+      { property: "og:title", content: "Dashboard — Meritus" },
+      { property: "og:description", content: "Track streaks, mock test scores, Forget-Meter alerts and upcoming exams in one place." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/dashboard" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/dashboard" }],
+  }),
 });
 
 const stats = [

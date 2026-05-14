@@ -3,7 +3,18 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/mock-tests/$id")({ component: TestUI });
+export const Route = createFileRoute("/mock-tests/$id")({
+  component: TestUI,
+  head: () => ({
+    meta: [
+      { title: "Mock Test — Meritus" },
+      { name: "description", content: "Take your mock test in a pixel-perfect NTA-style interface with real-time timer." },
+      { property: "og:title", content: "Mock Test — Meritus" },
+      { property: "og:description", content: "Take your mock test in a pixel-perfect NTA-style interface with real-time timer." },
+      { property: "og:type", content: "website" },
+    ],
+  }),
+});
 
 const sections = ["Physics", "Chemistry", "Mathematics"];
 const total = 30;

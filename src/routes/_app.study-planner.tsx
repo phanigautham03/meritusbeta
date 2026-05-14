@@ -4,7 +4,20 @@ import { RefreshCw, Sparkles, Check } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app/study-planner")({ component: Planner });
+export const Route = createFileRoute("/_app/study-planner")({
+  component: Planner,
+  head: () => ({
+    meta: [
+      { title: "Study Planner — Meritus" },
+      { name: "description", content: "Personalised AI-generated week-by-week study plan tailored to your exam." },
+      { property: "og:title", content: "Study Planner — Meritus" },
+      { property: "og:description", content: "Personalised AI-generated week-by-week study plan tailored to your exam." },
+      { property: "og:url", content: "https://meritusbeta.lovable.app/study-planner" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/study-planner" }],
+  }),
+});
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const subjectColor: Record<string, string> = {

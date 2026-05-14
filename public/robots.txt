@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /my-exams
+Disallow: /mock-tests
+Disallow: /study-planner
+Disallow: /forget-meter
+Disallow: /ai-tutor
+Disallow: /leaderboard
+Disallow: /mentor-sessions
+Disallow: /profile
+Disallow: /upgrade
+Disallow: /results
+Disallow: /onboarding
+
+Sitemap: https://meritusbeta.lovable.app/sitemap.xml
