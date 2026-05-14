@@ -25,6 +25,7 @@ import { Route as AppLeaderboardRouteImport } from './routes/_app.leaderboard'
 import { Route as AppForgetMeterRouteImport } from './routes/_app.forget-meter'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppAiTutorRouteImport } from './routes/_app.ai-tutor'
+import { Route as AppResultsIdRouteImport } from './routes/_app.results.$id'
 import { Route as AppMockTestsIdRouteImport } from './routes/_app.mock-tests.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -106,6 +107,11 @@ const AppAiTutorRoute = AppAiTutorRouteImport.update({
   path: '/ai-tutor',
   getParentRoute: () => AppRoute,
 } as any)
+const AppResultsIdRoute = AppResultsIdRouteImport.update({
+  id: '/results/$id',
+  path: '/results/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMockTestsIdRoute = AppMockTestsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
+  '/results/$id': typeof AppResultsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
+  '/results/$id': typeof AppResultsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/_app/study-planner': typeof AppStudyPlannerRoute
   '/_app/upgrade': typeof AppUpgradeRoute
   '/_app/mock-tests/$id': typeof AppMockTestsIdRoute
+  '/_app/results/$id': typeof AppResultsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -187,6 +196,7 @@ export interface FileRouteTypes {
     | '/study-planner'
     | '/upgrade'
     | '/mock-tests/$id'
+    | '/results/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
     | '/study-planner'
     | '/upgrade'
     | '/mock-tests/$id'
+    | '/results/$id'
   id:
     | '__root__'
     | '/'
@@ -224,6 +235,7 @@ export interface FileRouteTypes {
     | '/_app/study-planner'
     | '/_app/upgrade'
     | '/_app/mock-tests/$id'
+    | '/_app/results/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -349,6 +361,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAiTutorRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/results/$id': {
+      id: '/_app/results/$id'
+      path: '/results/$id'
+      fullPath: '/results/$id'
+      preLoaderRoute: typeof AppResultsIdRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/mock-tests/$id': {
       id: '/_app/mock-tests/$id'
       path: '/$id'
@@ -382,6 +401,7 @@ interface AppRouteChildren {
   AppProfileRoute: typeof AppProfileRoute
   AppStudyPlannerRoute: typeof AppStudyPlannerRoute
   AppUpgradeRoute: typeof AppUpgradeRoute
+  AppResultsIdRoute: typeof AppResultsIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -395,6 +415,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppProfileRoute: AppProfileRoute,
   AppStudyPlannerRoute: AppStudyPlannerRoute,
   AppUpgradeRoute: AppUpgradeRoute,
+  AppResultsIdRoute: AppResultsIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
