@@ -65,7 +65,10 @@ function Landing() {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-md bg-primary flex items-center justify-center font-bold text-white">M</div>
-            <span className="font-bold text-lg text-white">Meritus</span>
+            <div className="flex flex-col leading-tight">
+              <span className="font-bold text-lg text-white">Meritus</span>
+              <span className="text-[10px] uppercase tracking-[0.18em] text-indigo-200">Merit, Mastered.</span>
+            </div>
           </Link>
           <nav className="hidden md:flex items-center gap-7 text-sm text-indigo-100">
             <a href="#features" className="hover:text-white">Features</a>
