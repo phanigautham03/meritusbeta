@@ -1,20 +1,22 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { supabase as browserClient } from "@/integrations/supabase/client";
 
 /* ============================================================
    MOCK TESTS
    ============================================================ */
 
-export const listMockTests = createServerFn({ method: "GET" }).handler(async () => {
-  const { data, error } = await browserClient
-    .from("mock_tests")
-    .select("id,exam_name,title,description,num_questions,duration_minutes,difficulty,subject,created_at")
-    .order("created_at", { ascending: false });
-  if (error) throw new Error(error.message);
-  return data ?? [];
-});
+export const listMockTests = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase } = context;
+    const { data, error } = await supabase
+      .from("mock_tests")
+      .select("id,exam_name,title,description,num_questions,duration_minutes,difficulty,subject,created_at")
+      .order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return data ?? [];
+  });
 
 export const getMockTestForAttempt = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -148,15 +150,18 @@ export const getMockAttemptResult = createServerFn({ method: "POST" })
    MENTORS
    ============================================================ */
 
-export const listMentors = createServerFn({ method: "GET" }).handler(async () => {
-  const { data, error } = await browserClient
-    .from("mentor_profiles")
-    .select("*")
-    .eq("is_active", true)
-    .order("rating", { ascending: false });
-  if (error) throw new Error(error.message);
-  return data ?? [];
-});
+export const listMentors = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase } = context;
+    const { data, error } = await supabase
+      .from("mentor_profiles")
+      .select("*")
+      .eq("is_active", true)
+      .order("rating", { ascending: false });
+    if (error) throw new Error(error.message);
+    return data ?? [];
+  });
 
 /* ============================================================
    DASHBOARD
@@ -212,9 +217,13 @@ export const listMyRevisions = createServerFn({ method: "GET" })
 
 export const listAllTopics = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async () => {
-    const { data, error } = await browserClient
-      .from("study_topics").select("id,topic_name,subject,exam_name").order("exam_name").order("subject");
+  .handler(async ({ context }) => {
+    const { supabase } = context;
+    const { data, error } = await supabase
+      .from("study_topics")
+      .select("id,topic_name,subject,exam_name")
+      .order("exam_name")
+      .order("subject");
     if (error) throw new Error(error.message);
     return data ?? [];
   });
