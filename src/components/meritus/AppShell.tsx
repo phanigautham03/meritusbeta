@@ -4,6 +4,7 @@ import {
   LayoutDashboard, BookOpen, FileText, CalendarDays, Brain, Sparkles,
   Trophy, Users, ChevronLeft, ChevronRight, Bell, Search, LogOut,
   Settings as SettingsIcon, User, Crown, Home, BarChart3, ShieldCheck,
+  ClipboardList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -18,6 +19,7 @@ const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/my-exams", label: "My Exams", icon: BookOpen },
   { to: "/mock-tests", label: "Mock Tests", icon: FileText },
+  { to: "/quiz", label: "Quiz", icon: ClipboardList, badge: "NEW", badgeColor: "bg-teal text-white" },
   { to: "/study-planner", label: "Study Planner", icon: CalendarDays },
   { to: "/forget-meter", label: "Forget-Meter", icon: Brain, badge: "NEW", badgeColor: "bg-teal text-white" },
   { to: "/ai-tutor", label: "AI Tutor", icon: Sparkles, badge: "AI", badgeColor: "bg-primary text-white" },

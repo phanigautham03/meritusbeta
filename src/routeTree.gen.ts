@@ -17,6 +17,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppUpgradeRouteImport } from './routes/_app.upgrade'
 import { Route as AppStudyPlannerRouteImport } from './routes/_app.study-planner'
+import { Route as AppQuizRouteImport } from './routes/_app.quiz'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppMyExamsRouteImport } from './routes/_app.my-exams'
 import { Route as AppMockTestsRouteImport } from './routes/_app.mock-tests'
@@ -27,7 +28,10 @@ import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppAiTutorRouteImport } from './routes/_app.ai-tutor'
 import { Route as AppAdminRouteImport } from './routes/_app.admin'
 import { Route as AppResultsIdRouteImport } from './routes/_app.results.$id'
+import { Route as AppQuizBatchIdRouteImport } from './routes/_app.quiz.$batchId'
 import { Route as AppMockTestsIdRouteImport } from './routes/_app.mock-tests.$id'
+import { Route as AppQuizBatchIdReviseRouteImport } from './routes/_app.quiz.$batchId.revise'
+import { Route as AppQuizBatchIdResultRouteImport } from './routes/_app.quiz.$batchId.result'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -66,6 +70,11 @@ const AppUpgradeRoute = AppUpgradeRouteImport.update({
 const AppStudyPlannerRoute = AppStudyPlannerRouteImport.update({
   id: '/study-planner',
   path: '/study-planner',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQuizRoute = AppQuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
   getParentRoute: () => AppRoute,
 } as any)
 const AppProfileRoute = AppProfileRouteImport.update({
@@ -118,10 +127,25 @@ const AppResultsIdRoute = AppResultsIdRouteImport.update({
   path: '/results/$id',
   getParentRoute: () => AppRoute,
 } as any)
+const AppQuizBatchIdRoute = AppQuizBatchIdRouteImport.update({
+  id: '/$batchId',
+  path: '/$batchId',
+  getParentRoute: () => AppQuizRoute,
+} as any)
 const AppMockTestsIdRoute = AppMockTestsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AppMockTestsRoute,
+} as any)
+const AppQuizBatchIdReviseRoute = AppQuizBatchIdReviseRouteImport.update({
+  id: '/revise',
+  path: '/revise',
+  getParentRoute: () => AppQuizBatchIdRoute,
+} as any)
+const AppQuizBatchIdResultRoute = AppQuizBatchIdResultRouteImport.update({
+  id: '/result',
+  path: '/result',
+  getParentRoute: () => AppQuizBatchIdRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -139,10 +163,14 @@ export interface FileRoutesByFullPath {
   '/mock-tests': typeof AppMockTestsRouteWithChildren
   '/my-exams': typeof AppMyExamsRoute
   '/profile': typeof AppProfileRoute
+  '/quiz': typeof AppQuizRouteWithChildren
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
+  '/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/results/$id': typeof AppResultsIdRoute
+  '/quiz/$batchId/result': typeof AppQuizBatchIdResultRoute
+  '/quiz/$batchId/revise': typeof AppQuizBatchIdReviseRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -159,10 +187,14 @@ export interface FileRoutesByTo {
   '/mock-tests': typeof AppMockTestsRouteWithChildren
   '/my-exams': typeof AppMyExamsRoute
   '/profile': typeof AppProfileRoute
+  '/quiz': typeof AppQuizRouteWithChildren
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
+  '/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/results/$id': typeof AppResultsIdRoute
+  '/quiz/$batchId/result': typeof AppQuizBatchIdResultRoute
+  '/quiz/$batchId/revise': typeof AppQuizBatchIdReviseRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -181,10 +213,14 @@ export interface FileRoutesById {
   '/_app/mock-tests': typeof AppMockTestsRouteWithChildren
   '/_app/my-exams': typeof AppMyExamsRoute
   '/_app/profile': typeof AppProfileRoute
+  '/_app/quiz': typeof AppQuizRouteWithChildren
   '/_app/study-planner': typeof AppStudyPlannerRoute
   '/_app/upgrade': typeof AppUpgradeRoute
   '/_app/mock-tests/$id': typeof AppMockTestsIdRoute
+  '/_app/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/_app/results/$id': typeof AppResultsIdRoute
+  '/_app/quiz/$batchId/result': typeof AppQuizBatchIdResultRoute
+  '/_app/quiz/$batchId/revise': typeof AppQuizBatchIdReviseRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -203,10 +239,14 @@ export interface FileRouteTypes {
     | '/mock-tests'
     | '/my-exams'
     | '/profile'
+    | '/quiz'
     | '/study-planner'
     | '/upgrade'
     | '/mock-tests/$id'
+    | '/quiz/$batchId'
     | '/results/$id'
+    | '/quiz/$batchId/result'
+    | '/quiz/$batchId/revise'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -223,10 +263,14 @@ export interface FileRouteTypes {
     | '/mock-tests'
     | '/my-exams'
     | '/profile'
+    | '/quiz'
     | '/study-planner'
     | '/upgrade'
     | '/mock-tests/$id'
+    | '/quiz/$batchId'
     | '/results/$id'
+    | '/quiz/$batchId/result'
+    | '/quiz/$batchId/revise'
   id:
     | '__root__'
     | '/'
@@ -244,10 +288,14 @@ export interface FileRouteTypes {
     | '/_app/mock-tests'
     | '/_app/my-exams'
     | '/_app/profile'
+    | '/_app/quiz'
     | '/_app/study-planner'
     | '/_app/upgrade'
     | '/_app/mock-tests/$id'
+    | '/_app/quiz/$batchId'
     | '/_app/results/$id'
+    | '/_app/quiz/$batchId/result'
+    | '/_app/quiz/$batchId/revise'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -315,6 +363,13 @@ declare module '@tanstack/react-router' {
       path: '/study-planner'
       fullPath: '/study-planner'
       preLoaderRoute: typeof AppStudyPlannerRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/quiz': {
+      id: '/_app/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof AppQuizRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/profile': {
@@ -387,12 +442,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppResultsIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/quiz/$batchId': {
+      id: '/_app/quiz/$batchId'
+      path: '/$batchId'
+      fullPath: '/quiz/$batchId'
+      preLoaderRoute: typeof AppQuizBatchIdRouteImport
+      parentRoute: typeof AppQuizRoute
+    }
     '/_app/mock-tests/$id': {
       id: '/_app/mock-tests/$id'
       path: '/$id'
       fullPath: '/mock-tests/$id'
       preLoaderRoute: typeof AppMockTestsIdRouteImport
       parentRoute: typeof AppMockTestsRoute
+    }
+    '/_app/quiz/$batchId/revise': {
+      id: '/_app/quiz/$batchId/revise'
+      path: '/revise'
+      fullPath: '/quiz/$batchId/revise'
+      preLoaderRoute: typeof AppQuizBatchIdReviseRouteImport
+      parentRoute: typeof AppQuizBatchIdRoute
+    }
+    '/_app/quiz/$batchId/result': {
+      id: '/_app/quiz/$batchId/result'
+      path: '/result'
+      fullPath: '/quiz/$batchId/result'
+      preLoaderRoute: typeof AppQuizBatchIdResultRouteImport
+      parentRoute: typeof AppQuizBatchIdRoute
     }
   }
 }
@@ -409,6 +485,31 @@ const AppMockTestsRouteWithChildren = AppMockTestsRoute._addFileChildren(
   AppMockTestsRouteChildren,
 )
 
+interface AppQuizBatchIdRouteChildren {
+  AppQuizBatchIdResultRoute: typeof AppQuizBatchIdResultRoute
+  AppQuizBatchIdReviseRoute: typeof AppQuizBatchIdReviseRoute
+}
+
+const AppQuizBatchIdRouteChildren: AppQuizBatchIdRouteChildren = {
+  AppQuizBatchIdResultRoute: AppQuizBatchIdResultRoute,
+  AppQuizBatchIdReviseRoute: AppQuizBatchIdReviseRoute,
+}
+
+const AppQuizBatchIdRouteWithChildren = AppQuizBatchIdRoute._addFileChildren(
+  AppQuizBatchIdRouteChildren,
+)
+
+interface AppQuizRouteChildren {
+  AppQuizBatchIdRoute: typeof AppQuizBatchIdRouteWithChildren
+}
+
+const AppQuizRouteChildren: AppQuizRouteChildren = {
+  AppQuizBatchIdRoute: AppQuizBatchIdRouteWithChildren,
+}
+
+const AppQuizRouteWithChildren =
+  AppQuizRoute._addFileChildren(AppQuizRouteChildren)
+
 interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRoute
   AppAiTutorRoute: typeof AppAiTutorRoute
@@ -419,6 +520,7 @@ interface AppRouteChildren {
   AppMockTestsRoute: typeof AppMockTestsRouteWithChildren
   AppMyExamsRoute: typeof AppMyExamsRoute
   AppProfileRoute: typeof AppProfileRoute
+  AppQuizRoute: typeof AppQuizRouteWithChildren
   AppStudyPlannerRoute: typeof AppStudyPlannerRoute
   AppUpgradeRoute: typeof AppUpgradeRoute
   AppResultsIdRoute: typeof AppResultsIdRoute
@@ -434,6 +536,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppMockTestsRoute: AppMockTestsRouteWithChildren,
   AppMyExamsRoute: AppMyExamsRoute,
   AppProfileRoute: AppProfileRoute,
+  AppQuizRoute: AppQuizRouteWithChildren,
   AppStudyPlannerRoute: AppStudyPlannerRoute,
   AppUpgradeRoute: AppUpgradeRoute,
   AppResultsIdRoute: AppResultsIdRoute,
