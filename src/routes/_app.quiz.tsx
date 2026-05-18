@@ -15,9 +15,16 @@ export const Route = createFileRoute("/_app/quiz")({
   }),
 });
 
-const EXAMS = [
-  "JEE Main", "NEET", "NEET PG", "AIIMS PG", "UPSC",
-  "IBPS PO", "CAT", "GATE", "SSC CGL",
+const EXAMS: { label: string; value: string }[] = [
+  { label: "JEE Main", value: "JEE Main" },
+  { label: "NEET UG", value: "NEET" },
+  { label: "NEET PG", value: "NEET PG" },
+  { label: "AIIMS PG", value: "AIIMS PG" },
+  { label: "UPSC CSE", value: "UPSC" },
+  { label: "IBPS PO", value: "IBPS PO" },
+  { label: "CAT", value: "CAT" },
+  { label: "GATE CSE", value: "GATE" },
+  { label: "SSC CGL", value: "SSC CGL" },
 ];
 
 const diffTone: Record<string, string> = {
@@ -37,7 +44,7 @@ type Batch = {
 
 function QuizHub() {
   const [batches, setBatches] = useState<Batch[] | null>(null);
-  const [exam, setExam] = useState<string>(EXAMS[0]);
+  const [exam, setExam] = useState<string>(EXAMS[0].value);
   const [diff, setDiff] = useState<string>("all");
   const [q, setQ] = useState("");
 
@@ -85,11 +92,11 @@ function QuizHub() {
           </p>
           <div className="flex flex-col">
             {EXAMS.map((e) => {
-              const active = e === exam;
+              const active = e.value === exam;
               return (
                 <button
-                  key={e}
-                  onClick={() => setExam(e)}
+                  key={e.value}
+                  onClick={() => setExam(e.value)}
                   className={cn(
                     "flex items-center justify-between text-left px-3 py-2 rounded-lg text-sm transition-colors",
                     active
@@ -97,12 +104,12 @@ function QuizHub() {
                       : "text-gray-700 hover:bg-[#F5F3FF]",
                   )}
                 >
-                  <span>{e}</span>
+                  <span>{e.label}</span>
                   <span className={cn(
                     "text-[11px] px-1.5 py-0.5 rounded-full",
                     active ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500",
                   )}>
-                    {examCounts[e] ?? 0}
+                    {examCounts[e.value] ?? 0}
                   </span>
                 </button>
               );
