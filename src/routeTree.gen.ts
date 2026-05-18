@@ -17,6 +17,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppUpgradeRouteImport } from './routes/_app.upgrade'
 import { Route as AppStudyPlannerRouteImport } from './routes/_app.study-planner'
+import { Route as AppQuizRouteImport } from './routes/_app.quiz'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppMyExamsRouteImport } from './routes/_app.my-exams'
 import { Route as AppMockTestsRouteImport } from './routes/_app.mock-tests'
@@ -66,6 +67,11 @@ const AppUpgradeRoute = AppUpgradeRouteImport.update({
 const AppStudyPlannerRoute = AppStudyPlannerRouteImport.update({
   id: '/study-planner',
   path: '/study-planner',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQuizRoute = AppQuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
   getParentRoute: () => AppRoute,
 } as any)
 const AppProfileRoute = AppProfileRouteImport.update({
@@ -139,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/mock-tests': typeof AppMockTestsRouteWithChildren
   '/my-exams': typeof AppMyExamsRoute
   '/profile': typeof AppProfileRoute
+  '/quiz': typeof AppQuizRoute
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
@@ -159,6 +166,7 @@ export interface FileRoutesByTo {
   '/mock-tests': typeof AppMockTestsRouteWithChildren
   '/my-exams': typeof AppMyExamsRoute
   '/profile': typeof AppProfileRoute
+  '/quiz': typeof AppQuizRoute
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
@@ -181,6 +189,7 @@ export interface FileRoutesById {
   '/_app/mock-tests': typeof AppMockTestsRouteWithChildren
   '/_app/my-exams': typeof AppMyExamsRoute
   '/_app/profile': typeof AppProfileRoute
+  '/_app/quiz': typeof AppQuizRoute
   '/_app/study-planner': typeof AppStudyPlannerRoute
   '/_app/upgrade': typeof AppUpgradeRoute
   '/_app/mock-tests/$id': typeof AppMockTestsIdRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/mock-tests'
     | '/my-exams'
     | '/profile'
+    | '/quiz'
     | '/study-planner'
     | '/upgrade'
     | '/mock-tests/$id'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/mock-tests'
     | '/my-exams'
     | '/profile'
+    | '/quiz'
     | '/study-planner'
     | '/upgrade'
     | '/mock-tests/$id'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/_app/mock-tests'
     | '/_app/my-exams'
     | '/_app/profile'
+    | '/_app/quiz'
     | '/_app/study-planner'
     | '/_app/upgrade'
     | '/_app/mock-tests/$id'
@@ -315,6 +327,13 @@ declare module '@tanstack/react-router' {
       path: '/study-planner'
       fullPath: '/study-planner'
       preLoaderRoute: typeof AppStudyPlannerRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/quiz': {
+      id: '/_app/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof AppQuizRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/profile': {
@@ -419,6 +438,7 @@ interface AppRouteChildren {
   AppMockTestsRoute: typeof AppMockTestsRouteWithChildren
   AppMyExamsRoute: typeof AppMyExamsRoute
   AppProfileRoute: typeof AppProfileRoute
+  AppQuizRoute: typeof AppQuizRoute
   AppStudyPlannerRoute: typeof AppStudyPlannerRoute
   AppUpgradeRoute: typeof AppUpgradeRoute
   AppResultsIdRoute: typeof AppResultsIdRoute
@@ -434,6 +454,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppMockTestsRoute: AppMockTestsRouteWithChildren,
   AppMyExamsRoute: AppMyExamsRoute,
   AppProfileRoute: AppProfileRoute,
+  AppQuizRoute: AppQuizRoute,
   AppStudyPlannerRoute: AppStudyPlannerRoute,
   AppUpgradeRoute: AppUpgradeRoute,
   AppResultsIdRoute: AppResultsIdRoute,
@@ -452,3 +473,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
