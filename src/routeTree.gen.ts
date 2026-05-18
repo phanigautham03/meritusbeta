@@ -30,6 +30,7 @@ import { Route as AppAdminRouteImport } from './routes/_app.admin'
 import { Route as AppResultsIdRouteImport } from './routes/_app.results.$id'
 import { Route as AppQuizBatchIdRouteImport } from './routes/_app.quiz.$batchId'
 import { Route as AppMockTestsIdRouteImport } from './routes/_app.mock-tests.$id'
+import { Route as AppQuizBatchIdResultRouteImport } from './routes/_app.quiz.$batchId.result'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -135,6 +136,11 @@ const AppMockTestsIdRoute = AppMockTestsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AppMockTestsRoute,
 } as any)
+const AppQuizBatchIdResultRoute = AppQuizBatchIdResultRouteImport.update({
+  id: '/result',
+  path: '/result',
+  getParentRoute: () => AppQuizBatchIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -155,8 +161,9 @@ export interface FileRoutesByFullPath {
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
-  '/quiz/$batchId': typeof AppQuizBatchIdRoute
+  '/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/results/$id': typeof AppResultsIdRoute
+  '/quiz/$batchId/result': typeof AppQuizBatchIdResultRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -177,8 +184,9 @@ export interface FileRoutesByTo {
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
-  '/quiz/$batchId': typeof AppQuizBatchIdRoute
+  '/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/results/$id': typeof AppResultsIdRoute
+  '/quiz/$batchId/result': typeof AppQuizBatchIdResultRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -201,8 +209,9 @@ export interface FileRoutesById {
   '/_app/study-planner': typeof AppStudyPlannerRoute
   '/_app/upgrade': typeof AppUpgradeRoute
   '/_app/mock-tests/$id': typeof AppMockTestsIdRoute
-  '/_app/quiz/$batchId': typeof AppQuizBatchIdRoute
+  '/_app/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/_app/results/$id': typeof AppResultsIdRoute
+  '/_app/quiz/$batchId/result': typeof AppQuizBatchIdResultRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -227,6 +236,7 @@ export interface FileRouteTypes {
     | '/mock-tests/$id'
     | '/quiz/$batchId'
     | '/results/$id'
+    | '/quiz/$batchId/result'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/mock-tests/$id'
     | '/quiz/$batchId'
     | '/results/$id'
+    | '/quiz/$batchId/result'
   id:
     | '__root__'
     | '/'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/_app/mock-tests/$id'
     | '/_app/quiz/$batchId'
     | '/_app/results/$id'
+    | '/_app/quiz/$batchId/result'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -432,6 +444,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMockTestsIdRouteImport
       parentRoute: typeof AppMockTestsRoute
     }
+    '/_app/quiz/$batchId/result': {
+      id: '/_app/quiz/$batchId/result'
+      path: '/result'
+      fullPath: '/quiz/$batchId/result'
+      preLoaderRoute: typeof AppQuizBatchIdResultRouteImport
+      parentRoute: typeof AppQuizBatchIdRoute
+    }
   }
 }
 
@@ -447,12 +466,24 @@ const AppMockTestsRouteWithChildren = AppMockTestsRoute._addFileChildren(
   AppMockTestsRouteChildren,
 )
 
+interface AppQuizBatchIdRouteChildren {
+  AppQuizBatchIdResultRoute: typeof AppQuizBatchIdResultRoute
+}
+
+const AppQuizBatchIdRouteChildren: AppQuizBatchIdRouteChildren = {
+  AppQuizBatchIdResultRoute: AppQuizBatchIdResultRoute,
+}
+
+const AppQuizBatchIdRouteWithChildren = AppQuizBatchIdRoute._addFileChildren(
+  AppQuizBatchIdRouteChildren,
+)
+
 interface AppQuizRouteChildren {
-  AppQuizBatchIdRoute: typeof AppQuizBatchIdRoute
+  AppQuizBatchIdRoute: typeof AppQuizBatchIdRouteWithChildren
 }
 
 const AppQuizRouteChildren: AppQuizRouteChildren = {
-  AppQuizBatchIdRoute: AppQuizBatchIdRoute,
+  AppQuizBatchIdRoute: AppQuizBatchIdRouteWithChildren,
 }
 
 const AppQuizRouteWithChildren =
