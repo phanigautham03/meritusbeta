@@ -173,36 +173,60 @@ export type Database = {
           city: string | null
           created_at: string
           display_name: string | null
+          education_level: string | null
           first_name: string | null
+          full_name: string | null
           id: string
           merit_points: number
+          mobile: string | null
+          onboarding_complete: boolean
+          plan: string
+          state: string | null
+          study_hours_per_day: number | null
           target_exam: string
           target_year: number | null
           updated_at: string
+          user_type: string
         }
         Insert: {
           avatar_url?: string | null
           city?: string | null
           created_at?: string
           display_name?: string | null
+          education_level?: string | null
           first_name?: string | null
+          full_name?: string | null
           id: string
           merit_points?: number
+          mobile?: string | null
+          onboarding_complete?: boolean
+          plan?: string
+          state?: string | null
+          study_hours_per_day?: number | null
           target_exam?: string
           target_year?: number | null
           updated_at?: string
+          user_type?: string
         }
         Update: {
           avatar_url?: string | null
           city?: string | null
           created_at?: string
           display_name?: string | null
+          education_level?: string | null
           first_name?: string | null
+          full_name?: string | null
           id?: string
           merit_points?: number
+          mobile?: string | null
+          onboarding_complete?: boolean
+          plan?: string
+          state?: string | null
+          study_hours_per_day?: number | null
           target_exam?: string
           target_year?: number | null
           updated_at?: string
+          user_type?: string
         }
         Relationships: []
       }
@@ -331,10 +355,12 @@ export type Database = {
       }
       test_attempts: {
         Row: {
+          answers: Json | null
           answers_json: Json | null
           correct_count: number | null
           id: string
           mock_test_id: string | null
+          percentage: number | null
           percentile: number | null
           score: number | null
           started_at: string
@@ -343,13 +369,16 @@ export type Database = {
           total_marks: number | null
           unattempted_count: number | null
           user_id: string
+          weak_topics: string[]
           wrong_count: number | null
         }
         Insert: {
+          answers?: Json | null
           answers_json?: Json | null
           correct_count?: number | null
           id?: string
           mock_test_id?: string | null
+          percentage?: number | null
           percentile?: number | null
           score?: number | null
           started_at?: string
@@ -358,13 +387,16 @@ export type Database = {
           total_marks?: number | null
           unattempted_count?: number | null
           user_id: string
+          weak_topics?: string[]
           wrong_count?: number | null
         }
         Update: {
+          answers?: Json | null
           answers_json?: Json | null
           correct_count?: number | null
           id?: string
           mock_test_id?: string | null
+          percentage?: number | null
           percentile?: number | null
           score?: number | null
           started_at?: string
@@ -373,6 +405,7 @@ export type Database = {
           total_marks?: number | null
           unattempted_count?: number | null
           user_id?: string
+          weak_topics?: string[]
           wrong_count?: number | null
         }
         Relationships: [
@@ -545,6 +578,7 @@ export type Database = {
       user_exams: {
         Row: {
           added_at: string
+          exam_date: string | null
           exam_name: string
           id: string
           target_date: string | null
@@ -552,6 +586,7 @@ export type Database = {
         }
         Insert: {
           added_at?: string
+          exam_date?: string | null
           exam_name: string
           id?: string
           target_date?: string | null
@@ -559,6 +594,7 @@ export type Database = {
         }
         Update: {
           added_at?: string
+          exam_date?: string | null
           exam_name?: string
           id?: string
           target_date?: string | null
@@ -592,6 +628,7 @@ export type Database = {
           current_streak: number
           last_active_date: string | null
           longest_streak: number
+          merit_points: number
           updated_at: string
           user_id: string
         }
@@ -599,6 +636,7 @@ export type Database = {
           current_streak?: number
           last_active_date?: string | null
           longest_streak?: number
+          merit_points?: number
           updated_at?: string
           user_id: string
         }
@@ -606,6 +644,7 @@ export type Database = {
           current_streak?: number
           last_active_date?: string | null
           longest_streak?: number
+          merit_points?: number
           updated_at?: string
           user_id?: string
         }
