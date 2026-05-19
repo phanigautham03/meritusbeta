@@ -101,16 +101,19 @@ export const submitMockAttempt = createServerFn({ method: "POST" })
         score, total_marks: totalMarks,
         correct_count: correct, wrong_count: wrong, unattempted_count: unattempted,
         answers_json: review,
+        answers: review as any,
       })
       .eq("id", data.attemptId)
       .eq("user_id", userId);
     if (updErr) throw new Error(updErr.message);
 
-    // Award merit points (best-effort).
+    // Award merit points on user_streaks (canonical) + mirror on profiles for legacy reads.
     if (meritDelta > 0) {
+      const { data: s } = await supabase.from("user_streaks").select("merit_points").eq("user_id", userId).maybeSingle();
+      const newPoints = ((s as any)?.merit_points ?? 0) + meritDelta;
+      await supabase.from("user_streaks").upsert({ user_id: userId, merit_points: newPoints, updated_at: new Date().toISOString() } as any);
       const { data: prof } = await supabase.from("profiles").select("merit_points").eq("id", userId).maybeSingle();
-      const newPoints = (prof?.merit_points ?? 0) + meritDelta;
-      await supabase.from("profiles").update({ merit_points: newPoints }).eq("id", userId);
+      await supabase.from("profiles").update({ merit_points: (prof?.merit_points ?? 0) + meritDelta }).eq("id", userId);
     }
 
     // Bump streak.
@@ -137,7 +140,7 @@ export const getMockAttemptResult = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
     const { data: a, error } = await supabase
       .from("test_attempts")
-      .select("id,user_id,mock_test_id,test_id,score,total_marks,correct_count,wrong_count,unattempted_count,answers_json,submitted_at,started_at, mock:mock_tests(id,title,exam_name,subject,difficulty,duration_minutes,questions)")
+      .select("id,user_id,mock_test_id,test_id,score,total_marks,correct_count,wrong_count,unattempted_count,answers,answers_json,submitted_at,started_at, mock:mock_tests(id,title,exam_name,subject,difficulty,duration_minutes,questions)")
       .eq("id", data.attemptId)
       .maybeSingle();
     if (error) throw new Error(error.message);
