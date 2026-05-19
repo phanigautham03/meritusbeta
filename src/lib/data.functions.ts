@@ -101,16 +101,19 @@ export const submitMockAttempt = createServerFn({ method: "POST" })
         score, total_marks: totalMarks,
         correct_count: correct, wrong_count: wrong, unattempted_count: unattempted,
         answers_json: review,
+        answers: review as any,
       })
       .eq("id", data.attemptId)
       .eq("user_id", userId);
     if (updErr) throw new Error(updErr.message);
 
-    // Award merit points (best-effort).
+    // Award merit points on user_streaks (canonical) + mirror on profiles for legacy reads.
     if (meritDelta > 0) {
+      const { data: s } = await supabase.from("user_streaks").select("merit_points").eq("user_id", userId).maybeSingle();
+      const newPoints = ((s as any)?.merit_points ?? 0) + meritDelta;
+      await supabase.from("user_streaks").upsert({ user_id: userId, merit_points: newPoints, updated_at: new Date().toISOString() } as any);
       const { data: prof } = await supabase.from("profiles").select("merit_points").eq("id", userId).maybeSingle();
-      const newPoints = (prof?.merit_points ?? 0) + meritDelta;
-      await supabase.from("profiles").update({ merit_points: newPoints }).eq("id", userId);
+      await supabase.from("profiles").update({ merit_points: (prof?.merit_points ?? 0) + meritDelta }).eq("id", userId);
     }
 
     // Bump streak.
@@ -137,7 +140,7 @@ export const getMockAttemptResult = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
     const { data: a, error } = await supabase
       .from("test_attempts")
-      .select("id,user_id,mock_test_id,test_id,score,total_marks,correct_count,wrong_count,unattempted_count,answers_json,submitted_at,started_at, mock:mock_tests(id,title,exam_name,subject,difficulty,duration_minutes,questions)")
+      .select("id,user_id,mock_test_id,test_id,score,total_marks,correct_count,wrong_count,unattempted_count,answers,answers_json,submitted_at,started_at, mock:mock_tests(id,title,exam_name,subject,difficulty,duration_minutes,questions)")
       .eq("id", data.attemptId)
       .maybeSingle();
     if (error) throw new Error(error.message);
@@ -299,6 +302,42 @@ export const removeMyExam = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
     const { error } = await supabase.from("user_exams").delete()
       .eq("id", data.id).eq("user_id", userId);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+
+export const getMyProfile = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+    const [{ data: profile }, { data: streak }, { data: rankRow }] = await Promise.all([
+      supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
+      supabase.from("user_streaks").select("*").eq("user_id", userId).maybeSingle(),
+      supabase.from("leaderboard").select("rank").eq("user_id", userId).maybeSingle(),
+    ]);
+    return { profile, streak, rank: (rankRow as any)?.rank ?? null };
+  });
+
+export const updateMyProfile = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i) => z.object({
+    full_name: z.string().max(120).optional(),
+    mobile: z.string().max(20).optional(),
+    city: z.string().max(80).optional(),
+    state: z.string().max(80).optional(),
+    education_level: z.string().max(40).optional(),
+    user_type: z.string().max(40).optional(),
+    study_hours_per_day: z.number().int().min(1).max(16).optional(),
+    plan: z.string().max(40).optional(),
+    onboarding_complete: z.boolean().optional(),
+  }).parse(i))
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    const { error } = await supabase.from("profiles").update(data as any).eq("id", userId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

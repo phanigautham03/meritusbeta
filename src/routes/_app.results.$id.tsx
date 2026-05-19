@@ -20,7 +20,7 @@ function ResultsPage() {
   if (error || !data) return <div className="p-8 text-danger">Failed: {(error as Error)?.message ?? "Not found"}</div>;
 
   const mock = (data as any).mock;
-  const review = ((data as any).answers_json ?? []) as { index: number; selected: number; isCorrect: boolean | null }[];
+  const review = (((data as any).answers ?? (data as any).answers_json) ?? []) as { index: number; selected: number; isCorrect: boolean | null }[];
   const questions = (mock?.questions ?? []) as any[];
   const score = Number((data as any).score ?? 0);
   const total = Number((data as any).total_marks ?? 0);
