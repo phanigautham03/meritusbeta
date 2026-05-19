@@ -18,7 +18,7 @@ function Dashboard() {
   if (isLoading || !data) return <div className="p-8 text-secondary-text"><Loader2 className="animate-spin inline mr-2" size={16}/> Loading…</div>;
 
   const name = data.profile?.first_name ?? data.profile?.display_name ?? "there";
-  const merit = data.profile?.merit_points ?? 0;
+  const merit = (data.streak as any)?.merit_points ?? data.profile?.merit_points ?? 0;
   const streak = data.streak?.current_streak ?? 0;
   const longest = data.streak?.longest_streak ?? 0;
   const nextExam = data.exams[0];
