@@ -307,6 +307,42 @@ export const removeMyExam = createServerFn({ method: "POST" })
   });
 
 /* ============================================================
+   PROFILE
+   ============================================================ */
+
+export const getMyProfile = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+    const [{ data: profile }, { data: streak }, { data: rankRow }] = await Promise.all([
+      supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
+      supabase.from("user_streaks").select("*").eq("user_id", userId).maybeSingle(),
+      supabase.from("leaderboard").select("rank").eq("user_id", userId).maybeSingle(),
+    ]);
+    return { profile, streak, rank: (rankRow as any)?.rank ?? null };
+  });
+
+export const updateMyProfile = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i) => z.object({
+    full_name: z.string().max(120).optional(),
+    mobile: z.string().max(20).optional(),
+    city: z.string().max(80).optional(),
+    state: z.string().max(80).optional(),
+    education_level: z.string().max(40).optional(),
+    user_type: z.string().max(40).optional(),
+    study_hours_per_day: z.number().int().min(1).max(16).optional(),
+    plan: z.string().max(40).optional(),
+    onboarding_complete: z.boolean().optional(),
+  }).parse(i))
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    const { error } = await supabase.from("profiles").update(data as any).eq("id", userId);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+/* ============================================================
    STUDY PLANNER (AI-generated weekly plan via Lovable AI)
    ============================================================ */
 
