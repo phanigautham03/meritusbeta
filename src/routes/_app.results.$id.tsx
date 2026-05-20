@@ -5,6 +5,7 @@ import { Loader2, CheckCircle2, XCircle, MinusCircle, Trophy } from "lucide-reac
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getMockAttemptResult } from "@/lib/data.functions";
+import { normalizeQuestions } from "@/lib/question-normalize";
 
 export const Route = createFileRoute("/_app/results/$id")({
   component: ResultsPage,
@@ -21,7 +22,7 @@ function ResultsPage() {
 
   const mock = (data as any).mock;
   const review = (((data as any).answers ?? (data as any).answers_json) ?? []) as { index: number; selected: number; isCorrect: boolean | null }[];
-  const questions = (mock?.questions ?? []) as any[];
+  const questions = normalizeQuestions((mock?.questions ?? []) as any[]);
   const score = Number((data as any).score ?? 0);
   const total = Number((data as any).total_marks ?? 0);
   const correct = (data as any).correct_count ?? 0;
