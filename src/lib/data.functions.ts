@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { normalizeQuestions } from "@/lib/question-normalize";
 
 /* ============================================================
    MOCK TESTS
@@ -13,7 +14,8 @@ export const listMockTests = createServerFn({ method: "GET" })
     const { data, error } = await supabase
       .from("mock_tests")
       .select("id,exam_name,title,description,num_questions,duration_minutes,difficulty,subject,created_at")
-      .order("created_at", { ascending: false });
+      .order("exam_name", { ascending: true })
+      .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
     return data ?? [];
   });
@@ -30,13 +32,7 @@ export const getMockTestForAttempt = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!t) throw new Error("Test not found");
-    const questions = (t.questions as any[]).map((q: any, i: number) => ({
-      index: i,
-      text: q.text as string,
-      options: q.options as string[],
-      subject: q.subject as string | undefined,
-      topic: q.topic as string | undefined,
-    }));
+    const questions = normalizeQuestions(t.questions as any[]);
     return {
       test: {
         id: t.id, title: t.title, exam_name: t.exam_name, subject: t.subject,
