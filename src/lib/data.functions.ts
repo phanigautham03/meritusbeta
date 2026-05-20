@@ -74,7 +74,7 @@ export const submitMockAttempt = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
     const { data: t } = await supabase.from("mock_tests").select("questions").eq("id", data.mockTestId).maybeSingle();
     if (!t) throw new Error("Test missing");
-    const qs = t.questions as any[];
+    const qs = normalizeQuestions(t.questions as any[]);
 
     let correct = 0, wrong = 0, unattempted = 0;
     const review = data.answers.map((a) => {
