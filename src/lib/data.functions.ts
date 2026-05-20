@@ -32,7 +32,14 @@ export const getMockTestForAttempt = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!t) throw new Error("Test not found");
-    const questions = normalizeQuestions(t.questions as any[]);
+    // Strip correct/explanation before sending to the client.
+    const questions = normalizeQuestions(t.questions as any[]).map((q) => ({
+      index: q.index,
+      text: q.text,
+      options: q.options,
+      subject: q.subject,
+      topic: q.topic,
+    }));
     return {
       test: {
         id: t.id, title: t.title, exam_name: t.exam_name, subject: t.subject,
