@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, ChevronLeft, ChevronRight, Flag, Eraser } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { QuizQuestion } from "@/components/quiz/ExplanationPanel";
+import { normalizeQuestions } from "@/lib/question-normalize";
 import {
   Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
@@ -38,7 +39,10 @@ function QuizRunner() {
       .eq("id", batchId).maybeSingle()
       .then(({ data }) => {
         if (!data) return;
-        const b = data as unknown as Batch;
+        const b = {
+          ...(data as any),
+          questions: normalizeQuestions((data as any).questions),
+        } as Batch;
         setBatch(b);
         // Restore from localStorage
         try {

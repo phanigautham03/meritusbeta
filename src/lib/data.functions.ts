@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { normalizeQuestions } from "@/lib/question-normalize";
 
 /* ============================================================
    MOCK TESTS
@@ -13,7 +14,8 @@ export const listMockTests = createServerFn({ method: "GET" })
     const { data, error } = await supabase
       .from("mock_tests")
       .select("id,exam_name,title,description,num_questions,duration_minutes,difficulty,subject,created_at")
-      .order("created_at", { ascending: false });
+      .order("exam_name", { ascending: true })
+      .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
     return data ?? [];
   });
@@ -30,12 +32,13 @@ export const getMockTestForAttempt = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!t) throw new Error("Test not found");
-    const questions = (t.questions as any[]).map((q: any, i: number) => ({
-      index: i,
-      text: q.text as string,
-      options: q.options as string[],
-      subject: q.subject as string | undefined,
-      topic: q.topic as string | undefined,
+    // Strip correct/explanation before sending to the client.
+    const questions = normalizeQuestions(t.questions as any[]).map((q) => ({
+      index: q.index,
+      text: q.text,
+      options: q.options,
+      subject: q.subject,
+      topic: q.topic,
     }));
     return {
       test: {
@@ -78,7 +81,7 @@ export const submitMockAttempt = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
     const { data: t } = await supabase.from("mock_tests").select("questions").eq("id", data.mockTestId).maybeSingle();
     if (!t) throw new Error("Test missing");
-    const qs = t.questions as any[];
+    const qs = normalizeQuestions(t.questions as any[]);
 
     let correct = 0, wrong = 0, unattempted = 0;
     const review = data.answers.map((a) => {

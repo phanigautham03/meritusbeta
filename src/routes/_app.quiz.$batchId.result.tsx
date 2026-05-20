@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, ChevronDown, Check, X, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ExplanationPanel, type QuizQuestion } from "@/components/quiz/ExplanationPanel";
+import { normalizeQuestions } from "@/lib/question-normalize";
 
 export const Route = createFileRoute("/_app/quiz/$batchId/result")({
   component: QuizResult,
@@ -21,7 +22,13 @@ function QuizResult() {
   useEffect(() => {
     supabase.from("mock_tests")
       .select("id,title,questions,duration_minutes").eq("id", batchId).maybeSingle()
-      .then(({ data }) => data && setBatch(data as unknown as Batch));
+      .then(({ data }) => {
+        if (!data) return;
+        setBatch({
+          ...(data as any),
+          questions: normalizeQuestions((data as any).questions),
+        } as Batch);
+      });
     try {
       const raw = localStorage.getItem(`quiz_${batchId}_final`);
       if (raw) setFinal(JSON.parse(raw));
