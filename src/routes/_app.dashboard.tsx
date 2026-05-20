@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
-import { Star, Flame, BookOpen, AlertTriangle, ArrowRight, Loader2 } from "lucide-react";
+import { Star, Flame, BookOpen, AlertTriangle, ArrowRight, Loader2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getDashboard } from "@/lib/data.functions";
 
@@ -14,6 +15,18 @@ export const Route = createFileRoute("/_app/dashboard")({
 function Dashboard() {
   const fetch = useServerFn(getDashboard);
   const { data, isLoading } = useQuery({ queryKey: ["dashboard"], queryFn: () => fetch() });
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && !sessionStorage.getItem("welcomed")) {
+      setShowWelcome(true);
+    }
+  }, []);
+
+  const dismissWelcome = () => {
+    if (typeof window !== "undefined") sessionStorage.setItem("welcomed", "true");
+    setShowWelcome(false);
+  };
 
   if (isLoading || !data) return <div className="p-8 text-secondary-text"><Loader2 className="animate-spin inline mr-2" size={16}/> Loading…</div>;
 
@@ -31,6 +44,21 @@ function Dashboard() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
+      {showWelcome && (
+        <div className="rounded-xl bg-[#4338CA] text-white p-4 flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+          <p className="text-sm md:text-base">
+            🎉 Welcome to Meritus, <strong>{name}</strong>! Your question bank is ready. Start your first quiz to kick off your streak.
+          </p>
+          <button
+            onClick={dismissWelcome}
+            className="shrink-0 p-1 rounded hover:bg-white/10 transition"
+            aria-label="Dismiss welcome"
+          >
+            <X size={18} />
+          </button>
+        </div>
+      )}
+
       <section className="rounded-xl bg-gradient-to-br from-navy via-navy-2 to-primary text-white p-6 md:p-8">
         <h1 className="text-2xl md:text-3xl font-bold">Welcome back, {name} 👋</h1>
         <p className="mt-1 text-indigo-200">{nextExam ? `Next target: ${nextExam.exam_name}${nextExam.target_date ? ` · ${nextExam.target_date}` : ""}` : "Add your target exams to start tracking."}</p>
