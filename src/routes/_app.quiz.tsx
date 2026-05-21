@@ -5,6 +5,19 @@ import { Loader2, Search, ClipboardList, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
+const EXAM_LABELS: Record<string, string> = {
+  "JEE Main": "JEE Main",
+  "JEE Advanced": "JEE Advanced",
+  "NEET": "NEET UG",
+  "NEET PG": "NEET PG",
+  "AIIMS PG": "AIIMS PG",
+  "UPSC": "UPSC CSE",
+  "IBPS PO": "IBPS PO",
+  "CAT": "CAT",
+  "GATE": "GATE CSE",
+  "SSC CGL": "SSC CGL",
+};
+
 export const Route = createFileRoute("/_app/quiz")({
   component: QuizHub,
   head: () => ({
@@ -14,18 +27,6 @@ export const Route = createFileRoute("/_app/quiz")({
     ],
   }),
 });
-
-const EXAMS: { label: string; value: string }[] = [
-  { label: "JEE Main", value: "JEE Main" },
-  { label: "NEET UG", value: "NEET" },
-  { label: "NEET PG", value: "NEET PG" },
-  { label: "AIIMS PG", value: "AIIMS PG" },
-  { label: "UPSC CSE", value: "UPSC" },
-  { label: "IBPS PO", value: "IBPS PO" },
-  { label: "CAT", value: "CAT" },
-  { label: "GATE CSE", value: "GATE" },
-  { label: "SSC CGL", value: "SSC CGL" },
-];
 
 const diffTone: Record<string, string> = {
   easy: "bg-green-100 text-green-700",
@@ -44,7 +45,7 @@ type Batch = {
 
 function QuizHub() {
   const [batches, setBatches] = useState<Batch[] | null>(null);
-  const [exam, setExam] = useState<string>(EXAMS[0].value);
+  const [exam, setExam] = useState<string>("");
   const [diff, setDiff] = useState<string>("all");
   const [q, setQ] = useState("");
 
@@ -54,13 +55,19 @@ function QuizHub() {
       .select("id,exam_name,title,difficulty,subject,num_questions,created_at")
       .order("exam_name")
       .order("created_at")
-      .then(({ data }) => setBatches((data as Batch[]) ?? []));
+      .then(({ data }) => {
+        const rows = (data as Batch[]) ?? [];
+        setBatches(rows);
+        setExam((prev) => prev || rows[0]?.exam_name || "");
+      });
   }, []);
 
-  const examCounts = useMemo(() => {
-    const m: Record<string, number> = {};
-    batches?.forEach((b) => { m[b.exam_name] = (m[b.exam_name] ?? 0) + 1; });
-    return m;
+  const exams = useMemo(() => {
+    const m = new Map<string, number>();
+    batches?.forEach((b) => m.set(b.exam_name, (m.get(b.exam_name) ?? 0) + 1));
+    return Array.from(m.entries())
+      .map(([value, count]) => ({ value, label: EXAM_LABELS[value] ?? value, count }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }, [batches]);
 
   const filtered = useMemo(() => {
@@ -91,7 +98,10 @@ function QuizHub() {
             Exams
           </p>
           <div className="flex flex-col">
-            {EXAMS.map((e) => {
+            {exams.length === 0 && batches !== null && (
+              <p className="px-3 py-2 text-xs text-gray-400">No exams available.</p>
+            )}
+            {exams.map((e) => {
               const active = e.value === exam;
               return (
                 <button
@@ -109,7 +119,7 @@ function QuizHub() {
                     "text-[11px] px-1.5 py-0.5 rounded-full",
                     active ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500",
                   )}>
-                    {examCounts[e.value] ?? 0}
+                    {e.count}
                   </span>
                 </button>
               );
