@@ -193,8 +193,8 @@ function QuizHub() {
                     {b.num_questions} questions
                   </p>
                   <Link
-                    to="/quiz/$batchId"
-                    params={{ batchId: b.id }}
+                    to="/mock-tests/$id"
+                    params={{ id: b.id }}
                     className="mt-auto inline-flex items-center justify-center gap-1.5 bg-[#4338CA] hover:bg-[#3730A3] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
                   >
                     Start Quiz <ArrowRight size={14} />
