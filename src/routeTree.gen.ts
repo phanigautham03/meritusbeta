@@ -15,6 +15,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiAiTutorRouteImport } from './routes/api/ai-tutor'
 import { Route as AppUpgradeRouteImport } from './routes/_app.upgrade'
 import { Route as AppStudyPlannerRouteImport } from './routes/_app.study-planner'
 import { Route as AppQuizRouteImport } from './routes/_app.quiz'
@@ -60,6 +61,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAiTutorRoute = ApiAiTutorRouteImport.update({
+  id: '/api/ai-tutor',
+  path: '/api/ai-tutor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppUpgradeRoute = AppUpgradeRouteImport.update({
@@ -166,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/quiz': typeof AppQuizRouteWithChildren
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
+  '/api/ai-tutor': typeof ApiAiTutorRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
   '/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/results/$id': typeof AppResultsIdRoute
@@ -190,6 +197,7 @@ export interface FileRoutesByTo {
   '/quiz': typeof AppQuizRouteWithChildren
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
+  '/api/ai-tutor': typeof ApiAiTutorRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
   '/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/results/$id': typeof AppResultsIdRoute
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/_app/quiz': typeof AppQuizRouteWithChildren
   '/_app/study-planner': typeof AppStudyPlannerRoute
   '/_app/upgrade': typeof AppUpgradeRoute
+  '/api/ai-tutor': typeof ApiAiTutorRoute
   '/_app/mock-tests/$id': typeof AppMockTestsIdRoute
   '/_app/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/_app/results/$id': typeof AppResultsIdRoute
@@ -242,6 +251,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/study-planner'
     | '/upgrade'
+    | '/api/ai-tutor'
     | '/mock-tests/$id'
     | '/quiz/$batchId'
     | '/results/$id'
@@ -266,6 +276,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/study-planner'
     | '/upgrade'
+    | '/api/ai-tutor'
     | '/mock-tests/$id'
     | '/quiz/$batchId'
     | '/results/$id'
@@ -291,6 +302,7 @@ export interface FileRouteTypes {
     | '/_app/quiz'
     | '/_app/study-planner'
     | '/_app/upgrade'
+    | '/api/ai-tutor'
     | '/_app/mock-tests/$id'
     | '/_app/quiz/$batchId'
     | '/_app/results/$id'
@@ -305,6 +317,7 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiAiTutorRoute: typeof ApiAiTutorRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -349,6 +362,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai-tutor': {
+      id: '/api/ai-tutor'
+      path: '/api/ai-tutor'
+      fullPath: '/api/ai-tutor'
+      preLoaderRoute: typeof ApiAiTutorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/upgrade': {
@@ -551,6 +571,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiAiTutorRoute: ApiAiTutorRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
