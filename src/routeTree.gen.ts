@@ -9,15 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as RefundRouteImport } from './routes/refund'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as InstitutesRouteImport } from './routes/institutes'
+import { Route as FeedbackRouteImport } from './routes/feedback'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiVerifyPaymentRouteImport } from './routes/api/verify-payment'
+import { Route as ApiFeedbackRouteImport } from './routes/api/feedback'
+import { Route as ApiCreateOrderRouteImport } from './routes/api/create-order'
 import { Route as ApiAiTutorRouteImport } from './routes/api/ai-tutor'
 import { Route as AppUpgradeRouteImport } from './routes/_app.upgrade'
 import { Route as AppStudyPlannerRouteImport } from './routes/_app.study-planner'
+import { Route as AppStudyGroupsRouteImport } from './routes/_app.study-groups'
 import { Route as AppQuizRouteImport } from './routes/_app.quiz'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppMyExamsRouteImport } from './routes/_app.my-exams'
@@ -28,12 +39,24 @@ import { Route as AppForgetMeterRouteImport } from './routes/_app.forget-meter'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppAiTutorRouteImport } from './routes/_app.ai-tutor'
 import { Route as AppAdminRouteImport } from './routes/_app.admin'
+import { Route as AppMockTestsIndexRouteImport } from './routes/_app.mock-tests.index'
+import { Route as ApiAgentsStatusRouteImport } from './routes/api/agents/status'
 import { Route as AppResultsIdRouteImport } from './routes/_app.results.$id'
 import { Route as AppQuizBatchIdRouteImport } from './routes/_app.quiz.$batchId'
 import { Route as AppMockTestsIdRouteImport } from './routes/_app.mock-tests.$id'
+import { Route as ApiAgentsTriggerNameRouteImport } from './routes/api/agents/trigger.$name'
+import { Route as ApiAgentsSupportInboundRouteImport } from './routes/api/agents/support.inbound'
+import { Route as ApiAgentsSalesWebhookRouteImport } from './routes/api/agents/sales.webhook'
 import { Route as AppQuizBatchIdReviseRouteImport } from './routes/_app.quiz.$batchId.revise'
 import { Route as AppQuizBatchIdResultRouteImport } from './routes/_app.quiz.$batchId.result'
+import { Route as ApiAgentsSupportSendIdRouteImport } from './routes/api/agents/support.send.$id'
+import { Route as ApiAgentsContentApproveIdRouteImport } from './routes/api/agents/content.approve.$id'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -42,6 +65,16 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundRoute = RefundRouteImport.update({
+  id: '/refund',
+  path: '/refund',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -54,6 +87,26 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InstitutesRoute = InstitutesRouteImport.update({
+  id: '/institutes',
+  path: '/institutes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeedbackRoute = FeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
@@ -61,6 +114,21 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVerifyPaymentRoute = ApiVerifyPaymentRouteImport.update({
+  id: '/api/verify-payment',
+  path: '/api/verify-payment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiFeedbackRoute = ApiFeedbackRouteImport.update({
+  id: '/api/feedback',
+  path: '/api/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCreateOrderRoute = ApiCreateOrderRouteImport.update({
+  id: '/api/create-order',
+  path: '/api/create-order',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAiTutorRoute = ApiAiTutorRouteImport.update({
@@ -76,6 +144,11 @@ const AppUpgradeRoute = AppUpgradeRouteImport.update({
 const AppStudyPlannerRoute = AppStudyPlannerRouteImport.update({
   id: '/study-planner',
   path: '/study-planner',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppStudyGroupsRoute = AppStudyGroupsRouteImport.update({
+  id: '/study-groups',
+  path: '/study-groups',
   getParentRoute: () => AppRoute,
 } as any)
 const AppQuizRoute = AppQuizRouteImport.update({
@@ -128,6 +201,16 @@ const AppAdminRoute = AppAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMockTestsIndexRoute = AppMockTestsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppMockTestsRoute,
+} as any)
+const ApiAgentsStatusRoute = ApiAgentsStatusRouteImport.update({
+  id: '/api/agents/status',
+  path: '/api/agents/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppResultsIdRoute = AppResultsIdRouteImport.update({
   id: '/results/$id',
   path: '/results/$id',
@@ -143,6 +226,21 @@ const AppMockTestsIdRoute = AppMockTestsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AppMockTestsRoute,
 } as any)
+const ApiAgentsTriggerNameRoute = ApiAgentsTriggerNameRouteImport.update({
+  id: '/api/agents/trigger/$name',
+  path: '/api/agents/trigger/$name',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentsSupportInboundRoute = ApiAgentsSupportInboundRouteImport.update({
+  id: '/api/agents/support/inbound',
+  path: '/api/agents/support/inbound',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentsSalesWebhookRoute = ApiAgentsSalesWebhookRouteImport.update({
+  id: '/api/agents/sales/webhook',
+  path: '/api/agents/sales/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppQuizBatchIdReviseRoute = AppQuizBatchIdReviseRouteImport.update({
   id: '/revise',
   path: '/revise',
@@ -153,13 +251,31 @@ const AppQuizBatchIdResultRoute = AppQuizBatchIdResultRouteImport.update({
   path: '/result',
   getParentRoute: () => AppQuizBatchIdRoute,
 } as any)
+const ApiAgentsSupportSendIdRoute = ApiAgentsSupportSendIdRouteImport.update({
+  id: '/api/agents/support/send/$id',
+  path: '/api/agents/support/send/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentsContentApproveIdRoute =
+  ApiAgentsContentApproveIdRouteImport.update({
+    id: '/api/agents/content/approve/$id',
+    path: '/api/agents/content/approve/$id',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/feedback': typeof FeedbackRoute
+  '/institutes': typeof InstitutesRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund': typeof RefundRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/admin': typeof AppAdminRoute
   '/ai-tutor': typeof AppAiTutorRoute
   '/dashboard': typeof AppDashboardRoute
@@ -170,48 +286,83 @@ export interface FileRoutesByFullPath {
   '/my-exams': typeof AppMyExamsRoute
   '/profile': typeof AppProfileRoute
   '/quiz': typeof AppQuizRouteWithChildren
+  '/study-groups': typeof AppStudyGroupsRoute
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/api/ai-tutor': typeof ApiAiTutorRoute
+  '/api/create-order': typeof ApiCreateOrderRoute
+  '/api/feedback': typeof ApiFeedbackRoute
+  '/api/verify-payment': typeof ApiVerifyPaymentRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
   '/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/results/$id': typeof AppResultsIdRoute
+  '/api/agents/status': typeof ApiAgentsStatusRoute
+  '/mock-tests/': typeof AppMockTestsIndexRoute
   '/quiz/$batchId/result': typeof AppQuizBatchIdResultRoute
   '/quiz/$batchId/revise': typeof AppQuizBatchIdReviseRoute
+  '/api/agents/sales/webhook': typeof ApiAgentsSalesWebhookRoute
+  '/api/agents/support/inbound': typeof ApiAgentsSupportInboundRoute
+  '/api/agents/trigger/$name': typeof ApiAgentsTriggerNameRoute
+  '/api/agents/content/approve/$id': typeof ApiAgentsContentApproveIdRoute
+  '/api/agents/support/send/$id': typeof ApiAgentsSupportSendIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/feedback': typeof FeedbackRoute
+  '/institutes': typeof InstitutesRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund': typeof RefundRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/admin': typeof AppAdminRoute
   '/ai-tutor': typeof AppAiTutorRoute
   '/dashboard': typeof AppDashboardRoute
   '/forget-meter': typeof AppForgetMeterRoute
   '/leaderboard': typeof AppLeaderboardRoute
   '/mentor-sessions': typeof AppMentorSessionsRoute
-  '/mock-tests': typeof AppMockTestsRouteWithChildren
   '/my-exams': typeof AppMyExamsRoute
   '/profile': typeof AppProfileRoute
   '/quiz': typeof AppQuizRouteWithChildren
+  '/study-groups': typeof AppStudyGroupsRoute
   '/study-planner': typeof AppStudyPlannerRoute
   '/upgrade': typeof AppUpgradeRoute
   '/api/ai-tutor': typeof ApiAiTutorRoute
+  '/api/create-order': typeof ApiCreateOrderRoute
+  '/api/feedback': typeof ApiFeedbackRoute
+  '/api/verify-payment': typeof ApiVerifyPaymentRoute
   '/mock-tests/$id': typeof AppMockTestsIdRoute
   '/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/results/$id': typeof AppResultsIdRoute
+  '/api/agents/status': typeof ApiAgentsStatusRoute
+  '/mock-tests': typeof AppMockTestsIndexRoute
   '/quiz/$batchId/result': typeof AppQuizBatchIdResultRoute
   '/quiz/$batchId/revise': typeof AppQuizBatchIdReviseRoute
+  '/api/agents/sales/webhook': typeof ApiAgentsSalesWebhookRoute
+  '/api/agents/support/inbound': typeof ApiAgentsSupportInboundRoute
+  '/api/agents/trigger/$name': typeof ApiAgentsTriggerNameRoute
+  '/api/agents/content/approve/$id': typeof ApiAgentsContentApproveIdRoute
+  '/api/agents/support/send/$id': typeof ApiAgentsSupportSendIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/feedback': typeof FeedbackRoute
+  '/institutes': typeof InstitutesRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund': typeof RefundRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/_app/admin': typeof AppAdminRoute
   '/_app/ai-tutor': typeof AppAiTutorRoute
   '/_app/dashboard': typeof AppDashboardRoute
@@ -222,23 +373,41 @@ export interface FileRoutesById {
   '/_app/my-exams': typeof AppMyExamsRoute
   '/_app/profile': typeof AppProfileRoute
   '/_app/quiz': typeof AppQuizRouteWithChildren
+  '/_app/study-groups': typeof AppStudyGroupsRoute
   '/_app/study-planner': typeof AppStudyPlannerRoute
   '/_app/upgrade': typeof AppUpgradeRoute
   '/api/ai-tutor': typeof ApiAiTutorRoute
+  '/api/create-order': typeof ApiCreateOrderRoute
+  '/api/feedback': typeof ApiFeedbackRoute
+  '/api/verify-payment': typeof ApiVerifyPaymentRoute
   '/_app/mock-tests/$id': typeof AppMockTestsIdRoute
   '/_app/quiz/$batchId': typeof AppQuizBatchIdRouteWithChildren
   '/_app/results/$id': typeof AppResultsIdRoute
+  '/api/agents/status': typeof ApiAgentsStatusRoute
+  '/_app/mock-tests/': typeof AppMockTestsIndexRoute
   '/_app/quiz/$batchId/result': typeof AppQuizBatchIdResultRoute
   '/_app/quiz/$batchId/revise': typeof AppQuizBatchIdReviseRoute
+  '/api/agents/sales/webhook': typeof ApiAgentsSalesWebhookRoute
+  '/api/agents/support/inbound': typeof ApiAgentsSupportInboundRoute
+  '/api/agents/trigger/$name': typeof ApiAgentsTriggerNameRoute
+  '/api/agents/content/approve/$id': typeof ApiAgentsContentApproveIdRoute
+  '/api/agents/support/send/$id': typeof ApiAgentsSupportSendIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
+    | '/contact'
+    | '/feedback'
+    | '/institutes'
     | '/login'
     | '/onboarding'
+    | '/privacy'
+    | '/refund'
     | '/signup'
     | '/sitemap.xml'
+    | '/terms'
     | '/admin'
     | '/ai-tutor'
     | '/dashboard'
@@ -249,47 +418,82 @@ export interface FileRouteTypes {
     | '/my-exams'
     | '/profile'
     | '/quiz'
+    | '/study-groups'
     | '/study-planner'
     | '/upgrade'
     | '/api/ai-tutor'
+    | '/api/create-order'
+    | '/api/feedback'
+    | '/api/verify-payment'
     | '/mock-tests/$id'
     | '/quiz/$batchId'
     | '/results/$id'
+    | '/api/agents/status'
+    | '/mock-tests/'
     | '/quiz/$batchId/result'
     | '/quiz/$batchId/revise'
+    | '/api/agents/sales/webhook'
+    | '/api/agents/support/inbound'
+    | '/api/agents/trigger/$name'
+    | '/api/agents/content/approve/$id'
+    | '/api/agents/support/send/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
+    | '/contact'
+    | '/feedback'
+    | '/institutes'
     | '/login'
     | '/onboarding'
+    | '/privacy'
+    | '/refund'
     | '/signup'
     | '/sitemap.xml'
+    | '/terms'
     | '/admin'
     | '/ai-tutor'
     | '/dashboard'
     | '/forget-meter'
     | '/leaderboard'
     | '/mentor-sessions'
-    | '/mock-tests'
     | '/my-exams'
     | '/profile'
     | '/quiz'
+    | '/study-groups'
     | '/study-planner'
     | '/upgrade'
     | '/api/ai-tutor'
+    | '/api/create-order'
+    | '/api/feedback'
+    | '/api/verify-payment'
     | '/mock-tests/$id'
     | '/quiz/$batchId'
     | '/results/$id'
+    | '/api/agents/status'
+    | '/mock-tests'
     | '/quiz/$batchId/result'
     | '/quiz/$batchId/revise'
+    | '/api/agents/sales/webhook'
+    | '/api/agents/support/inbound'
+    | '/api/agents/trigger/$name'
+    | '/api/agents/content/approve/$id'
+    | '/api/agents/support/send/$id'
   id:
     | '__root__'
     | '/'
     | '/_app'
+    | '/about'
+    | '/contact'
+    | '/feedback'
+    | '/institutes'
     | '/login'
     | '/onboarding'
+    | '/privacy'
+    | '/refund'
     | '/signup'
     | '/sitemap.xml'
+    | '/terms'
     | '/_app/admin'
     | '/_app/ai-tutor'
     | '/_app/dashboard'
@@ -300,28 +504,62 @@ export interface FileRouteTypes {
     | '/_app/my-exams'
     | '/_app/profile'
     | '/_app/quiz'
+    | '/_app/study-groups'
     | '/_app/study-planner'
     | '/_app/upgrade'
     | '/api/ai-tutor'
+    | '/api/create-order'
+    | '/api/feedback'
+    | '/api/verify-payment'
     | '/_app/mock-tests/$id'
     | '/_app/quiz/$batchId'
     | '/_app/results/$id'
+    | '/api/agents/status'
+    | '/_app/mock-tests/'
     | '/_app/quiz/$batchId/result'
     | '/_app/quiz/$batchId/revise'
+    | '/api/agents/sales/webhook'
+    | '/api/agents/support/inbound'
+    | '/api/agents/trigger/$name'
+    | '/api/agents/content/approve/$id'
+    | '/api/agents/support/send/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
+  FeedbackRoute: typeof FeedbackRoute
+  InstitutesRoute: typeof InstitutesRoute
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RefundRoute: typeof RefundRoute
   SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsRoute: typeof TermsRoute
   ApiAiTutorRoute: typeof ApiAiTutorRoute
+  ApiCreateOrderRoute: typeof ApiCreateOrderRoute
+  ApiFeedbackRoute: typeof ApiFeedbackRoute
+  ApiVerifyPaymentRoute: typeof ApiVerifyPaymentRoute
+  ApiAgentsStatusRoute: typeof ApiAgentsStatusRoute
+  ApiAgentsSalesWebhookRoute: typeof ApiAgentsSalesWebhookRoute
+  ApiAgentsSupportInboundRoute: typeof ApiAgentsSupportInboundRoute
+  ApiAgentsTriggerNameRoute: typeof ApiAgentsTriggerNameRoute
+  ApiAgentsContentApproveIdRoute: typeof ApiAgentsContentApproveIdRoute
+  ApiAgentsSupportSendIdRoute: typeof ApiAgentsSupportSendIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -334,6 +572,20 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund': {
+      id: '/refund'
+      path: '/refund'
+      fullPath: '/refund'
+      preLoaderRoute: typeof RefundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -350,6 +602,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/institutes': {
+      id: '/institutes'
+      path: '/institutes'
+      fullPath: '/institutes'
+      preLoaderRoute: typeof InstitutesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/feedback': {
+      id: '/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app': {
       id: '/_app'
       path: ''
@@ -362,6 +642,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/verify-payment': {
+      id: '/api/verify-payment'
+      path: '/api/verify-payment'
+      fullPath: '/api/verify-payment'
+      preLoaderRoute: typeof ApiVerifyPaymentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/feedback': {
+      id: '/api/feedback'
+      path: '/api/feedback'
+      fullPath: '/api/feedback'
+      preLoaderRoute: typeof ApiFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/create-order': {
+      id: '/api/create-order'
+      path: '/api/create-order'
+      fullPath: '/api/create-order'
+      preLoaderRoute: typeof ApiCreateOrderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/ai-tutor': {
@@ -383,6 +684,13 @@ declare module '@tanstack/react-router' {
       path: '/study-planner'
       fullPath: '/study-planner'
       preLoaderRoute: typeof AppStudyPlannerRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/study-groups': {
+      id: '/_app/study-groups'
+      path: '/study-groups'
+      fullPath: '/study-groups'
+      preLoaderRoute: typeof AppStudyGroupsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/quiz': {
@@ -455,6 +763,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/mock-tests/': {
+      id: '/_app/mock-tests/'
+      path: '/'
+      fullPath: '/mock-tests/'
+      preLoaderRoute: typeof AppMockTestsIndexRouteImport
+      parentRoute: typeof AppMockTestsRoute
+    }
+    '/api/agents/status': {
+      id: '/api/agents/status'
+      path: '/api/agents/status'
+      fullPath: '/api/agents/status'
+      preLoaderRoute: typeof ApiAgentsStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/results/$id': {
       id: '/_app/results/$id'
       path: '/results/$id'
@@ -476,6 +798,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMockTestsIdRouteImport
       parentRoute: typeof AppMockTestsRoute
     }
+    '/api/agents/trigger/$name': {
+      id: '/api/agents/trigger/$name'
+      path: '/api/agents/trigger/$name'
+      fullPath: '/api/agents/trigger/$name'
+      preLoaderRoute: typeof ApiAgentsTriggerNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agents/support/inbound': {
+      id: '/api/agents/support/inbound'
+      path: '/api/agents/support/inbound'
+      fullPath: '/api/agents/support/inbound'
+      preLoaderRoute: typeof ApiAgentsSupportInboundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agents/sales/webhook': {
+      id: '/api/agents/sales/webhook'
+      path: '/api/agents/sales/webhook'
+      fullPath: '/api/agents/sales/webhook'
+      preLoaderRoute: typeof ApiAgentsSalesWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/quiz/$batchId/revise': {
       id: '/_app/quiz/$batchId/revise'
       path: '/revise'
@@ -490,15 +833,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppQuizBatchIdResultRouteImport
       parentRoute: typeof AppQuizBatchIdRoute
     }
+    '/api/agents/support/send/$id': {
+      id: '/api/agents/support/send/$id'
+      path: '/api/agents/support/send/$id'
+      fullPath: '/api/agents/support/send/$id'
+      preLoaderRoute: typeof ApiAgentsSupportSendIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agents/content/approve/$id': {
+      id: '/api/agents/content/approve/$id'
+      path: '/api/agents/content/approve/$id'
+      fullPath: '/api/agents/content/approve/$id'
+      preLoaderRoute: typeof ApiAgentsContentApproveIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AppMockTestsRouteChildren {
   AppMockTestsIdRoute: typeof AppMockTestsIdRoute
+  AppMockTestsIndexRoute: typeof AppMockTestsIndexRoute
 }
 
 const AppMockTestsRouteChildren: AppMockTestsRouteChildren = {
   AppMockTestsIdRoute: AppMockTestsIdRoute,
+  AppMockTestsIndexRoute: AppMockTestsIndexRoute,
 }
 
 const AppMockTestsRouteWithChildren = AppMockTestsRoute._addFileChildren(
@@ -541,6 +900,7 @@ interface AppRouteChildren {
   AppMyExamsRoute: typeof AppMyExamsRoute
   AppProfileRoute: typeof AppProfileRoute
   AppQuizRoute: typeof AppQuizRouteWithChildren
+  AppStudyGroupsRoute: typeof AppStudyGroupsRoute
   AppStudyPlannerRoute: typeof AppStudyPlannerRoute
   AppUpgradeRoute: typeof AppUpgradeRoute
   AppResultsIdRoute: typeof AppResultsIdRoute
@@ -557,6 +917,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppMyExamsRoute: AppMyExamsRoute,
   AppProfileRoute: AppProfileRoute,
   AppQuizRoute: AppQuizRouteWithChildren,
+  AppStudyGroupsRoute: AppStudyGroupsRoute,
   AppStudyPlannerRoute: AppStudyPlannerRoute,
   AppUpgradeRoute: AppUpgradeRoute,
   AppResultsIdRoute: AppResultsIdRoute,
@@ -567,11 +928,27 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
+  FeedbackRoute: FeedbackRoute,
+  InstitutesRoute: InstitutesRoute,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
+  PrivacyRoute: PrivacyRoute,
+  RefundRoute: RefundRoute,
   SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsRoute: TermsRoute,
   ApiAiTutorRoute: ApiAiTutorRoute,
+  ApiCreateOrderRoute: ApiCreateOrderRoute,
+  ApiFeedbackRoute: ApiFeedbackRoute,
+  ApiVerifyPaymentRoute: ApiVerifyPaymentRoute,
+  ApiAgentsStatusRoute: ApiAgentsStatusRoute,
+  ApiAgentsSalesWebhookRoute: ApiAgentsSalesWebhookRoute,
+  ApiAgentsSupportInboundRoute: ApiAgentsSupportInboundRoute,
+  ApiAgentsTriggerNameRoute: ApiAgentsTriggerNameRoute,
+  ApiAgentsContentApproveIdRoute: ApiAgentsContentApproveIdRoute,
+  ApiAgentsSupportSendIdRoute: ApiAgentsSupportSendIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

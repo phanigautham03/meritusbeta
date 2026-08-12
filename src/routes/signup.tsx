@@ -12,14 +12,13 @@ export const Route = createFileRoute("/signup")({
   component: Signup,
   head: () => ({
     meta: [
-      { title: "Sign up — Meritus" },
-      { name: "description", content: "Join 3.8 crore aspirants prepping smarter with AI on Meritus." },
-      { property: "og:title", content: "Sign up — Meritus" },
-      { property: "og:description", content: "Join 3.8 crore aspirants prepping smarter with AI on Meritus." },
-      { property: "og:url", content: "https://meritusbeta.lovable.app/signup" },
-      { property: "og:type", content: "website" },
+      { title: "Sign up free — Meritus" },
+      { name: "description", content: "Create your free Meritus account and start preparing smarter for JEE, NEET, UPSC and 200+ exams with AI." },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Sign up free — Meritus" },
+      { name: "twitter:description", content: "Create your free Meritus account and start preparing smarter for JEE, NEET, UPSC and 200+ exams with AI." },
     ],
-    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/signup" }],
+    links: [{ rel: "canonical", href: "https://meritus.co.in/signup" }],
   }),
 });
 

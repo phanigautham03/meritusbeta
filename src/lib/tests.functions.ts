@@ -227,31 +227,33 @@ export const generateAIQuestions = createServerFn({ method: "POST" })
       .single();
     if (!subject) throw new Error("Subject not found");
 
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) throw new Error("LOVABLE_API_KEY not configured");
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) throw new Error("ANTHROPIC_API_KEY not configured");
 
     const prompt = `Generate ${data.count} high-yield NEET PG MCQ questions for the subject "${subject.name}".
 Return STRICT JSON: {"questions":[{"stem":"...","options":["A","B","C","D"],"correct_index":0,"explanation":"...","difficulty":"easy|medium|hard"}]}.
 Each question must have exactly 4 options. correct_index is 0-3. Keep stem under 280 chars. Make them clinically relevant and exam-style.`;
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      headers: {
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+      },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: "You are a NEET PG question setter. Output valid JSON only." },
-          { role: "user", content: prompt },
-        ],
-        response_format: { type: "json_object" },
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 4096,
+        system: "You are a NEET PG question setter. Output valid JSON only.",
+        messages: [{ role: "user", content: prompt }],
       }),
     });
     if (!res.ok) {
       const txt = await res.text();
-      throw new Error(`AI gateway error ${res.status}: ${txt.slice(0, 200)}`);
+      throw new Error(`Anthropic API error ${res.status}: ${txt.slice(0, 200)}`);
     }
-    const json = (await res.json()) as { choices: { message: { content: string } }[] };
-    const content = json.choices?.[0]?.message?.content ?? "{}";
+    const anthropicJson = (await res.json()) as { content?: { type: string; text: string }[] };
+    const content = anthropicJson.content?.find((c) => c.type === "text")?.text ?? "{}";
     let parsed: { questions?: any[] };
     try {
       parsed = JSON.parse(content);

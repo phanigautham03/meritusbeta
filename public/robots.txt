@@ -12,5 +12,8 @@ Disallow: /profile
 Disallow: /upgrade
 Disallow: /results
 Disallow: /onboarding
+Disallow: /quiz
+Disallow: /admin
+Disallow: /study-groups
 
-Sitemap: https://meritusbeta.lovable.app/sitemap.xml
+Sitemap: https://meritus.co.in/sitemap.xml

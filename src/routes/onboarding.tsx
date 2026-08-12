@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { MeritusLogo } from "@/components/meritus/MeritusLogo";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -15,16 +16,16 @@ export const Route = createFileRoute("/onboarding")({
   head: () => ({ meta: [{ title: "Get started — Meritus" }] }),
 });
 
-const EXAMS: { name: string; icon: string }[] = [
-  { name: "JEE Main", icon: "⚛️" },
-  { name: "NEET UG", icon: "🧬" },
-  { name: "NEET PG", icon: "🏥" },
-  { name: "AIIMS PG", icon: "🔬" },
-  { name: "UPSC CSE", icon: "🏛️" },
-  { name: "IBPS PO", icon: "🏦" },
-  { name: "CAT", icon: "📊" },
-  { name: "GATE CSE", icon: "💻" },
-  { name: "SSC CGL", icon: "📋" },
+const EXAMS: { name: string; icon: string; label: string }[] = [
+  { name: "JEE Main",  icon: "⚛️", label: "JEE Main" },
+  { name: "NEET",      icon: "🧬", label: "NEET UG" },
+  { name: "NEET PG",   icon: "🏥", label: "NEET PG" },
+  { name: "INICET",    icon: "🔬", label: "INI-CET (AIIMS PG)" },
+  { name: "UPSC",      icon: "🏛️", label: "UPSC CSE" },
+  { name: "IBPS PO",   icon: "🏦", label: "IBPS PO" },
+  { name: "CAT",       icon: "📊", label: "CAT" },
+  { name: "GATE",      icon: "💻", label: "GATE CSE" },
+  { name: "SSC CGL",   icon: "📋", label: "SSC CGL" },
 ];
 
 function Onboarding() {
@@ -115,9 +116,8 @@ function Onboarding() {
 
   return (
     <div className="min-h-screen bg-[#1E1B4B] flex flex-col items-center px-4 py-8 font-sans">
-      <div className="flex items-center gap-2 mb-6">
-        <div className="h-9 w-9 rounded-md bg-white text-[#1E1B4B] flex items-center justify-center font-bold">M</div>
-        <span className="font-bold text-white text-lg">Meritus</span>
+      <div className="mb-6">
+        <MeritusLogo size="md" theme="dark" />
       </div>
 
       <div className="w-full max-w-[560px] bg-white rounded-2xl shadow-2xl p-6 md:p-8 overflow-hidden">
@@ -168,7 +168,7 @@ function Onboarding() {
                         )}
                         <div className="text-2xl">{e.icon}</div>
                         <div className={cn("mt-2 text-sm font-semibold", on ? "text-[#4338CA]" : "text-gray-900")}>
-                          {e.name}
+                          {e.label}
                         </div>
                       </button>
                     );

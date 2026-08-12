@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FeatureHowTo } from "@/components/meritus/FeatureHowTo";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sparkles, Send, Loader2 } from "lucide-react";
 import { useAuth } from "@/integrations/external-supabase/auth-context";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/ai-tutor")({
@@ -14,10 +16,10 @@ export const Route = createFileRoute("/_app/ai-tutor")({
       { name: "description", content: "Ask anything about JEE, NEET, UPSC and 200+ exams. AI-powered tutor that explains concepts and solves problems." },
       { property: "og:title", content: "AI Tutor — Meritus" },
       { property: "og:description", content: "Ask anything about JEE, NEET, UPSC and 200+ exams. AI-powered tutor that explains concepts and solves problems." },
-      { property: "og:url", content: "https://meritusbeta.lovable.app/ai-tutor" },
+      { property: "og:url", content: "https://meritus.co.in/ai-tutor" },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/ai-tutor" }],
+    links: [{ rel: "canonical", href: "https://meritus.co.in/ai-tutor" }],
   }),
 });
 
@@ -37,7 +39,14 @@ function AITutor() {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [userExams, setUserExams] = useState<string[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("user_exams").select("exam_name").eq("user_id", user.id)
+      .then(({ data }) => setUserExams((data ?? []).map((e) => e.exam_name)));
+  }, [user]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -54,7 +63,7 @@ function AITutor() {
       const res = await fetch("/api/ai-tutor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, conversationHistory: messages }),
+        body: JSON.stringify({ message: text, conversationHistory: messages, userExams }),
       });
       const json = await res.json().catch(() => ({} as any));
       if (!res.ok) {
@@ -72,6 +81,15 @@ function AITutor() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      <FeatureHowTo
+        title="AI Tutor"
+        steps={[
+          { step: "Ask any concept question from your syllabus", detail: "The AI knows JEE, NEET, UPSC, GATE, CAT syllabi. Ask 'Explain Newton's 3rd law with a JEE example' or 'What is the Preamble and why does it matter for UPSC?'" },
+          { step: "Ask it to solve problems step-by-step", detail: "Paste a question and say 'solve this step by step'. The AI shows working, not just the answer — so you understand the method." },
+          { step: "Use it to plan your next revision", detail: "Say 'I have 3 hours before my Physics mock — what should I revise?' It will prioritise based on your weak topics." },
+          { step: "Ask follow-up questions like a real tutor session", detail: "Each message remembers the conversation context. Drill down — 'Can you give me 3 more examples of that?' or 'What's the common mistake students make here?'" },
+        ]}
+      />
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-lg bg-primary-light text-primary flex items-center justify-center"><Sparkles size={20}/></div>
         <div>
@@ -123,7 +141,7 @@ function AITutor() {
           }}
         >
           <Input
-            placeholder="Ask about JEE, NEET, UPSC..."
+            placeholder={userExams.length > 0 ? `Ask about ${userExams.slice(0,2).join(", ")}...` : "Ask about your exams..."}
             className="h-11 bg-[#F9FAFB]"
             value={input}
             onChange={(e) => setInput(e.target.value)}

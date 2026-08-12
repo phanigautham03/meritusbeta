@@ -13,12 +13,9 @@ export const Route = createFileRoute("/login")({
     meta: [
       { title: "Log in — Meritus" },
       { name: "description", content: "Sign in to continue your AI-powered exam prep on Meritus." },
-      { property: "og:title", content: "Log in — Meritus" },
-      { property: "og:description", content: "Sign in to continue your AI-powered exam prep on Meritus." },
-      { property: "og:url", content: "https://meritusbeta.lovable.app/login" },
-      { property: "og:type", content: "website" },
+      { name: "robots", content: "noindex, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://meritusbeta.lovable.app/login" }],
+    links: [{ rel: "canonical", href: "https://meritus.co.in/login" }],
   }),
 });
 

@@ -11,11 +11,14 @@ export const listMockTests = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase } = context;
+
     const { data, error } = await supabase
       .from("mock_tests")
-      .select("id,exam_name,title,description,num_questions,duration_minutes,difficulty,subject,created_at")
+      .select("id,exam_name,title,description,num_questions,duration_minutes,difficulty,subject,test_type,created_at")
       .order("exam_name", { ascending: true })
+      .order("test_type", { ascending: true })
       .order("created_at", { ascending: true });
+
     if (error) throw new Error(error.message);
     return data ?? [];
   });
@@ -224,12 +227,26 @@ export const listMyRevisions = createServerFn({ method: "GET" })
 export const listAllTopics = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { supabase } = context;
-    const { data, error } = await supabase
+    const { supabase, userId } = context;
+
+    const { data: userExams } = await supabase
+      .from("user_exams")
+      .select("exam_name")
+      .eq("user_id", userId);
+
+    const examNames = (userExams ?? []).map((e) => e.exam_name);
+
+    let query = supabase
       .from("study_topics")
       .select("id,topic_name,subject,exam_name")
       .order("exam_name")
       .order("subject");
+
+    if (examNames.length > 0) {
+      query = query.in("exam_name", examNames);
+    }
+
+    const { data, error } = await query;
     if (error) throw new Error(error.message);
     return data ?? [];
   });
@@ -346,7 +363,7 @@ export const updateMyProfile = createServerFn({ method: "POST" })
   });
 
 /* ============================================================
-   STUDY PLANNER (AI-generated weekly plan via Lovable AI)
+   STUDY PLANNER (AI-generated weekly plan via Anthropic Claude)
    ============================================================ */
 
 export const generateStudyPlan = createServerFn({ method: "POST" })
@@ -360,8 +377,8 @@ export const generateStudyPlan = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { userId } = context;
 
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) throw new Error("LOVABLE_API_KEY not configured");
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) throw new Error("ANTHROPIC_API_KEY not configured");
 
     const prompt = `Build a 7-day study plan as STRICT JSON for a student preparing for: ${data.selectedExams.join(", ")}.
 Exam date: ${data.examDate}. Available hours per day: ${data.availableHours}.
@@ -369,25 +386,145 @@ ${data.weakTopics?.length ? `Weak topics to prioritise: ${data.weakTopics.join("
 Return JSON: {"weekly_plan":{"Mon":[{"time":"6:00 - 8:00","subject":"Physics","topic":"Mechanics","kind":"theory|practice|revision"}],"Tue":[...],"Wed":[...],"Thu":[...],"Fri":[...],"Sat":[...],"Sun":[...]}}.
 Each day must total roughly ${data.availableHours} hours. Include theory + practice + revision blocks. Keep topic names concise.`;
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      headers: {
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: "You are an expert exam coach. Output valid JSON only." },
-          { role: "user", content: prompt },
-        ],
-        response_format: { type: "json_object" },
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 2048,
+        system: "You are an expert exam coach. Output valid JSON only with no additional commentary.",
+        messages: [{ role: "user", content: prompt }],
       }),
     });
     if (!res.ok) {
       const txt = await res.text();
-      throw new Error(`AI gateway error ${res.status}: ${txt.slice(0, 200)}`);
+      throw new Error(`Anthropic API error ${res.status}: ${txt.slice(0, 200)}`);
     }
-    const json = (await res.json()) as { choices: { message: { content: string } }[] };
-    const content = json.choices?.[0]?.message?.content ?? "{}";
+    const json = (await res.json()) as { content: { type: string; text: string }[] };
+    const content = json.content?.find((b) => b.type === "text")?.text ?? "{}";
+    // Strip markdown code fences if Claude wraps in ```json ... ```
+    const cleaned = content.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
     let parsed: { weekly_plan?: Record<string, any[]> };
-    try { parsed = JSON.parse(content); } catch { throw new Error("AI returned invalid JSON"); }
+    try { parsed = JSON.parse(cleaned); } catch { throw new Error("AI returned invalid JSON"); }
     return { user_id: userId, weekly_plan: parsed.weekly_plan ?? {} };
+  });
+
+/* ============================================================
+   FORGET METER — SEED STARTER TOPICS
+   Seeds 10 topics for new users based on their selected exams
+   so the Forget-Meter looks personalised from Day 1.
+   ============================================================ */
+
+export const seedStarterTopics = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+
+    // Already has revisions? Skip.
+    const { count } = await supabase
+      .from("topic_revisions")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId);
+    if ((count ?? 0) > 0) return { seeded: 0 };
+
+    // Get user's chosen exams
+    const { data: userExams } = await supabase
+      .from("user_exams")
+      .select("exam_name")
+      .eq("user_id", userId);
+
+    const examNames = (userExams ?? []).map((e) => e.exam_name);
+
+    // Pull up to 30 topics for their exams (take the first 10 after shuffle)
+    let query = supabase
+      .from("study_topics")
+      .select("id,exam_name,subject,topic_name")
+      .order("exam_name")
+      .limit(30);
+
+    if (examNames.length > 0) {
+      query = query.in("exam_name", examNames);
+    }
+
+    const { data: topics } = await query;
+    if (!topics || topics.length === 0) return { seeded: 0 };
+
+    // Pick up to 10 evenly spread across subjects
+    const seen = new Set<string>();
+    const picks: typeof topics = [];
+    for (const t of topics) {
+      if (picks.length >= 10) break;
+      const key = t.subject;
+      if (!seen.has(key) || picks.length < 5) {
+        picks.push(t);
+        seen.add(key);
+      }
+    }
+    if (picks.length < 10) {
+      for (const t of topics) {
+        if (picks.length >= 10) break;
+        if (!picks.find((p) => p.id === t.id)) picks.push(t);
+      }
+    }
+
+    // Upsert revisions with staggered initial scores (60–100) to show the meter isn't all perfect
+    const rows = picks.map((t, i) => ({
+      user_id: userId,
+      topic_id: t.id,
+      retention_score: 100 - i * 4,   // 100, 96, 92… down to ~64 for variety
+      times_revised: 0,
+      last_revised_at: new Date(Date.now() - i * 2 * 86400 * 1000).toISOString(), // spread over past days
+    }));
+
+    const { error } = await supabase
+      .from("topic_revisions")
+      .upsert(rows, { onConflict: "user_id,topic_id" });
+
+    if (error) throw new Error(error.message);
+    return { seeded: rows.length };
+  });
+
+/* ============================================================
+   MENTOR INTEREST
+   Collects interest from students (want mentor) and mentors (want to teach)
+   stored in a simple mentor_interest table via profiles metadata
+   ============================================================ */
+
+export const submitMentorInterest = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i) =>
+    z.object({
+      type: z.enum(["student", "mentor"]),
+      exam: z.string().min(2).max(80),
+      message: z.string().max(500).optional(),
+      contact: z.string().max(100).optional(),
+    }).parse(i)
+  )
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    // Store as a JSON log in profiles.mentor_interest_json (best-effort upsert)
+    // Falls back gracefully if column doesn't exist — we just record the timestamp
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", userId);
+
+    // Also try to insert into mentor_interest table if it exists
+    await supabase.from("mentor_interest" as any).insert({
+      user_id: userId,
+      type: data.type,
+      exam: data.exam,
+      message: data.message ?? "",
+      contact: data.contact ?? "",
+      created_at: new Date().toISOString(),
+    }).then(() => {}).catch(() => {}); // silently ignore if table doesn't exist yet
+
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });

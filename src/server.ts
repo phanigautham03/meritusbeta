@@ -66,6 +66,77 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
+// ── Cron trigger router ───────────────────────────────────────────────────────
+// Runs agents based on the Cloudflare cron schedule defined in wrangler.jsonc.
+// Each cron expression maps to one or more agents.
+
+async function handleScheduled(event: { cron: string }): Promise<void> {
+  const { createClient } = await import("@supabase/supabase-js");
+  const db = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_PUBLISHABLE_KEY!,
+  );
+
+  const { isAgentEnabled } = await import("./lib/agents/agent-utils");
+
+  const cron = event.cron;
+  console.log(`[cron] triggered: ${cron}`);
+
+  try {
+    // Daily 08:00 IST = "30 2 * * *" UTC
+    if (cron === "30 2 * * *") {
+      if (await isAgentEnabled(db, "crm")) {
+        const { runCrmAgent } = await import("./lib/agents/crm-agent");
+        const result = await runCrmAgent(db);
+        console.log("[cron] CRM agent done:", result.actionsCount, "actions");
+      }
+    }
+
+    // Every 30 minutes — Support Agent
+    if (cron === "*/30 * * * *") {
+      if (await isAgentEnabled(db, "support")) {
+        const { runSupportAgent } = await import("./lib/agents/support-agent");
+        const result = await runSupportAgent(db);
+        console.log("[cron] Support agent done:", result.actionsCount, "actions");
+      }
+    }
+
+    // Every 4 hours — Admin Agent
+    if (cron === "0 */4 * * *") {
+      if (await isAgentEnabled(db, "admin")) {
+        const { runAdminAgent } = await import("./lib/agents/admin-agent");
+        const result = await runAdminAgent(db);
+        console.log("[cron] Admin agent done:", result.actionsCount, "anomalies");
+      }
+    }
+
+    // Monday 07:00 IST = "30 1 * * 1" UTC — Analytics + Marketing
+    if (cron === "30 1 * * 1") {
+      if (await isAgentEnabled(db, "analytics")) {
+        const { runAnalyticsAgent } = await import("./lib/agents/analytics-agent");
+        const result = await runAnalyticsAgent(db);
+        console.log("[cron] Analytics agent done:", result.actionsCount, "actions");
+      }
+      if (await isAgentEnabled(db, "marketing")) {
+        const { runMarketingAgent } = await import("./lib/agents/marketing-agent");
+        const result = await runMarketingAgent(db);
+        console.log("[cron] Marketing agent done:", result.actionsCount, "content pieces");
+      }
+    }
+
+    // Sunday 23:00 IST = "30 17 * * 7" UTC — Content Agent (7 = Sunday in CF cron)
+    if (cron === "30 17 * * 7") {
+      if (await isAgentEnabled(db, "content")) {
+        const { runContentAgent } = await import("./lib/agents/content-agent");
+        const result = await runContentAgent(db);
+        console.log("[cron] Content agent done:", result.actionsCount, "MCQs generated");
+      }
+    }
+  } catch (err) {
+    console.error("[cron] unhandled error in scheduled handler:", err);
+  }
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
@@ -76,5 +147,9 @@ export default {
       console.error(error);
       return brandedErrorResponse();
     }
+  },
+
+  async scheduled(event: { cron: string }, _env: unknown, ctx: { waitUntil: (p: Promise<unknown>) => void }) {
+    ctx.waitUntil(handleScheduled(event));
   },
 };

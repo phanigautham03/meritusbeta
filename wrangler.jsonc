@@ -4,4 +4,18 @@
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/server.ts",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "meritus.co.in/*", "zone_name": "meritus.co.in" },
+    { "pattern": "www.meritus.co.in/*", "zone_name": "meritus.co.in" }
+  ],
+  "triggers": {
+    "crons": [
+      "30 2 * * *",    // CRM Agent       — daily 08:00 IST (02:30 UTC)
+      "*/30 * * * *",  // Support Agent   — every 30 minutes
+      "0 */4 * * *",   // Admin Agent     — every 4 hours
+      "30 1 * * 1",    // Analytics+Marketing — Monday 07:00 IST (01:30 UTC)
+      "30 17 * * 7"    // Content Agent   — Sunday 23:00 IST (17:30 UTC, day 7 = Sunday)
+    ]
+  }
 }

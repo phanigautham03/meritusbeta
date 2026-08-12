@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check } from "lucide-react";
+import { MeritusLogo } from "@/components/meritus/MeritusLogo";
 
 const examPills = ["JEE Main", "NEET UG", "UPSC", "GATE", "CAT", "SSC CGL"];
 
@@ -26,9 +27,8 @@ export function AuthSplit({
             {p}
           </span>
         ))}
-        <Link to="/" className="relative flex items-center gap-2 z-10">
-          <div className="h-9 w-9 rounded-md bg-primary flex items-center justify-center font-bold text-white">M</div>
-          <span className="font-bold text-lg">Meritus</span>
+        <Link to="/" className="relative z-10">
+          <MeritusLogo size="md" theme="dark" />
         </Link>
         <div className="relative my-auto z-10 max-w-md">
           <h1 className="text-4xl font-bold tracking-tight">{title}</h1>

@@ -23,10 +23,31 @@ export function normalizeQuestion(raw: any, index = 0): QuizQuestion & { index: 
   let correct: number;
   if (typeof raw.correct === "number") {
     correct = raw.correct;
-  } else if (typeof raw.correct_option === "string") {
-    correct = raw.correct_option.toUpperCase().charCodeAt(0) - 65;
   } else if (typeof raw.correct_index === "number") {
     correct = raw.correct_index;
+  } else if (typeof raw.correct_option === "number") {
+    correct = raw.correct_option;
+  } else if (typeof raw.correct_option === "string") {
+    const co = raw.correct_option.trim().toUpperCase();
+    correct = co.length === 1 && co >= "A" && co <= "E"
+      ? co.charCodeAt(0) - 65
+      : Number.isFinite(parseInt(co, 10)) ? parseInt(co, 10) : -1;
+  } else if (typeof raw.answer === "number") {
+    correct = raw.answer;
+  } else if (typeof raw.answer === "string") {
+    const a = raw.answer.trim().toUpperCase();
+    correct = a.length === 1 && a >= "A" && a <= "E"
+      ? a.charCodeAt(0) - 65
+      : Number.isFinite(parseInt(a, 10)) ? parseInt(a, 10) : -1;
+  } else if (typeof raw.correct_answer === "number") {
+    correct = raw.correct_answer;
+  } else if (typeof raw.correct_answer === "string") {
+    const ca = raw.correct_answer.trim().toUpperCase();
+    correct = ca.length === 1 && ca >= "A" && ca <= "E"
+      ? ca.charCodeAt(0) - 65
+      : Number.isFinite(parseInt(ca, 10)) ? parseInt(ca, 10) : -1;
+  } else if (typeof raw.ci === "number") {
+    correct = raw.ci;
   } else {
     correct = -1;
   }

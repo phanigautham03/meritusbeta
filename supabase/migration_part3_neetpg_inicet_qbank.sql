@@ -1,0 +1,547 @@
+-- ============================================================
+-- PART 3: Question bank — NEET PG + INICET (50 questions each)
+-- ============================================================
+
+INSERT INTO public.question_bank (exam_name, subject, topic, difficulty, text, options, correct, explanation, source, year) VALUES
+
+-- ====== NEET PG — ANATOMY (12 questions) ======
+('NEET PG','Anatomy','Upper Limb','hard',
+ 'The "anatomical snuffbox" is bounded medially by the tendon of:',
+ '["Extensor pollicis longus","Extensor pollicis brevis","Abductor pollicis longus","Extensor carpi radialis longus"]',0,
+ 'The anatomical snuffbox: medial boundary = EPL tendon; lateral boundary = EPB + APL tendons. The radial artery crosses the floor. Scaphoid fracture causes snuffbox tenderness.',
+ 'Gray''s Anatomy',2024),
+
+('NEET PG','Anatomy','Head & Neck','medium',
+ 'The facial nerve (CN VII) exits the skull through which foramen?',
+ '["Stylomastoid foramen","Jugular foramen","Foramen ovale","Foramen spinosum"]',0,
+ 'Facial nerve exits through the stylomastoid foramen. Then it enters the parotid gland and splits into its five main branches (TEFCM mnemonic).',
+ 'Clinical Anatomy',2023),
+
+('NEET PG','Anatomy','Neuroanatomy','hard',
+ 'Which tract carries pain and temperature from the body to the brain?',
+ '["Lateral spinothalamic tract","Anterior spinothalamic tract","Dorsal column","Corticospinal tract"]',0,
+ 'Lateral spinothalamic tract: pain + temperature. Anterior spinothalamic: crude touch + pressure. Dorsal columns: fine touch, vibration, proprioception.',
+ 'Snell''s Clinical Neuroanatomy',2022),
+
+('NEET PG','Anatomy','Thorax','medium',
+ 'The mitral valve is best auscultated at:',
+ '["Apex (5th ICS, MCL)","2nd ICS right sternal border","2nd ICS left sternal border","4th ICS left sternal border"]',0,
+ 'Auscultation areas: Mitral = Apex (5th ICS MCL); Aortic = 2nd ICS RSB; Pulmonary = 2nd ICS LSB; Tricuspid = 4th ICS LSB.',
+ 'Gray''s Anatomy',2024),
+
+('NEET PG','Anatomy','Abdomen','hard',
+ 'McBurney''s point (appendix) is located at:',
+ '["1/3 of line from ASIS to umbilicus","Midpoint of inguinal ligament","1/2 way between ASIS and umbilicus","2/3 of line from ASIS to umbilicus"]',0,
+ 'McBurney''s point: junction of lateral 1/3 and medial 2/3 of line joining ASIS to umbilicus (i.e., 1/3 from ASIS, 2/3 from umbilicus).',
+ 'Clinical Anatomy',2023),
+
+('NEET PG','Anatomy','Embryology','hard',
+ 'The primitive gut is formed from:',
+ '["Endoderm","Mesoderm","Ectoderm","Neural crest cells"]',0,
+ 'The gut tube (primitive gut) is lined by endoderm which differentiates into the epithelium of the GI tract, liver, pancreas, and lungs.',
+ 'Langman''s Medical Embryology',2022),
+
+('NEET PG','Anatomy','Pelvis','medium',
+ 'Which ligament supports the uterus in its anteverted-anteflexed position?',
+ '["Round ligament of uterus","Broad ligament","Cardinal ligament","Uterosacral ligament"]',0,
+ 'Round ligament maintains anteversion. Cardinal (Mackenrodt) + uterosacral ligaments: main supports preventing prolapse. Broad ligament: peritoneal fold.',
+ 'Gray''s Anatomy',2024),
+
+('NEET PG','Anatomy','Lower Limb','hard',
+ 'The femoral triangle contains all EXCEPT:',
+ '["Obturator nerve","Femoral nerve","Femoral artery","Femoral vein"]',0,
+ 'Femoral triangle contents: femoral nerve (lateral), femoral artery (middle), femoral vein (medial), lymphatics. Obturator nerve is NOT in the femoral triangle — it exits through obturator foramen.',
+ 'Gray''s Anatomy',2023),
+
+('NEET PG','Anatomy','Histology','medium',
+ 'Goblet cells are found in the epithelium of all EXCEPT:',
+ '["Esophagus","Small intestine","Large intestine","Respiratory tract (trachea)"]',0,
+ 'Goblet cells (mucous secreting): small intestine, large intestine, trachea. NOT found in esophagus (which has stratified squamous epithelium).',
+ 'Junqueira''s Basic Histology',2022),
+
+('NEET PG','Anatomy','Cranial Nerves','medium',
+ 'CN IX (Glossopharyngeal nerve) is responsible for gag reflex (afferent limb). Efferent limb is via:',
+ '["Vagus nerve (CN X)","Facial nerve (CN VII)","Hypoglossal (CN XII)","Trigeminal (CN V)"]',0,
+ 'Gag reflex: Afferent = CN IX (posterior pharyngeal wall). Efferent = CN X (vagus) which drives pharyngeal muscles.',
+ 'Clinical Neuroanatomy',2024),
+
+('NEET PG','Anatomy','Surface Anatomy','easy',
+ 'The transpyloric plane (L1) passes through:',
+ '["Pylorus, hilum of kidneys, fundus of gallbladder","Umbilicus","Iliac crest","Anterior superior iliac spine"]',0,
+ 'Transpyloric plane (L1): pylorus, 1st lumbar vertebra, hilum of kidneys, fundus of gallbladder, tip of 9th costal cartilage, splenic flexure.',
+ 'Clinical Anatomy',2023),
+
+('NEET PG','Anatomy','Musculoskeletal','hard',
+ 'The rotator cuff does NOT include:',
+ '["Teres major","Supraspinatus","Infraspinatus","Subscapularis"]',0,
+ 'Rotator cuff = SITS: Supraspinatus, Infraspinatus, Teres minor, Subscapularis. Teres MAJOR is NOT part of the rotator cuff.',
+ 'Gray''s Anatomy',2022),
+
+-- ====== NEET PG — PHYSIOLOGY (10 questions) ======
+('NEET PG','Physiology','Cardiac Physiology','hard',
+ 'Cardiac output = heart rate × stroke volume. Normal cardiac output at rest:',
+ '["5 L/min","3 L/min","8 L/min","2 L/min"]',0,
+ 'Normal HR ~72 bpm × stroke volume ~70 mL = ~5 L/min. This equals 5000 mL/min. Exercise can increase to 20–25 L/min.',
+ 'Guyton and Hall',2024),
+
+('NEET PG','Physiology','Renal Physiology','medium',
+ 'Normal GFR in an adult male:',
+ '["125 mL/min","80 mL/min","60 mL/min","180 mL/min"]',0,
+ 'Normal GFR ≈ 125 mL/min (180 L/day filtered; ~1.5 L excreted). Measured by inulin clearance. Creatinine clearance slightly overestimates.',
+ 'Guyton and Hall',2023),
+
+('NEET PG','Physiology','Neurophysiology','hard',
+ 'The resting membrane potential of a neuron is approximately:',
+ '["-70 mV","+70 mV","-55 mV","0 mV"]',0,
+ 'RMP = −70 mV, maintained by Na⁺/K⁺-ATPase (3 Na⁺ out, 2 K⁺ in) and high K⁺ permeability. Threshold ≈ −55 mV.',
+ 'Ganong''s Review',2022),
+
+('NEET PG','Physiology','Respiratory Physiology','medium',
+ 'FEV1/FVC ratio < 70% indicates:',
+ '["Obstructive lung disease","Restrictive lung disease","Normal","Mixed pattern"]',0,
+ 'Obstructive (asthma, COPD): FEV1 reduced more than FVC → FEV1/FVC < 70%. Restrictive: both FEV1 and FVC reduced proportionally → ratio normal or increased.',
+ 'Ganong''s Review',2024),
+
+('NEET PG','Physiology','GI Physiology','medium',
+ 'Chief cells of gastric glands secrete:',
+ '["Pepsinogen","HCl","Mucus","Intrinsic factor"]',0,
+ 'Gastric cells: Chief → pepsinogen; Parietal → HCl + intrinsic factor; Mucus neck cells → mucus; G cells → gastrin.',
+ 'Guyton and Hall',2023),
+
+('NEET PG','Physiology','Endocrine Physiology','hard',
+ 'Which hormone increases serum calcium levels?',
+ '["PTH (Parathyroid hormone)","Calcitonin","Insulin","Cortisol"]',0,
+ 'PTH: increases serum Ca²⁺ by bone resorption, renal Ca²⁺ reabsorption, and activating vitamin D. Calcitonin lowers Ca²⁺.',
+ 'Ganong''s Review',2022),
+
+('NEET PG','Physiology','Blood Physiology','easy',
+ 'Normal hemoglobin level in adult males:',
+ '["14-18 g/dL","10-12 g/dL","8-10 g/dL","20-22 g/dL"]',0,
+ 'Normal Hb: adult males 14–18 g/dL; adult females 12–16 g/dL. Below 13 g/dL in men = anemia.',
+ 'Ganong''s Review',2024),
+
+('NEET PG','Physiology','Thermoregulation','medium',
+ 'The primary center for body temperature regulation is the:',
+ '["Hypothalamus","Cerebral cortex","Medulla oblongata","Spinal cord"]',0,
+ 'Hypothalamus is the thermostat — detects temperature via blood temp and thermoreceptors, initiates sweating (heat loss) or shivering + vasoconstriction (heat conservation).',
+ 'Ganong''s Review',2023),
+
+('NEET PG','Physiology','Muscle Physiology','hard',
+ 'Rigor mortis occurs due to:',
+ '["ATP depletion preventing myosin-actin detachment","Excess Ca²⁺","Hyperkalemia","Neuronal hyperactivity"]',0,
+ 'Rigor mortis: after death, ATP depletes → myosin heads cannot detach from actin → permanent cross-bridge formation → muscle rigidity.',
+ 'Ganong''s Review',2022),
+
+('NEET PG','Physiology','Vision Physiology','medium',
+ 'Rhodopsin is found in:',
+ '["Rod cells","Cone cells","Bipolar cells","Ganglion cells"]',0,
+ 'Rhodopsin (visual purple) = opsin + retinal. Present in rod cells. Responsible for dim-light (scotopic) vision. Cones have iodopsins (color vision).',
+ 'Ganong''s Review',2024),
+
+-- ====== NEET PG — BIOCHEMISTRY (8 questions) ======
+('NEET PG','Biochemistry','Enzymes','hard',
+ 'The Michaelis constant (Km) represents:',
+ '["Substrate concentration at half-maximal velocity","Maximum reaction velocity","Enzyme concentration","Product concentration"]',0,
+ 'Km = [S] at Vmax/2. Low Km = high affinity. High Km = low affinity. Measured by Lineweaver-Burk plot (double reciprocal).',
+ 'Harper''s Biochemistry',2023),
+
+('NEET PG','Biochemistry','Metabolism','medium',
+ 'The rate-limiting enzyme of the TCA cycle is:',
+ '["Isocitrate dehydrogenase","Citrate synthase","α-Ketoglutarate dehydrogenase","Malate dehydrogenase"]',0,
+ 'Isocitrate dehydrogenase (isocitrate → α-KG) is the main rate-limiting step of TCA. Inhibited by ATP+NADH; activated by ADP+NAD⁺.',
+ 'Harper''s Biochemistry',2022),
+
+('NEET PG','Biochemistry','Amino Acid Metabolism','hard',
+ 'Maple syrup urine disease is caused by deficiency of:',
+ '["Branched-chain α-keto acid dehydrogenase","Phenylalanine hydroxylase","Homogentisate oxidase","Tyrosinase"]',0,
+ 'MSUD: branched-chain amino acids (Leu, Ile, Val) accumulate → urine smells like maple syrup. Due to deficient BCKA dehydrogenase. Rx: restricted BCAA diet.',
+ 'Harper''s Biochemistry',2024),
+
+('NEET PG','Biochemistry','Vitamins','medium',
+ 'Vitamin B12 deficiency causes:',
+ '["Megaloblastic anemia + subacute combined degeneration of spinal cord","Pellagra","Scurvy","Rickets"]',0,
+ 'B12 deficiency: megaloblastic anemia + neurological (subacute combined degeneration affecting posterior + lateral columns). B9 (folate) causes megaloblastic anemia without neurological features.',
+ 'Harper''s Biochemistry',2023),
+
+('NEET PG','Biochemistry','DNA/RNA','hard',
+ 'The enzyme that removes RNA primers during DNA replication is:',
+ '["DNA Polymerase I (in prokaryotes)","DNA Polymerase III","Helicase","Ligase"]',0,
+ 'In E. coli: DNA Pol III = main replicase. DNA Pol I = 5''→3'' exonuclease activity removes RNA primers + fills gaps. DNA ligase seals nicks.',
+ 'Harper''s Biochemistry',2022),
+
+('NEET PG','Biochemistry','Lipid Metabolism','medium',
+ 'Which enzyme is rate-limiting in cholesterol synthesis?',
+ '["HMG-CoA reductase","Acetyl-CoA carboxylase","Lipoprotein lipase","LCAT"]',0,
+ 'HMG-CoA reductase (3-hydroxy-3-methylglutaryl CoA reductase) is the rate-limiting enzyme. Target of statins (competitive inhibitors).',
+ 'Harper''s Biochemistry',2024),
+
+('NEET PG','Biochemistry','Protein Structure','easy',
+ 'Alpha-helix and beta-sheets are examples of protein:',
+ '["Secondary structure","Primary structure","Tertiary structure","Quaternary structure"]',0,
+ 'Primary: amino acid sequence. Secondary: local folding (α-helix, β-sheet). Tertiary: 3D fold of single chain. Quaternary: multiple subunits.',
+ 'Harper''s Biochemistry',2023),
+
+('NEET PG','Biochemistry','Hormones','medium',
+ 'Second messenger for insulin signaling is:',
+ '["Tyrosine kinase (no classic second messenger)","cAMP","cGMP","IP3"]',0,
+ 'Insulin receptor = tyrosine kinase receptor (RTK). Activates IRS-1 → PI3K → Akt cascade. Unlike GPCRs, insulin does not use cAMP as second messenger.',
+ 'Harper''s Biochemistry',2022),
+
+-- ====== NEET PG — PATHOLOGY (10 questions) ======
+('NEET PG','Pathology','Cell Injury','hard',
+ 'Coagulative necrosis is the hallmark of:',
+ '["Ischemic infarction (most organs)","Brain infarction","TB granuloma","Fat necrosis"]',0,
+ 'Coagulative necrosis: ischemic infarction (heart, kidney, spleen). Exception: brain → liquefactive. Caseous (TB). Fat necrosis = fat saponification.',
+ 'Robbins Pathology',2024),
+
+('NEET PG','Pathology','Inflammation','medium',
+ 'The cardinal signs of acute inflammation are due to release of:',
+ '["Histamine, prostaglandins, bradykinin","Lymphokines only","IL-10 and TGF-β","Interferon-γ"]',0,
+ 'Acute inflammation mediators: histamine (vasodilation), prostaglandins (pain, fever), bradykinin (pain, vasodilation), leukotrienes (bronchoconstriction). These cause rubor, calor, dolor, tumor.',
+ 'Robbins Pathology',2023),
+
+('NEET PG','Pathology','Neoplasia','hard',
+ 'The p53 gene is a:',
+ '["Tumor suppressor gene","Proto-oncogene","DNA repair gene only","Oncogene"]',0,
+ 'p53 = guardian of the genome. Tumor suppressor gene — induces cell cycle arrest, apoptosis, or DNA repair after damage. Mutated in >50% of human cancers.',
+ 'Robbins Pathology',2022),
+
+('NEET PG','Pathology','Hematology','medium',
+ 'Reed-Sternberg cells are characteristic of:',
+ '["Hodgkin lymphoma","Non-Hodgkin lymphoma","CML","Burkitt lymphoma"]',0,
+ 'Reed-Sternberg cells (owl-eye nuclei): pathognomonic for Hodgkin lymphoma. Bilobed large cells with prominent nucleoli. Bernhard Sternberg + Dorothy Reed.',
+ 'Robbins Pathology',2024),
+
+('NEET PG','Pathology','Cardiovascular','hard',
+ 'Aschoff bodies are found in:',
+ '["Rheumatic fever (myocardium)","Infective endocarditis","Myocardial infarction","Atherosclerosis"]',0,
+ 'Aschoff bodies: granulomas with fibrinoid necrosis + Anitschkow cells (caterpillar cells) + giant cells. Pathognomonic for rheumatic fever (myocarditis).',
+ 'Robbins Pathology',2023),
+
+('NEET PG','Pathology','GI Pathology','medium',
+ 'H. pylori infection is associated with which type of gastric ulcer?',
+ '["Peptic ulcer disease (duodenal > gastric)","Fundic ulcer","Stress ulcer only","Zollinger-Ellison syndrome"]',0,
+ 'H. pylori causes 95% of duodenal ulcers and ~70% of gastric ulcers. Eradicating H. pylori heals ulcers and prevents recurrence.',
+ 'Robbins Pathology',2022),
+
+('NEET PG','Pathology','Renal Pathology','hard',
+ 'Wire-loop glomerulopathy is seen in:',
+ '["Lupus nephritis (Class IV)","IgA nephropathy","Minimal change disease","Membranous nephropathy"]',0,
+ 'Wire-loop lesions: immune complex deposits in GBM → thickened glomerular capillary walls in diffuse lupus nephritis (WHO Class IV). Most severe form.',
+ 'Robbins Pathology',2024),
+
+('NEET PG','Pathology','Pulmonary','medium',
+ 'Ghon focus is characteristic of:',
+ '["Primary tuberculosis","Secondary tuberculosis","Lobar pneumonia","Lung cancer"]',0,
+ 'Ghon focus: subpleural caseous nodule in primary TB (usually mid-zone). Ghon complex = Ghon focus + enlarged hilar lymph nodes.',
+ 'Robbins Pathology',2023),
+
+('NEET PG','Pathology','Endocrine','medium',
+ 'Multiple endocrine neoplasia type 2A (MEN 2A) includes:',
+ '["Medullary thyroid carcinoma + pheochromocytoma + parathyroid hyperplasia","Pituitary adenoma + parathyroid + pancreatic tumors","Only thyroid carcinoma","Adrenal adenoma only"]',0,
+ 'MEN 2A (Sipple syndrome): medullary thyroid carcinoma + pheochromocytoma + parathyroid hyperplasia. MEN 1 (Wermer): pituitary + pancreas + parathyroid.',
+ 'Robbins Pathology',2022),
+
+('NEET PG','Pathology','Dermatology','easy',
+ 'Nikolsky''s sign is positive in:',
+ '["Pemphigus vulgaris","Psoriasis","Lichen planus","Basal cell carcinoma"]',0,
+ 'Nikolsky sign: gentle pressure slides epidermis off — positive in pemphigus vulgaris (intraepidermal acantholysis). Negative in bullous pemphigoid (subepidermal).',
+ 'Robbins Pathology',2024),
+
+-- ====== NEET PG — PHARMACOLOGY (10 questions) ======
+('NEET PG','Pharmacology','Autonomic Pharmacology','hard',
+ 'Atropine causes tachycardia by blocking:',
+ '["M2 muscarinic receptors in SA node","β1 receptors","α1 receptors","Nicotinic receptors"]',0,
+ 'Atropine blocks M2 muscarinic receptors in SA node → removes vagal tone → heart rate increases. Does NOT act on adrenergic receptors.',
+ 'KD Tripathi Pharmacology',2023),
+
+('NEET PG','Pharmacology','Antimicrobials','medium',
+ 'Drug of choice for Methicillin-Resistant Staph aureus (MRSA):',
+ '["Vancomycin","Amoxicillin","Penicillin","Cephalexin"]',0,
+ 'MRSA: resistant to all β-lactams (altered PBP). Vancomycin (glycopeptide) is DOC. Linezolid and daptomycin are alternatives.',
+ 'KD Tripathi',2022),
+
+('NEET PG','Pharmacology','Antiepileptics','hard',
+ 'Phenytoin acts by:',
+ '["Blocking voltage-gated sodium channels","Enhancing GABA","Blocking calcium channels","Antagonizing glutamate"]',0,
+ 'Phenytoin: blocks voltage-gated Na⁺ channels in sustained-firing neurons. Does NOT increase GABA (unlike benzodiazepines and barbiturates).',
+ 'KD Tripathi',2024),
+
+('NEET PG','Pharmacology','Analgesics','medium',
+ 'Aspirin irreversibly inhibits:',
+ '["COX-1 and COX-2 (both) by acetylation","Only COX-2","Lipoxygenase","PLA2"]',0,
+ 'Aspirin acetylates and irreversibly inhibits both COX-1 and COX-2. Platelets cannot synthesize new COX → antiplatelet effect lasts platelet lifetime (7–10 days).',
+ 'KD Tripathi',2023),
+
+('NEET PG','Pharmacology','Antihypertensives','medium',
+ 'ACE inhibitors are contraindicated in:',
+ '["Pregnancy (bilateral renal artery stenosis)","Heart failure","Diabetic nephropathy","Post-MI"]',0,
+ 'ACE inhibitors contraindicated: pregnancy (fetotoxic — causes renal dysgenesis), bilateral renal artery stenosis (precipitates acute renal failure), hyperkalemia.',
+ 'KD Tripathi',2022),
+
+('NEET PG','Pharmacology','Antibiotics','hard',
+ 'Gray baby syndrome is caused by:',
+ '["Chloramphenicol","Tetracycline","Aminoglycosides","Sulfonamides"]',0,
+ 'Chloramphenicol → gray baby syndrome in neonates (immature hepatic glucuronidation + reduced renal excretion → toxic accumulation → cardiovascular collapse).',
+ 'KD Tripathi',2024),
+
+('NEET PG','Pharmacology','Antidiabetics','medium',
+ 'Which oral hypoglycemic does NOT cause hypoglycemia when used alone?',
+ '["Metformin","Glibenclamide","Glipizide","Glimepiride"]',0,
+ 'Metformin does not stimulate insulin secretion → does not cause hypoglycemia monotherapy. Sulfonylureas (glibenclamide, glipizide, glimepiride) stimulate insulin release → can cause hypoglycemia.',
+ 'KD Tripathi',2023),
+
+('NEET PG','Pharmacology','Antifungals','medium',
+ 'Amphotericin B mechanism of action:',
+ '["Binds ergosterol → membrane pores → fungal cell death","Inhibits ergosterol synthesis","Inhibits β-glucan synthesis","Inhibits nucleic acid synthesis"]',0,
+ 'Amphotericin B binds ergosterol (not cholesterol) in fungal membrane → forms pores → leakage of K⁺ and other ions → cell death. Gold standard for systemic fungal infections.',
+ 'KD Tripathi',2022),
+
+('NEET PG','Pharmacology','Antiviral','hard',
+ 'Mechanism of action of Oseltamivir (Tamiflu):',
+ '["Neuraminidase inhibitor","Reverse transcriptase inhibitor","Protease inhibitor","Integrase inhibitor"]',0,
+ 'Oseltamivir inhibits influenza neuraminidase → prevents release of new viral particles from host cells. Zanamivir works similarly. Used within 48 hours of onset.',
+ 'KD Tripathi',2024),
+
+('NEET PG','Pharmacology','Anticancer','hard',
+ 'Methotrexate acts by inhibiting:',
+ '["Dihydrofolate reductase (DHFR)","Thymidylate synthase directly","DNA polymerase","RNA polymerase"]',0,
+ 'Methotrexate: competitive inhibitor of DHFR → depletes tetrahydrofolate → impairs thymidylate and purine synthesis → cell death. Used in RA, psoriasis, leukemias.',
+ 'KD Tripathi',2023),
+
+-- ====== INICET — SURGERY (12 questions) ======
+('INICET','Surgery','General Surgery','medium',
+ 'Most common site of inguinal hernia in males:',
+ '["Indirect (lateral to inferior epigastric vessels)","Direct (medial to inferior epigastric)","Femoral","Umbilical"]',0,
+ 'Indirect inguinal hernia: most common (especially in males) — passes through deep inguinal ring lateral to inferior epigastric vessels. Associated with patent processus vaginalis.',
+ 'Bailey & Love''s Surgery',2024),
+
+('INICET','Surgery','Trauma','hard',
+ 'First step in management of multiple trauma patient (primary survey):',
+ '["Airway with cervical spine control","Breathing","Circulation","Disability"]',0,
+ 'ABCDE (ATLS protocol): Airway (with C-spine) → Breathing → Circulation → Disability (neuro) → Exposure. Airway is always first — apneic patient dies in 4 minutes.',
+ 'ATLS Manual',2023),
+
+('INICET','Surgery','Hepato-Biliary','hard',
+ 'Charcot''s triad in acute cholangitis consists of:',
+ '["Fever + RUQ pain + jaundice","Fever + abdominal pain + hypotension","Jaundice + steatorrhea + weight loss","Pain + fever + purulent discharge"]',0,
+ 'Charcot''s triad: fever (chills), RUQ pain, jaundice. Reynolds'' pentad adds hypotension + mental status changes (septic cholangitis).',
+ 'Bailey & Love''s',2022),
+
+('INICET','Surgery','Thyroid','medium',
+ 'Fine needle aspiration cytology (FNAC) of thyroid — Bethesda category VI indicates:',
+ '["Malignant","Benign","Atypia of undetermined significance","Suspicious for malignancy"]',0,
+ 'Bethesda System: I=non-diagnostic, II=benign, III=AUS, IV=follicular neoplasm, V=suspicious for malignancy, VI=malignant. Category VI → proceed directly to thyroidectomy.',
+ 'INICET 2022 Paper',2022),
+
+('INICET','Surgery','Breast','hard',
+ 'Peau d''orange (skin of orange) appearance in breast cancer is due to:',
+ '["Dermal lymphatic invasion causing skin edema","Nipple retraction","Fat necrosis","Fibrosis"]',0,
+ 'Lymphatic spread to skin → lymphatic obstruction → edema of skin → skin pits at hair follicle orifices → peau d''orange. Indicates locally advanced (T4) disease.',
+ 'Bailey & Love''s',2024),
+
+('INICET','Surgery','GI Surgery','medium',
+ 'Meckel''s diverticulum is a remnant of:',
+ '["Vitello-intestinal (omphalomesenteric) duct","Urachal remnant","Wolffian duct","Mullerian duct"]',0,
+ 'Meckel''s diverticulum: persistence of vitello-intestinal duct. Rule of 2s: 2% population, 2 feet from ileocecal valve, 2 inches long, 2 types of ectopic tissue (gastric/pancreatic).',
+ 'Bailey & Love''s',2023),
+
+('INICET','Surgery','Urology','hard',
+ 'Gold standard investigation for transitional cell carcinoma of bladder:',
+ '["Cystoscopy + biopsy","CT urogram","Urine cytology","Ultrasound"]',0,
+ 'Cystoscopy with biopsy is gold standard for TCC bladder — directly visualizes and samples the tumor. Urine cytology: high specificity but low sensitivity.',
+ 'Campbell-Walsh Urology',2022),
+
+('INICET','Surgery','Orthopaedics','medium',
+ 'Colles'' fracture involves:',
+ '["Distal radius (dinner fork deformity, dorsal angulation)","Ulna","Both radius and ulna","Carpal bones"]',0,
+ 'Colles'' fracture: distal radius fracture with dorsal angulation + dorsal displacement → dinner fork deformity. Mechanism: FOOSH (fall on outstretched hand).',
+ 'Bailey & Love''s',2024),
+
+('INICET','Surgery','Neurosurgery','hard',
+ 'Lucid interval followed by rapid deterioration suggests:',
+ '["Extradural (epidural) hematoma","Subdural hematoma","Subarachnoid hemorrhage","Intracerebral hemorrhage"]',0,
+ 'EDH: lucid interval (brief) → herniation. Caused by middle meningeal artery rupture (temporal bone fracture). CT shows biconvex (lens-shaped) hyperdense collection.',
+ 'Bailey & Love''s',2023),
+
+('INICET','Surgery','Endoscopy','medium',
+ 'ERCP is used for:',
+ '["Diagnosis and treatment of biliary + pancreatic duct diseases","Only for gallbladder stones","Biopsy of stomach","Sigmoid volvulus decompression"]',0,
+ 'ERCP (endoscopic retrograde cholangiopancreatography): visualizes and treats CBD stones, biliary strictures, pancreatic duct pathology. Both diagnostic and therapeutic.',
+ 'Bailey & Love''s',2022),
+
+('INICET','Surgery','Vascular','hard',
+ 'Intermittent claudication is a symptom of:',
+ '["Peripheral arterial disease (PAD)","Deep vein thrombosis","Varicose veins","Lymphedema"]',0,
+ 'Claudication: muscle pain on walking, relieved by rest. Due to inadequate arterial blood flow (PAD). ABI (ankle-brachial index) < 0.9 confirms PAD.',
+ 'Bailey & Love''s',2024),
+
+('INICET','Surgery','Pediatric Surgery','medium',
+ 'Hypertrophic pyloric stenosis classically presents as:',
+ '["Non-bilious projectile vomiting in 2-6 week old infant","Bilious vomiting","Bloody diarrhea","Abdominal distension at birth"]',0,
+ 'HPS: gastric outlet obstruction by hypertrophied pylorus. Non-bilious (above ampulla) projectile vomiting at 2–6 weeks. Palpable olive mass. Hypochloremic hypokalemic metabolic alkalosis.',
+ 'Pediatric Surgery Textbook',2023),
+
+-- ====== INICET — MEDICINE (12 questions) ======
+('INICET','Medicine','Cardiology','hard',
+ 'Electrical alternans on ECG is a feature of:',
+ '["Cardiac tamponade","Myocardial infarction","Atrial flutter","Complete heart block"]',0,
+ 'Cardiac tamponade: Beck''s triad (hypotension + muffled heart sounds + JVD) + electrical alternans (alternating QRS amplitude due to heart swinging in pericardial fluid).',
+ 'Harrison''s Medicine',2024),
+
+('INICET','Medicine','Pulmonology','medium',
+ 'Curschmann''s spirals and Charcot-Leyden crystals in sputum suggest:',
+ '["Bronchial asthma","Pneumonia","Pulmonary TB","Lung cancer"]',0,
+ 'Asthma sputum: Curschmann spirals (mucus casts of bronchioles), Charcot-Leyden crystals (eosinophil granule proteins), eosinophilia.',
+ 'Harrison''s Medicine',2023),
+
+('INICET','Medicine','Nephrology','hard',
+ 'The most common cause of nephrotic syndrome in adults:',
+ '["Membranous nephropathy","Minimal change disease","Focal segmental glomerulosclerosis","Diabetic nephropathy"]',0,
+ 'Adults: membranous nephropathy is most common primary cause. Children: minimal change disease. FSGS: most common in African Americans. Diabetic nephropathy: leading cause overall (secondary).',
+ 'Harrison''s Medicine',2022),
+
+('INICET','Medicine','Rheumatology','medium',
+ 'Butterfly rash (malar rash) sparing the nasolabial folds is characteristic of:',
+ '["SLE","Rosacea","Dermatomyositis","Sjogren''s syndrome"]',0,
+ 'SLE malar rash: erythema over cheeks + nose bridge, spares nasolabial folds. Photo-sensitive. Part of the 11 ACR/EULAR criteria for SLE diagnosis.',
+ 'Harrison''s Medicine',2024),
+
+('INICET','Medicine','Endocrinology','hard',
+ 'The most sensitive test for primary hypothyroidism:',
+ '["TSH (thyroid stimulating hormone)","Free T4","Total T3","TRH stimulation test"]',0,
+ 'TSH is most sensitive for primary hypothyroidism: elevated TSH with normal/low T4 = subclinical/overt hypothyroidism. TSH rises before T4 falls.',
+ 'Harrison''s Medicine',2023),
+
+('INICET','Medicine','Gastroenterology','medium',
+ 'Crigler-Najjar syndrome is caused by deficiency of:',
+ '["UDP-glucuronosyltransferase","Glucose-6-phosphatase","α-1 antitrypsin","Ceruloplasmin"]',0,
+ 'Crigler-Najjar: UGT1A1 enzyme deficiency → inability to conjugate bilirubin → unconjugated hyperbilirubinemia. Type I: severe (kernicterus). Type II: milder (responds to phenobarbital).',
+ 'Harrison''s Medicine',2022),
+
+('INICET','Medicine','Hematology','hard',
+ 'The Philadelphia chromosome (t 9;22) is found in:',
+ '["CML (and ~30% ALL)","AML","Hodgkin lymphoma","Multiple myeloma"]',0,
+ 'Ph chromosome: BCR-ABL fusion gene → constitutively active tyrosine kinase → uncontrolled myeloid proliferation. Present in 95% CML and ~30% adult ALL. Target of imatinib.',
+ 'Harrison''s Medicine',2024),
+
+('INICET','Medicine','Infectious Disease','medium',
+ 'Weil''s disease (icteric leptospirosis) is caused by:',
+ '["Leptospira interrogans","Borrelia burgdorferi","Treponema pallidum","Brucella abortus"]',0,
+ 'Leptospirosis: zoonosis via water/soil contaminated with infected animal urine. Weil''s disease = severe form with jaundice, renal failure, bleeding. Rx: penicillin G.',
+ 'Harrison''s Medicine',2023),
+
+('INICET','Medicine','Neurology','hard',
+ 'Myasthenia gravis is caused by antibodies against:',
+ '["Acetylcholine receptors (nicotinic) at NMJ","Voltage-gated calcium channels","Acetylcholinesterase","Presynaptic nerve terminal"]',0,
+ 'MG: autoantibodies (IgG) against nicotinic AChR at NMJ → receptor destruction → fatigable weakness. Anti-MuSK antibodies in seronegative cases. Rx: pyridostigmine, immunosuppression.',
+ 'Harrison''s Medicine',2022),
+
+('INICET','Medicine','Dermatology','medium',
+ 'Koebner phenomenon is seen in:',
+ '["Psoriasis, vitiligo, lichen planus","SLE only","Pemphigus","Melanoma"]',0,
+ 'Koebner (isomorphic) phenomenon: skin lesions at sites of trauma in psoriasis, vitiligo, lichen planus, warts. NOT seen in pemphigus or SLE.',
+ 'Harrison''s Medicine',2024),
+
+('INICET','Medicine','Ophthalmology','medium',
+ 'Kayser-Fleischer rings (corneal) are diagnostic of:',
+ '["Wilson''s disease (hepatolenticular degeneration)","Diabetes mellitus","Hypertension","Sarcoidosis"]',0,
+ 'Wilson''s disease: autosomal recessive, ATP7B mutation → copper accumulation. K-F rings: copper deposition in Descemet''s membrane. Also: liver disease, neuropsychiatric features.',
+ 'Harrison''s Medicine',2023),
+
+('INICET','Medicine','Psychiatry','hard',
+ 'Schneider''s first-rank symptoms of schizophrenia include all EXCEPT:',
+ '["Depressed mood","Auditory hallucinations (third-person commentary)","Thought insertion/withdrawal/broadcasting","Somatic passivity"]',0,
+ 'Schneider''s FRS: auditory hallucinations (3rd person, running commentary), thought insertion/withdrawal/broadcasting, made actions/feelings/impulses, somatic passivity, delusional perception. Depressed mood is NOT a FRS.',
+ 'Harrison''s Medicine',2022),
+
+-- ====== INICET — GYNECOLOGY & OBSTETRICS (14 questions) ======
+('INICET','Obstetrics','Normal Labour','medium',
+ 'The active phase of labour begins at:',
+ '["4 cm cervical dilation","0 cm (latent phase starts)","10 cm (complete)","8 cm"]',0,
+ 'WHO partograph: latent phase = 0–4 cm (slow). Active phase = 4–10 cm (rapid, ≥1 cm/hr). Alert line drawn from 4 cm; action line 4 hours later.',
+ 'Williams Obstetrics',2024),
+
+('INICET','Obstetrics','Hypertensive Disorders','hard',
+ 'Hellp syndrome in preeclampsia consists of:',
+ '["Hemolysis + Elevated Liver enzymes + Low Platelets","Hypertension + Edema + Leukocytosis + Proteinuria","Hyperglycemia + Leukopenia + Proteinuria","Heart failure + Elevated Liver enzymes + Pulmonary edema"]',0,
+ 'HELLP: H = hemolysis (microangiopathic), EL = elevated liver enzymes (AST, ALT), LP = low platelets (<100,000/μL). Complicates 0.5–0.9% of all pregnancies. Treat: deliver.',
+ 'Williams Obstetrics',2023),
+
+('INICET','Obstetrics','Antepartum Hemorrhage','hard',
+ 'Placenta previa is most accurately diagnosed by:',
+ '["Transvaginal ultrasound (TVS)","Abdominal palpation","PV examination","MRI"]',0,
+ 'TVS is gold standard for placenta previa diagnosis (safe, accurate, does not increase bleeding risk). PV examination is contraindicated (may precipitate massive hemorrhage).',
+ 'Williams Obstetrics',2022),
+
+('INICET','Obstetrics','Postpartum Hemorrhage','medium',
+ 'Most common cause of PPH:',
+ '["Uterine atony (4Ts: Tone)","Trauma","Tissue (retained placenta)","Thrombin (coagulopathy)"]',0,
+ 'PPH causes (4 Ts): Tone (atony) = 70–80% of PPH. Trauma (lacerations) = 20%. Tissue = retained placenta. Thrombin = coagulopathy. Oxytocin is the first-line treatment for atonic PPH.',
+ 'Williams Obstetrics',2024),
+
+('INICET','Gynaecology','Cervical Cancer','hard',
+ 'Most common histological type of cervical carcinoma:',
+ '["Squamous cell carcinoma (SCC)","Adenocarcinoma","Clear cell carcinoma","Sarcoma"]',0,
+ 'Cervical carcinoma: 80% SCC (at squamocolumnar junction). HPV 16 (SCC) and HPV 18 (adenocarcinoma). Adenocarcinoma incidence increasing due to HPV 18.',
+ 'Williams Gynecology',2023),
+
+('INICET','Gynaecology','PCOS','medium',
+ 'Rotterdam criteria for PCOS diagnosis requires 2 of 3: oligo/anovulation, clinical/biochemical hyperandrogenism, and:',
+ '["Polycystic ovarian morphology on USG","Elevated FSH","Elevated LH only","Low AMH"]',0,
+ 'Rotterdam 2003 criteria: need 2 of (1) oligo/anovulation (2) clinical or biochemical hyperandrogenism (3) polycystic ovaries on ultrasound (≥12 follicles per ovary or volume >10 mL).',
+ 'ASRM/ESHRE',2022),
+
+('INICET','Gynaecology','Infertility','hard',
+ 'The most common cause of female infertility in India:',
+ '["Tubal factor (post-pelvic inflammatory disease)","Ovulatory dysfunction","Unexplained infertility","Endometriosis"]',0,
+ 'In developing countries including India: tubal factor (post-PID, post-chlamydia, post-tuberculosis of fallopian tubes) is the most common cause.',
+ 'Dutta''s Gynecology',2024),
+
+('INICET','Gynaecology','Contraception','medium',
+ 'Cu-T IUD works primarily by:',
+ '["Spermicidal effect + impairs sperm transport","Hormonal effect","Preventing ovulation","Thickening cervical mucus only"]',0,
+ 'Copper IUD: copper ions are spermicidal (impair sperm motility, acrosome reaction). Also causes endometrial changes. Does NOT suppress ovulation. Most effective non-hormonal reversible contraceptive.',
+ 'Dutta''s Gynecology',2023),
+
+('INICET','Gynaecology','Menstrual Disorders','medium',
+ 'Primary dysmenorrhea is caused by:',
+ '["Excess prostaglandins (PGF2α) causing uterine hypercontractility","Endometriosis","Uterine fibroids","Adenomyosis"]',0,
+ 'Primary dysmenorrhea: no organic cause. Excess PGF2α → intense myometrial contractions + uterine ischemia → pain. Rx: NSAIDs (reduce PG synthesis) or OCP.',
+ 'Dutta''s Gynecology',2022),
+
+('INICET','Obstetrics','Gestational Diabetes','hard',
+ 'Oral glucose tolerance test (OGTT) for GDM is done at:',
+ '["24-28 weeks gestation","12-14 weeks","First antenatal visit","36-38 weeks"]',0,
+ 'GDM screening: OGTT with 75g glucose at 24–28 weeks (WHO criteria). Diagnostic if any value: fasting ≥92 mg/dL, 1h ≥180 mg/dL, 2h ≥153 mg/dL.',
+ 'Williams Obstetrics',2024),
+
+('INICET','Gynaecology','Ovarian Tumors','hard',
+ 'CA-125 is most elevated in:',
+ '["Epithelial ovarian cancer (serous cystadenocarcinoma)","Dermoid cyst","Granulosa cell tumor","Krukenberg tumor"]',0,
+ 'CA-125: tumor marker for serous epithelial ovarian cancer. Normal <35 U/mL. Also elevated in endometriosis, fibroids, PID (not specific). Used for monitoring treatment response.',
+ 'Williams Gynecology',2023),
+
+('INICET','Obstetrics','Rh Incompatibility','medium',
+ 'Anti-D immunoglobulin is given to Rh-negative mothers:',
+ '["At 28 weeks + within 72 hours of delivery of Rh+ve baby","Only at delivery","Only in subsequent pregnancies","At 16 weeks only"]',0,
+ 'Anti-D IgG prophylaxis: 28 weeks antenatal + within 72 hours of delivery if baby is Rh+ve. Also after sensitizing events (abortion, amniocentesis, APH).',
+ 'Williams Obstetrics',2022),
+
+('INICET','Gynaecology','Fibroid Uterus','medium',
+ 'Most common complication of fibroid (leiomyoma) in pregnancy:',
+ '["Red degeneration (carneous degeneration)","Malignant change","Calcification","Cystic degeneration"]',0,
+ 'Red degeneration (carneous): occurs during pregnancy due to rapid growth → venous obstruction → hemorrhagic infarction → severe localized pain. Treated conservatively (analgesics).',
+ 'Dutta''s Gynecology',2024),
+
+('INICET','Gynaecology','Cervical Screening','easy',
+ 'Pap smear screens for:',
+ '["Cervical cancer and precancerous lesions (CIN)","Ovarian cancer","Endometrial cancer","Vulvar cancer"]',0,
+ 'Pap smear (cytology): screens for cervical intraepithelial neoplasia (CIN) and cervical cancer. Co-testing with HPV improves sensitivity. Recommended from age 21.',
+ 'ACOG Guidelines',2023);
+
+-- Verify counts
+SELECT exam_name, subject, COUNT(*) as q_count
+FROM public.question_bank
+GROUP BY exam_name, subject
+ORDER BY exam_name, subject;

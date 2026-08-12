@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { MeritusIcon } from "@/components/meritus/MeritusLogo";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
@@ -33,6 +34,7 @@ function TestUI() {
   const [visited, setVisited] = useState<Record<number, boolean>>({});
   const [secs, setSecs] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const startedRef = useRef(false);
 
   useEffect(() => {
@@ -90,9 +92,46 @@ function TestUI() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [secs, attemptId]);
 
-  if (isLoading || !data) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="flex items-center gap-2 text-secondary-text"><Loader2 className="animate-spin" /> Loading test…</div></div>;
-  if (error) return <div className="p-8 text-danger">Failed: {(error as Error).message}</div>;
-  if (!total) return <div className="p-8">This test has no questions.</div>;
+  // counts for the pre-submit confirmation screen
+  const confirmCounts = useMemo(() => {
+    let answered = 0, markedAnswered = 0, markedUnanswered = 0, notAnswered = 0;
+    for (let i = 0; i < total; i++) {
+      const isMarked = !!marked[i];
+      const hasAnswer = selections[i] != null;
+      if (isMarked && hasAnswer) markedAnswered++;
+      else if (isMarked && !hasAnswer) markedUnanswered++;
+      else if (!isMarked && hasAnswer) answered++;
+      else if (visited[i]) notAnswered++;
+    }
+    const notVisited = total - answered - markedAnswered - markedUnanswered - notAnswered;
+    return { answered, markedAnswered, markedUnanswered, notAnswered, notVisited };
+  }, [marked, selections, visited, total]);
+
+  if (isLoading || !data) return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
+      <div className="flex flex-col items-center gap-3 text-secondary-text">
+        <Loader2 className="animate-spin" size={32} />
+        <span className="text-sm">Loading test…</span>
+      </div>
+    </div>
+  );
+  if (error) return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background p-8">
+      <div className="max-w-lg w-full bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+        <p className="text-red-700 font-semibold text-lg mb-2">Failed to load test</p>
+        <p className="text-red-600 text-sm font-mono break-all">{(error as Error).message}</p>
+        <button onClick={() => window.history.back()} className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg text-sm">Go Back</button>
+      </div>
+    </div>
+  );
+  if (!total) return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
+      <div className="text-center">
+        <p className="text-lg font-semibold text-body">This test has no questions.</p>
+        <button onClick={() => window.history.back()} className="mt-4 px-4 py-2 bg-primary text-white rounded-lg text-sm">Go Back</button>
+      </div>
+    </div>
+  );
 
   const cls = (i: number) => {
     if (i === current) return "bg-card border-2 border-gold text-gold";
@@ -103,10 +142,10 @@ function TestUI() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="fixed inset-0 z-40 bg-background flex flex-col overflow-hidden">
       <header className="bg-navy text-white px-4 h-16 flex items-center justify-between gap-4 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded bg-primary flex items-center justify-center font-bold text-sm">M</div>
+          <MeritusIcon size={30} />
           <div>
             <div className="font-bold text-sm leading-tight">{data.test.title}</div>
             <div className="text-xs text-indigo-200">{data.test.exam_name} · +4 / −1</div>
@@ -114,7 +153,7 @@ function TestUI() {
         </div>
         <div className="flex items-center gap-3">
           <div className={cn("font-mono text-lg md:text-xl font-bold tabular-nums px-3 py-1 rounded", secs < 60 ? "text-red-400" : "text-white")}>{fmt(secs)}</div>
-          <Button onClick={handleSubmit} disabled={submitting || !attemptId} className="bg-danger hover:bg-danger/90 font-semibold">{submitting ? "Submitting…" : "Submit Test"}</Button>
+          <Button onClick={() => setShowConfirm(true)} disabled={submitting || !attemptId} className="bg-danger hover:bg-danger/90 font-semibold">{submitting ? "Submitting…" : "Submit Test"}</Button>
         </div>
       </header>
 
@@ -169,6 +208,51 @@ function TestUI() {
           </div>
         </aside>
       </div>
+
+      {/* ── Pre-submit confirmation modal ───────────────────────── */}
+      {showConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-card rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <h2 className="text-lg font-bold text-body">Ready to submit?</h2>
+            <p className="text-sm text-secondary-text mt-1">Review your attempt summary before final submission.</p>
+
+            <div className="mt-5 space-y-2">
+              {[
+                { label: "Answered", count: confirmCounts.answered, color: "bg-success", textColor: "text-success" },
+                { label: "Marked for review (answered)", count: confirmCounts.markedAnswered, color: "bg-violet-600", textColor: "text-violet-600" },
+                { label: "Marked for review (not answered)", count: confirmCounts.markedUnanswered, color: "bg-violet-300", textColor: "text-violet-500" },
+                { label: "Not answered", count: confirmCounts.notAnswered, color: "bg-danger", textColor: "text-danger" },
+                { label: "Not visited", count: confirmCounts.notVisited, color: "bg-muted-text", textColor: "text-secondary-text" },
+              ].map(({ label, count, color, textColor }) => (
+                <div key={label} className="flex items-center justify-between bg-background rounded-lg px-4 py-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <span className={cn("h-3 w-3 rounded", color)} />
+                    <span className="text-sm text-body">{label}</span>
+                  </div>
+                  <span className={cn("text-sm font-bold tabular-nums", textColor)}>{count}</span>
+                </div>
+              ))}
+              <div className="flex items-center justify-between bg-navy/5 border border-navy/10 rounded-lg px-4 py-2.5 mt-1">
+                <span className="text-sm font-semibold text-body">Total questions</span>
+                <span className="text-sm font-bold text-body tabular-nums">{total}</span>
+              </div>
+            </div>
+
+            {(confirmCounts.notAnswered + confirmCounts.markedUnanswered + confirmCounts.notVisited) > 0 && (
+              <p className="mt-4 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                ⚠ You have {confirmCounts.notAnswered + confirmCounts.markedUnanswered + confirmCounts.notVisited} unanswered question(s). Unanswered questions score 0 (no negative marking).
+              </p>
+            )}
+
+            <div className="mt-5 flex gap-3">
+              <Button variant="outline" className="flex-1" onClick={() => setShowConfirm(false)}>Back to Test</Button>
+              <Button className="flex-1 bg-danger hover:bg-danger/90 font-semibold" disabled={submitting} onClick={() => { setShowConfirm(false); handleSubmit(); }}>
+                {submitting ? "Submitting…" : "Confirm & Submit"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
