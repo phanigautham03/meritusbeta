@@ -38,7 +38,7 @@ const mobileTabs = [
   { to: "/dashboard", label: "Home", icon: Home },
   { to: "/mock-tests", label: "Tests", icon: FileText },
   { to: "/forget-meter", label: "Memory", icon: Brain },
-  { to: "/leaderboard", label: "Ranks", icon: BarChart3 },
+  { to: "/upgrade", label: "Upgrade", icon: Crown },
   { to: "/profile", label: "Profile", icon: User },
 ];
 

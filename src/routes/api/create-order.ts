@@ -10,8 +10,8 @@ export const Route = createFileRoute("/api/create-order")({
           const billing = body.billing ?? "monthly";
 
           const prices: Record<string, Record<string, number>> = {
-            pro:   { monthly: 49900,  annual: 419300  }, // paise
-            power: { monthly: 99900,  annual: 839300  },
+            pro:   { monthly: 49900,  annual: 478800  }, // paise (₹499/mo, ₹399/mo×12=₹4788/yr)
+            power: { monthly: 99900,  annual: 958800  }, // paise (₹999/mo, ₹799/mo×12=₹9588/yr)
           };
 
           const amount = prices[plan]?.[billing] ?? 49900;
